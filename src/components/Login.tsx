@@ -4,6 +4,7 @@ import Button from './common/Button';
 
 interface LoginProps {
   onClose: () => void;
+  onOpenRegister: () => void;
 }
 
 const Login: React.FC<LoginProps> = ({ onClose }) => {

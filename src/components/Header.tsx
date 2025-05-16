@@ -2,11 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { Menu, X, PawPrint } from 'lucide-react';
 import Button from './common/Button';
 import Login from './Login';
+import Register from './Register';
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
+  const [isRegisterOpen, setIsRegisterOpen] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -60,7 +62,7 @@ const Header: React.FC = () => {
                 </a>
               ))}
               <Button onClick={() => setIsLoginOpen(true)} variant="outline">Login</Button>
-              <Button href="/register" variant="outline">Register</Button>
+              <Button onClick={() => setIsRegisterOpen(true)} variant="outline">Register</Button>
               <Button href="#booking">Book Now</Button>
             </nav>
 
@@ -92,7 +94,7 @@ const Header: React.FC = () => {
                 <Button onClick={() => { setIsLoginOpen(true); setIsMenuOpen(false); }} variant="outline">
                   Login
                 </Button>
-                <Button href="/register" variant="outline" onClick={() => setIsMenuOpen(false)}>
+                <Button onClick={() => { setIsRegisterOpen(true); setIsMenuOpen(false); }} variant="outline">
                   Register
                 </Button>
                 <Button href="#booking" onClick={() => setIsMenuOpen(false)}>
@@ -105,6 +107,7 @@ const Header: React.FC = () => {
       </header>
 
       {isLoginOpen && <Login onClose={() => setIsLoginOpen(false)} />}
+      {isRegisterOpen && <Register onClose={() => setIsRegisterOpen(false)} />}
     </>
   );
 };

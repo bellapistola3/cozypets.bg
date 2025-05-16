@@ -107,12 +107,7 @@ const Header: React.FC = () => {
       </header>
 
       {isLoginOpen && <Login onClose={() => setIsLoginOpen(false)} />}
-      {isRegisterOpen && 
-        <Register
-         onClose={() => setIsRegisterOpen(false)}
-         onOpenLogin={() => setIsLoginOpen(true)}
-       />
-     )}
+      {isRegisterOpen && <Register onClose={() => setIsRegisterOpen(false)} />}
     </>
   );
 };

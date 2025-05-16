@@ -4,9 +4,10 @@ import Button from './common/Button';
 
 interface LoginProps {
   onClose: () => void;
+  onOpenRegister: () => void;
 }
 
-const Login: React.FC<LoginProps> = ({ onClose }) => {
+const Login: React.FC<LoginProps> = ({ onClose, onOpenRegister }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -80,8 +81,9 @@ const Login: React.FC<LoginProps> = ({ onClose }) => {
               <button 
                 type="button"
                 onClick={() => {
-                  onClose();
-                  // Add register modal open logic here
+                  onClose();       // close the Login modal
+                  onOpenRegister();   // open the Registration modal
+                 
                 }}
                 className="font-medium text-blue-600 hover:text-blue-500"
               >

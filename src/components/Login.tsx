@@ -82,6 +82,7 @@ const Login: React.FC<LoginProps> = ({ onClose, onOpenRegister }) => {
                 type="button"
                 onClick={() => {
                   onClose();
+                  onOpenLogin();
                   // Add register modal open logic here
                 }}
                 className="font-medium text-blue-600 hover:text-blue-500"

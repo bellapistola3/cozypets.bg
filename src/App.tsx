@@ -1,4 +1,5 @@
 import React from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import Services from './components/Services';
@@ -10,24 +11,49 @@ import Faq from './components/Faq';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import ScrollToTop from './components/common/ScrollToTop';
+import About from './components/About'; // Промени пътя, ако е в друга папка
 
 function App() {
   return (
-    <div className="min-h-screen bg-gray-50">
+    <BrowserRouter>
       <ScrollToTop />
       <Header />
-      <main>
-        <Hero />
-        <Services />
-        <Testimonials />
-        <Gallery />
-        <Team />
-        <Booking />
-        <Faq />
-        <Contact />
-      </main>
-      <Footer />
-    </div>
+
+      <Routes>
+        {/* Начална страница */}
+        <Route
+          path="/"
+          element={
+            <>
+              <main>
+                <Hero />
+                <Services />
+                <Testimonials />
+                <Gallery />
+                <Team />
+                <Booking />
+                <Faq />
+                <Contact />
+              </main>
+              <Footer />
+            </>
+          }
+        />
+
+        {/* Страница „За нас“ */}
+        <Route
+          path="/about"
+          element={
+            <>
+              <main>
+                <About />
+              </main>
+              <Footer />
+            </>
+          }
+        />
+      </Routes>
+    </BrowserRouter>
   );
 }
 

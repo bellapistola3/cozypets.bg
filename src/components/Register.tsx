@@ -4,6 +4,7 @@ import Button from './common/Button';
 
 interface RegisterProps {
   onClose: () => void;
+  onOpenLogin: () => void;
 }
 
 const Register: React.FC<RegisterProps> = ({ onClose }) => {

@@ -11,7 +11,7 @@ import Faq from './components/Faq';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import ScrollToTop from './components/common/ScrollToTop';
-import About from './components/About'; // Промени пътя, ако е в друга папка
+import About from './About'; // Fixed import path
 
 function App() {
   return (
@@ -40,7 +40,7 @@ function App() {
           }
         />
 
-        {/* Страница „За нас“ */}
+        {/* Страница „За нас" */}
         <Route
           path="/about"
           element={

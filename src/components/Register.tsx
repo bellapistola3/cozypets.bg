@@ -152,11 +152,11 @@ const Register: React.FC<RegisterProps> = ({ onClose }) => {
 
             <div className="text-center text-sm text-gray-600">
               Already have an account?{' '}
-              <button 
+              <button
                 type="button"
                 onClick={() => {
-                  onClose();
-                  // Add login modal open logic here
+                  onClose();        // close the Register modal
+                  onOpenLogin();    // open the Login modal
                 }}
                 className="font-medium text-blue-600 hover:text-blue-500"
               >

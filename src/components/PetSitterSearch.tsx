@@ -22,17 +22,17 @@ const PetSitterSearch: React.FC<PetSitterSearchProps> = ({ onClose }) => {
   });
 
   const petTypeOptions = [
-    { value: 'dog', label: 'Dog' },
-    { value: 'cat', label: 'Cat' },
-    { value: 'bird', label: 'Bird' },
-    { value: 'small-mammal', label: 'Small Mammal' },
-    { value: 'reptile', label: 'Reptile' },
-    { value: 'other', label: 'Other' },
+    { value: 'dog', label: 'Куче' },
+    { value: 'cat', label: 'Котка' },
+    { value: 'bird', label: 'Птица' },
+    { value: 'small-mammal', label: 'Дребен бозайник' },
+    { value: 'reptile', label: 'Влечуго' },
+    { value: 'other', label: 'Друг' },
   ];
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    console.log('Search data:', formData);
+    console.log('Търсени данни:', formData);
   };
 
   const handlePetTypeChange = (value: string) => {
@@ -55,18 +55,18 @@ const PetSitterSearch: React.FC<PetSitterSearchProps> = ({ onClose }) => {
         <button
           onClick={onClose}
           className="absolute top-4 right-4 text-gray-500 hover:text-accent-500 transition-colors"
-          aria-label="Close search"
+          aria-label="Затвори търсене"
         >
           <X className="h-6 w-6" />
         </button>
         
         <div className="p-6 md:p-8">
-          <h2 className="text-2xl font-bold text-secondary-900 mb-6">Find Your Perfect Pet Sitter</h2>
+          <h2 className="text-2xl font-bold text-secondary-900 mb-6">Намерете перфектния гледач на домашни любимци</h2>
           
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Pet Types (Select all that apply)
+                Видове домашни любимци (изберете всички подходящи)
               </label>
               <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                 {petTypeOptions.map(option => (
@@ -88,7 +88,7 @@ const PetSitterSearch: React.FC<PetSitterSearchProps> = ({ onClose }) => {
             
             <div>
               <label htmlFor="city" className="block text-sm font-medium text-gray-700 mb-1">
-                City
+                Град
               </label>
               <input
                 type="text"
@@ -96,7 +96,7 @@ const PetSitterSearch: React.FC<PetSitterSearchProps> = ({ onClose }) => {
                 name="city"
                 value={formData.city}
                 onChange={handleChange}
-                placeholder="Enter your city"
+                placeholder="Въведете вашия град"
                 className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-accent-500 focus:border-accent-500"
                 required
               />
@@ -105,7 +105,7 @@ const PetSitterSearch: React.FC<PetSitterSearchProps> = ({ onClose }) => {
             <div className="grid md:grid-cols-2 gap-6">
               <div>
                 <label htmlFor="startDate" className="block text-sm font-medium text-gray-700 mb-1">
-                  Start Date
+                  Начална дата
                 </label>
                 <input
                   type="date"
@@ -120,7 +120,7 @@ const PetSitterSearch: React.FC<PetSitterSearchProps> = ({ onClose }) => {
               
               <div>
                 <label htmlFor="endDate" className="block text-sm font-medium text-gray-700 mb-1">
-                  End Date
+                  Крайна дата
                 </label>
                 <input
                   type="date"
@@ -136,7 +136,7 @@ const PetSitterSearch: React.FC<PetSitterSearchProps> = ({ onClose }) => {
             
             <div className="flex justify-end pt-4">
               <Button type="submit">
-                Search Pet Sitters
+                Търсене на гледачи
               </Button>
             </div>
           </form>

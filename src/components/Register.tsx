@@ -7,7 +7,7 @@ interface RegisterProps {
   onOpenLogin: () => void;
 }
 
-const Register: React.FC<RegisterProps> = ({ onClose }) => {
+const Register: React.FC<RegisterProps> = ({ onClose, onOpenLogin }) => {
   const [formData, setFormData] = useState({
     firstName: '',
     familyName: '',

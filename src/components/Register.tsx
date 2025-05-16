@@ -146,7 +146,7 @@ const Register: React.FC<RegisterProps> = ({ onClose }) => {
               </div>
             </div>
 
-            <Button onClick={() => {setIsRegisterOpen(false); setIsLoginOpen(true);}} type="submit" className="w-full mt-6">
+            <Button onClick={() => {setIsRegisterOpen(false) setIsLoginOpen(true)}} type="submit" className="w-full mt-6">
               Create Account
             </Button>
 

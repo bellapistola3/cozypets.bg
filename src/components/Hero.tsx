@@ -7,19 +7,19 @@ const Hero: React.FC = () => {
   const [isSearchOpen, setIsSearchOpen] = useState(false);
 
   return (
-    <section id="hero" className="relative min-h-screen flex items-center justify-center overflow-hidden">
-      {/* Background Image with Floating Effect */}
-      <div className="absolute inset-0 w-full h-full">
+    <section id="hero" className="relative h-[calc(100vh-80px)] mt-20 min-h-[600px] flex items-center">
+      {/* Background Image */}
+      <div className="absolute inset-0">
         <img
           src="https://images.pexels.com/photos/1904105/pexels-photo-1904105.jpeg"
           alt="Pet sitting background"
-          className="w-full h-full object-cover animate-float"
+          className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 to-black/40"></div>
+        <div className="absolute inset-0 bg-black/50"></div>
       </div>
 
       {/* Content */}
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center mt-20">
+      <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
         <div className="max-w-3xl mx-auto">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6 animate-fadeInUp">
             Find Your Perfect <br />

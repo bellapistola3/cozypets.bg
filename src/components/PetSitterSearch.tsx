@@ -11,6 +11,7 @@ interface FormData {
   city: string;
   startDate: string;
   endDate: string;
+  home: string[];
 }
 
 const PetSitterSearch: React.FC<PetSitterSearchProps> = ({ onClose }) => {
@@ -28,6 +29,11 @@ const PetSitterSearch: React.FC<PetSitterSearchProps> = ({ onClose }) => {
     { value: 'small-mammal', label: 'Дребен бозайник' },
     { value: 'reptile', label: 'Влечуго' },
     { value: 'other', label: 'Друг' },
+  ];
+
+  const homeOptions = [
+    { value: 'sitterHome', label: 'в дома на гледача' },
+    { value: 'ownerHome', label: 'в дома на стопанина' },
   ];
 
   const handleSubmit = (e: React.FormEvent) => {

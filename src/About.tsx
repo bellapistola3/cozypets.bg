@@ -37,7 +37,14 @@ const About = () => {
       </p>
 
       <div className="text-center mt-10">
-        <a href="/contact" className="bg-green-500 hover:bg-green-600 text-white font-semibold px-6 py-3 rounded-lg shadow-md transition duration-300">Свържете се с нас</a>
+        <a
+          href="https://petstay.bg/kontakti"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="bg-green-500 hover:bg-green-600 text-white font-semibold px-6 py-3 rounded-lg shadow-md transition duration-300"
+        >
+          Свържете се с нас
+        </a>
       </div>
     </section>
   );

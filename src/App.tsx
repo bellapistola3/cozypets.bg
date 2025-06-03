@@ -11,7 +11,8 @@ import Faq from './components/Faq';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import ScrollToTop from './components/common/ScrollToTop';
-import About from './About'; // Fixed import path
+import About from './About';
+import PrivacyPolicy from './PrivacyPolicy'; // 👈 това е новото
 
 function App() {
   return (
@@ -47,6 +48,19 @@ function App() {
             <>
               <main>
                 <About />
+              </main>
+              <Footer />
+            </>
+          }
+        />
+
+        {/* Страница „Политика за поверителност" */}
+        <Route
+          path="/privacy"
+          element={
+            <>
+              <main>
+                <PrivacyPolicy />
               </main>
               <Footer />
             </>

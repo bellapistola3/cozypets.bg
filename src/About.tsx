@@ -33,15 +33,13 @@ const About = () => {
 
       <h2 className="text-2xl font-semibold mt-8 mb-4">Станете част от нашето семейство</h2>
       <p className="text-lg mb-6">
-        CozyPets не е просто платформа – това е общност. Приканваме  Ви да бъдете част от нея – като собственик, който търси сигурна грижа за любимеца си, или като гледач, готов да подари време, обич и внимание.
+        CozyPets не е просто платформа – това е общност. Приканваме ви да бъдете част от нея – като собственик, който търси сигурна грижа за любимеца си, или като гледач, готов да подари време, обич и внимание.
       </p>
 
       <div className="text-center mt-10">
         <a
-          href="https://petstay.bg/kontakti"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="bg-green-500 hover:bg-green-600 text-white font-semibold px-6 py-3 rounded-lg shadow-md transition duration-300"
+          href="/#contact"
+          className="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-3 rounded-lg shadow-md transition duration-300"
         >
           Свържете се с нас
         </a>

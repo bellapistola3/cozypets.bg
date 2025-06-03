@@ -7,26 +7,26 @@ const Contact: React.FC = () => {
     <section id="contact" className="py-20 bg-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading
-          title="Contact Us"
-          subtitle="Get in touch with our pet care team"
+          title="Свържете се с нас"
+          subtitle="Пишете ни – ние сме тук за вас и вашите любимци"
           centered
         />
         
         <div className="grid md:grid-cols-2 gap-12 mt-12">
           <div>
-            <h3 className="text-xl font-semibold mb-6">Get In Touch</h3>
+            <h3 className="text-xl font-semibold mb-6">Контакти</h3>
             <div className="space-y-4">
               <div className="flex items-center">
-                <Phone className="h-5 w-5 text-blue-600 mr-3" />
-                <span>(555) 123-4567</span>
+                <Phone className="h-5 w-5 text-green-600 mr-3" />
+                <span>+359 XXX XXX XXX</span> {/* ← сложи реален номер */}
               </div>
               <div className="flex items-center">
-                <Mail className="h-5 w-5 text-blue-600 mr-3" />
-                <span>contact@pawkeeper.com</span>
+                <Mail className="h-5 w-5 text-green-600 mr-3" />
+                <span>contact@cozypetsbyalice.bg</span> {/* ← ако нямаш, остави празно */}
               </div>
               <div className="flex items-center">
-                <MapPin className="h-5 w-5 text-blue-600 mr-3" />
-                <span>123 Pet Care Lane, Pet City, PC 12345</span>
+                <MapPin className="h-5 w-5 text-green-600 mr-3" />
+                <span>София, България</span>
               </div>
             </div>
           </div>
@@ -35,45 +35,48 @@ const Contact: React.FC = () => {
             <form className="space-y-4">
               <div>
                 <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-                  Name
+                  Име
                 </label>
                 <input
                   type="text"
                   id="name"
                   name="name"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                  required
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500"
                 />
               </div>
               
               <div>
                 <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                  Email
+                  Имейл
                 </label>
                 <input
                   type="email"
                   id="email"
                   name="email"
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                  required
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500"
                 />
               </div>
               
               <div>
                 <label htmlFor="message" className="block text-sm font-medium text-gray-700 mb-1">
-                  Message
+                  Съобщение
                 </label>
                 <textarea
                   id="message"
                   name="message"
                   rows={4}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                  required
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500"
                 ></textarea>
               </div>
               
               <button
                 type="submit"
-                className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 transition-colors"
+                className="w-full bg-green-600 text-white py-2 px-4 rounded-md hover:bg-green-700 transition-colors"
               >
-                Send Message
+                Изпрати съобщение
               </button>
             </form>
           </div>

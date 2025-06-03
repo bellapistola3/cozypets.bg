@@ -12,7 +12,7 @@ import Contact from './components/Contact';
 import Footer from './components/Footer';
 import ScrollToTop from './components/common/ScrollToTop';
 import About from './About';
-import PrivacyPolicy from './PrivacyPolicy'; // 👈 това е новото
+import PrivacyPolicy from './PrivacyPolicy';
 
 function App() {
   return (
@@ -35,6 +35,16 @@ function App() {
                 <Booking />
                 <Faq />
                 <Contact />
+
+                {/* Бутон за политика за поверителност */}
+                <div className="text-center mt-12">
+                  <a
+                    href="/privacy"
+                    className="inline-block bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg shadow-md transition duration-300"
+                  >
+                    Политика за поверителност
+                  </a>
+                </div>
               </main>
               <Footer />
             </>
@@ -72,3 +82,4 @@ function App() {
 }
 
 export default App;
+

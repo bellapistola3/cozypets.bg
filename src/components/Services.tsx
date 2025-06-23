@@ -7,48 +7,48 @@ const Services: React.FC = () => {
   const services = [
     {
       id: 1,
-      title: 'Daily Dog Walks',
-      description: 'Regular exercise and bathroom breaks for your canine companion while you\'re at work or away.',
+      title: 'Ежедневни разходки с кучета',
+      description: 'Редовни упражнения и почивки за вашия кучешки спътник, докато сте на работа или отсъстващи.',
       icon: <Clock className="h-6 w-6" />,
-      price: 'From $25 per walk',
-      features: ['30-minute or 1-hour options', 'Flexible scheduling', 'GPS tracked walks', 'Detailed report after each visit'],
+      price: 'От 25 лв. на разходка',
+      features: ['30-минутни или 1-часови опции', 'Гъвкаво планиране', 'GPS проследени разходки', 'Подробен отчет след всяко посещение'],
       popular: false,
     },
     {
       id: 2,
-      title: 'In-Home Pet Sitting',
-      description: 'Complete care for your pets in the comfort of their own home while you\'re on vacation or business trips.',
+      title: 'Домашно гледане на домашни любимци',
+      description: 'Пълна грижа за вашите домашни любимци в комфорта на собствения им дом, докато сте на ваканция или служебни пътувания.',
       icon: <Home className="h-6 w-6" />,
-      price: 'From $60 per day',
-      features: ['Multiple daily visits', 'Feeding and medication', 'Fresh water and litter maintenance', 'Home security checks'],
+      price: 'От 60 лв. на ден',
+      features: ['Множество ежедневни посещения', 'Хранене и лекарства', 'Прясна вода и поддръжка на тоалетната', 'Проверки за домашна сигурност'],
       popular: true,
     },
     {
       id: 3,
-      title: 'Overnight Care',
-      description: 'Overnight stays to provide companionship, security, and care during evening and morning hours.',
+      title: 'Нощна грижа',
+      description: 'Нощни престои за осигуряване на компания, сигурност и грижа през вечерните и сутрешните часове.',
       icon: <CalendarDays className="h-6 w-6" />,
-      price: 'From $95 per night',
-      features: ['12-hour overnight stays', 'Evening and morning routines', 'Constant companionship', 'Regular updates and photos'],
+      price: 'От 95 лв. на нощ',
+      features: ['12-часови нощни престои', 'Вечерни и сутрешни рутини', 'Постоянна компания', 'Редовни актуализации и снимки'],
       popular: false,
     },
     {
       id: 4,
-      title: 'Pet Taxi Services',
-      description: 'Safe transportation to vet appointments, grooming sessions, or wherever your pet needs to go.',
+      title: 'Такси услуги за домашни любимци',
+      description: 'Безопасен транспорт до ветеринарни прегледи, груминг сесии или където и да трябва да отиде вашият домашен любимец.',
       icon: <Star className="h-6 w-6" />,
-      price: 'From $35 per trip',
-      features: ['Secure pet carriers provided', 'Climate-controlled vehicle', 'Waiting during appointments', 'Direct-to-destination service'],
+      price: 'От 35 лв. на пътуване',
+      features: ['Осигурени безопасни преносими клетки', 'Климатизиран автомобил', 'Изчакване по време на прегледи', 'Директна услуга до дестинацията'],
       popular: false,
     },
   ];
 
   return (
-    <section id="services" className="py-20 bg-white">
+    <section id="services" className="py-20 bg-gradient-to-br from-green-50 to-green-100">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading
-          title="Our Pet Care Services"
-          subtitle="Professional care tailored to your pet's needs"
+          title="Нашите услуги за грижа за домашни любимци"
+          subtitle="Професионална грижа, адаптирана към нуждите на вашия домашен любимец"
           centered
         />
         
@@ -59,33 +59,33 @@ const Services: React.FC = () => {
         </div>
 
         <div className="mt-20 grid md:grid-cols-3 gap-8">
-          <div className="bg-blue-50 rounded-xl p-8 flex flex-col items-center text-center transition-transform duration-300 hover:scale-105">
-            <div className="bg-blue-100 p-3 rounded-full mb-4">
-              <Heart className="h-6 w-6 text-blue-600" />
+          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 flex flex-col items-center text-center transition-all duration-300 hover:scale-105 hover:bg-white/90 shadow-lg hover:shadow-xl border border-green-200">
+            <div className="bg-gradient-to-br from-green-100 to-green-200 p-4 rounded-full mb-6 shadow-md">
+              <Heart className="h-8 w-8 text-green-600" />
             </div>
-            <h3 className="text-xl font-semibold mb-3">Personalized Care</h3>
-            <p className="text-gray-600">
-              We tailor our services to your pet\'s unique personality, needs, and routines.
+            <h3 className="text-xl font-semibold mb-4 text-gray-800">Персонализирана грижа</h3>
+            <p className="text-gray-600 leading-relaxed">
+              Адаптираме нашите услуги към уникалната личност, нужди и рутини на вашия домашен любимец.
             </p>
           </div>
           
-          <div className="bg-blue-50 rounded-xl p-8 flex flex-col items-center text-center transition-transform duration-300 hover:scale-105">
-            <div className="bg-blue-100 p-3 rounded-full mb-4">
-              <Shield className="h-6 w-6 text-blue-600" />
+          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 flex flex-col items-center text-center transition-all duration-300 hover:scale-105 hover:bg-white/90 shadow-lg hover:shadow-xl border border-green-200">
+            <div className="bg-gradient-to-br from-green-100 to-green-200 p-4 rounded-full mb-6 shadow-md">
+              <Shield className="h-8 w-8 text-green-600" />
             </div>
-            <h3 className="text-xl font-semibold mb-3">Insured & Bonded</h3>
-            <p className="text-gray-600">
-              Our services are fully insured and bonded for your complete peace of mind.
+            <h3 className="text-xl font-semibold mb-4 text-gray-800">Застраховани и гарантирани</h3>
+            <p className="text-gray-600 leading-relaxed">
+              Нашите услуги са напълно застраховани и гарантирани за вашето пълно спокойствие.
             </p>
           </div>
           
-          <div className="bg-blue-50 rounded-xl p-8 flex flex-col items-center text-center transition-transform duration-300 hover:scale-105">
-            <div className="bg-blue-100 p-3 rounded-full mb-4">
-              <Star className="h-6 w-6 text-blue-600" />
+          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 flex flex-col items-center text-center transition-all duration-300 hover:scale-105 hover:bg-white/90 shadow-lg hover:shadow-xl border border-green-200">
+            <div className="bg-gradient-to-br from-green-100 to-green-200 p-4 rounded-full mb-6 shadow-md">
+              <Star className="h-8 w-8 text-green-600" />
             </div>
-            <h3 className="text-xl font-semibold mb-3">5-Star Service</h3>
-            <p className="text-gray-600">
-              Consistently rated 5 stars by our clients for reliability and quality care.
+            <h3 className="text-xl font-semibold mb-4 text-gray-800">5-звездна услуга</h3>
+            <p className="text-gray-600 leading-relaxed">
+              Постоянно оценявани с 5 звезди от нашите клиенти за надеждност и качествена грижа.
             </p>
           </div>
         </div>

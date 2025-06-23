@@ -8,11 +8,11 @@ const Hero: React.FC = () => {
 
   return (
     <section id="hero" className="relative h-[calc(100vh-80px)] mt-20 min-h-[600px] flex items-center">
-      {/* Background Image - Updated to a more beautiful pet-focused image */}
+      {/* Background Image - Beautiful dogs image */}
       <div className="absolute inset-0">
         <img
-          src="https://images.pexels.com/photos/4587998/pexels-photo-4587998.jpeg"
-          alt="Beautiful pet care background"
+          src="https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg"
+          alt="Beautiful dogs in nature"
           className="w-full h-full object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/50"></div>

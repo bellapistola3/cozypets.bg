@@ -46,7 +46,7 @@ const Team: React.FC = () => {
       name: 'Борислав Иванов',
       role: 'Координатор за разходки с кучета',
       bio: 'Борислав е нашият енергичен специалист по разходки с кучета, който управлява нашия екип от разходчици. Той е страстен планинар и гарантира, че всички наши кучета получават перфектното количество упражнения и обогатяване.',
-      image: 'https://images.pexels.com/photos/1239291/pexels-photo-1239291.jpeg',
+      image: 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg',
       social: {
         email: 'borislav@cozypetsbyalice.bg',
         phone: '+359 888 345 678',

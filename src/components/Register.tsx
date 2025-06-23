@@ -33,7 +33,7 @@ const Register: React.FC<RegisterProps> = ({ onClose, onOpenLogin }) => {
         <button
           onClick={onClose}
           className="absolute top-4 right-4 text-gray-500 hover:text-gray-700 transition-colors"
-          aria-label="Close registration"
+          aria-label="Затвори регистрация"
         >
           <X className="h-6 w-6" />
         </button>
@@ -46,13 +46,13 @@ const Register: React.FC<RegisterProps> = ({ onClose, onOpenLogin }) => {
               alt="CozyPets by Alice" 
               className="h-24 w-auto mx-auto mb-6"
             />
-            <h2 className="text-2xl font-bold text-gray-900">Create Account</h2>
+            <h2 className="text-2xl font-bold text-gray-900">Създайте акаунт</h2>
           </div>
           
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 mb-1">
-                First Name
+                Име
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -65,7 +65,7 @@ const Register: React.FC<RegisterProps> = ({ onClose, onOpenLogin }) => {
                   value={formData.firstName}
                   onChange={handleChange}
                   className="pl-10 w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500"
-                  placeholder="Enter your first name"
+                  placeholder="Въведете вашето име"
                   required
                 />
               </div>
@@ -73,7 +73,7 @@ const Register: React.FC<RegisterProps> = ({ onClose, onOpenLogin }) => {
 
             <div>
               <label htmlFor="familyName" className="block text-sm font-medium text-gray-700 mb-1">
-                Family Name
+                Фамилия
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -86,7 +86,7 @@ const Register: React.FC<RegisterProps> = ({ onClose, onOpenLogin }) => {
                   value={formData.familyName}
                   onChange={handleChange}
                   className="pl-10 w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500"
-                  placeholder="Enter your family name"
+                  placeholder="Въведете вашата фамилия"
                   required
                 />
               </div>
@@ -94,7 +94,7 @@ const Register: React.FC<RegisterProps> = ({ onClose, onOpenLogin }) => {
 
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                Email Address
+                Имейл адрес
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -107,7 +107,7 @@ const Register: React.FC<RegisterProps> = ({ onClose, onOpenLogin }) => {
                   value={formData.email}
                   onChange={handleChange}
                   className="pl-10 w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500"
-                  placeholder="Enter your email"
+                  placeholder="Въведете вашия имейл"
                   required
                 />
               </div>
@@ -115,7 +115,7 @@ const Register: React.FC<RegisterProps> = ({ onClose, onOpenLogin }) => {
 
             <div>
               <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-1">
-                Password
+                Парола
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -128,7 +128,7 @@ const Register: React.FC<RegisterProps> = ({ onClose, onOpenLogin }) => {
                   value={formData.password}
                   onChange={handleChange}
                   className="pl-10 w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500"
-                  placeholder="Create a password"
+                  placeholder="Създайте парола"
                   required
                 />
               </div>
@@ -136,7 +136,7 @@ const Register: React.FC<RegisterProps> = ({ onClose, onOpenLogin }) => {
 
             <div>
               <label htmlFor="phoneNumber" className="block text-sm font-medium text-gray-700 mb-1">
-                Phone Number
+                Телефонен номер
               </label>
               <div className="relative">
                 <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -149,18 +149,18 @@ const Register: React.FC<RegisterProps> = ({ onClose, onOpenLogin }) => {
                   value={formData.phoneNumber}
                   onChange={handleChange}
                   className="pl-10 w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500"
-                  placeholder="Enter your phone number"
+                  placeholder="Въведете вашия телефонен номер"
                   required
                 />
               </div>
             </div>
 
             <Button type="submit" className="w-full mt-6">
-              Create Account
+              Създай акаунт
             </Button>
 
             <div className="text-center text-sm text-gray-600">
-              Already have an account?{' '}
+              Вече имате акаунт?{' '}
               <button
                 type="button"
                 onClick={() => {
@@ -169,7 +169,7 @@ const Register: React.FC<RegisterProps> = ({ onClose, onOpenLogin }) => {
                 }}
                 className="font-medium text-green-600 hover:text-green-500"
               >
-                Sign in
+                Влезте
               </button>
             </div>
           </form>

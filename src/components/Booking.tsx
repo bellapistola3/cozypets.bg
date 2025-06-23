@@ -56,8 +56,8 @@ const Booking: React.FC = () => {
     <section id="booking" className="py-20 bg-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading
-          title="Book Our Services"
-          subtitle="Schedule care for your furry friend"
+          title="Резервирайте нашите услуги"
+          subtitle="Планирайте грижа за вашия пухкав приятел"
           centered
         />
 
@@ -70,35 +70,35 @@ const Booking: React.FC = () => {
                     formStep === 1 ? 'bg-green-50 text-green-600' : 'bg-gray-50 text-gray-500'
                   }`}
                 >
-                  <span className="hidden sm:inline">Your Information</span>
-                  <span className="sm:hidden">1. Info</span>
+                  <span className="hidden sm:inline">Вашата информация</span>
+                  <span className="sm:hidden">1. Инфо</span>
                 </div>
                 <div
                   className={`flex-1 py-4 text-center font-medium ${
                     formStep === 2 ? 'bg-green-50 text-green-600' : 'bg-gray-50 text-gray-500'
                   }`}
                 >
-                  <span className="hidden sm:inline">Pet Details</span>
-                  <span className="sm:hidden">2. Pet</span>
+                  <span className="hidden sm:inline">Детайли за домашния любимец</span>
+                  <span className="sm:hidden">2. Любимец</span>
                 </div>
                 <div
                   className={`flex-1 py-4 text-center font-medium ${
                     formStep === 3 ? 'bg-green-50 text-green-600' : 'bg-gray-50 text-gray-500'
                   }`}
                 >
-                  <span className="hidden sm:inline">Schedule & Confirm</span>
-                  <span className="sm:hidden">3. Schedule</span>
+                  <span className="hidden sm:inline">График и потвърждение</span>
+                  <span className="sm:hidden">3. График</span>
                 </div>
               </div>
 
               <form onSubmit={handleSubmit} className="p-6 md:p-8">
                 {formStep === 1 && (
                   <div className="space-y-4 animate-fadeIn">
-                    <h3 className="text-xl font-semibold mb-4">Your Information</h3>
+                    <h3 className="text-xl font-semibold mb-4">Вашата информация</h3>
                     
                     <div>
                       <label htmlFor="name" className="block text-sm font-medium text-gray-700 mb-1">
-                        Full Name
+                        Пълно име
                       </label>
                       <input
                         type="text"
@@ -113,7 +113,7 @@ const Booking: React.FC = () => {
                     
                     <div>
                       <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
-                        Email Address
+                        Имейл адрес
                       </label>
                       <input
                         type="email"
@@ -128,7 +128,7 @@ const Booking: React.FC = () => {
                     
                     <div>
                       <label htmlFor="phone" className="block text-sm font-medium text-gray-700 mb-1">
-                        Phone Number
+                        Телефонен номер
                       </label>
                       <input
                         type="tel"
@@ -143,7 +143,7 @@ const Booking: React.FC = () => {
                     
                     <div className="pt-4 flex justify-end">
                       <Button type="button" onClick={nextStep}>
-                        Next: Pet Details
+                        Напред: Детайли за домашния любимец
                       </Button>
                     </div>
                   </div>
@@ -151,11 +151,11 @@ const Booking: React.FC = () => {
 
                 {formStep === 2 && (
                   <div className="space-y-4 animate-fadeIn">
-                    <h3 className="text-xl font-semibold mb-4">Pet Details</h3>
+                    <h3 className="text-xl font-semibold mb-4">Детайли за домашния любимец</h3>
                     
                     <div>
                       <label htmlFor="petName" className="block text-sm font-medium text-gray-700 mb-1">
-                        Pet's Name
+                        Име на домашния любимец
                       </label>
                       <input
                         type="text"
@@ -170,7 +170,7 @@ const Booking: React.FC = () => {
                     
                     <div>
                       <label htmlFor="petType" className="block text-sm font-medium text-gray-700 mb-1">
-                        Type of Pet
+                        Вид домашен любимец
                       </label>
                       <select
                         id="petType"
@@ -180,18 +180,18 @@ const Booking: React.FC = () => {
                         required
                         className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500"
                       >
-                        <option value="dog">Dog</option>
-                        <option value="cat">Cat</option>
-                        <option value="bird">Bird</option>
-                        <option value="small-mammal">Small Mammal</option>
-                        <option value="reptile">Reptile</option>
-                        <option value="other">Other</option>
+                        <option value="dog">Куче</option>
+                        <option value="cat">Котка</option>
+                        <option value="bird">Птица</option>
+                        <option value="small-mammal">Дребен бозайник</option>
+                        <option value="reptile">Влечуго</option>
+                        <option value="other">Друг</option>
                       </select>
                     </div>
                     
                     <div>
                       <label htmlFor="service" className="block text-sm font-medium text-gray-700 mb-1">
-                        Service Needed
+                        Необходима услуга
                       </label>
                       <select
                         id="service"
@@ -201,19 +201,19 @@ const Booking: React.FC = () => {
                         required
                         className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500"
                       >
-                        <option value="daily-walks">Daily Dog Walks</option>
-                        <option value="home-visits">In-Home Pet Sitting</option>
-                        <option value="overnight">Overnight Care</option>
-                        <option value="pet-taxi">Pet Taxi Services</option>
+                        <option value="daily-walks">Ежедневни разходки с кучета</option>
+                        <option value="home-visits">Домашно гледане на домашни любимци</option>
+                        <option value="overnight">Нощна грижа</option>
+                        <option value="pet-taxi">Такси услуги за домашни любимци</option>
                       </select>
                     </div>
                     
                     <div className="pt-4 flex justify-between">
                       <Button type="button" variant="outline" onClick={prevStep}>
-                        Back
+                        Назад
                       </Button>
                       <Button type="button" onClick={nextStep}>
-                        Next: Schedule
+                        Напред: График
                       </Button>
                     </div>
                   </div>
@@ -221,12 +221,12 @@ const Booking: React.FC = () => {
 
                 {formStep === 3 && (
                   <div className="space-y-4 animate-fadeIn">
-                    <h3 className="text-xl font-semibold mb-4">Schedule & Confirm</h3>
+                    <h3 className="text-xl font-semibold mb-4">График и потвърждение</h3>
                     
                     <div className="flex flex-col sm:flex-row gap-4">
                       <div className="flex-1">
                         <label htmlFor="date" className="block text-sm font-medium text-gray-700 mb-1">
-                          Start Date
+                          Начална дата
                         </label>
                         <div className="relative">
                           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -246,7 +246,7 @@ const Booking: React.FC = () => {
                       
                       <div className="flex-1">
                         <label htmlFor="time" className="block text-sm font-medium text-gray-700 mb-1">
-                          Preferred Time
+                          Предпочитано време
                         </label>
                         <div className="relative">
                           <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
@@ -267,7 +267,7 @@ const Booking: React.FC = () => {
                     
                     <div>
                       <label htmlFor="notes" className="block text-sm font-medium text-gray-700 mb-1">
-                        Special Instructions
+                        Специални инструкции
                       </label>
                       <textarea
                         id="notes"
@@ -276,16 +276,16 @@ const Booking: React.FC = () => {
                         onChange={handleChange}
                         rows={4}
                         className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500"
-                        placeholder="Any special requirements or information about your pet..."
+                        placeholder="Всякакви специални изисквания или информация за вашия домашен любимец..."
                       ></textarea>
                     </div>
                     
                     <div className="pt-4 flex justify-between">
                       <Button type="button" variant="outline" onClick={prevStep}>
-                        Back
+                        Назад
                       </Button>
                       <Button type="submit">
-                        Book Now
+                        Резервирай сега
                       </Button>
                     </div>
                   </div>
@@ -297,13 +297,13 @@ const Booking: React.FC = () => {
               <div className="mx-auto w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-6">
                 <CheckCircle className="h-10 w-10 text-green-600" />
               </div>
-              <h3 className="text-2xl font-bold text-gray-900 mb-2">Booking Submitted!</h3>
+              <h3 className="text-2xl font-bold text-gray-900 mb-2">Резервацията е изпратена!</h3>
               <p className="text-gray-600 mb-6">
-                Thank you for booking with CozyPets by Alice. We'll be in touch within 2 hours to confirm your appointment and discuss any additional details.
+                Благодарим ви, че резервирахте с CozyPets by Alice. Ще се свържем с вас в рамките на 2 часа, за да потвърдим срещата ви и да обсъдим допълнителни детайли.
               </p>
               <div className="bg-green-50 p-4 rounded-lg">
                 <p className="text-sm text-green-700">
-                  A confirmation email has been sent to <strong>{formData.email}</strong>
+                  Имейл за потвърждение е изпратен на <strong>{formData.email}</strong>
                 </p>
               </div>
             </div>

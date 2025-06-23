@@ -26,12 +26,12 @@ const Header: React.FC = () => {
   }, []);
 
   const navLinks = [
-    { name: 'Services', href: '#services' },
-    { name: 'Testimonials', href: '#testimonials' },
-    { name: 'Gallery', href: '#gallery' },
-    { name: 'Team', href: '#team' },
-    { name: 'FAQ', href: '#faq' },
-    { name: 'Contact', href: '#contact' },
+    { name: 'Услуги', href: '#services' },
+    { name: 'Отзиви', href: '#testimonials' },
+    { name: 'Галерия', href: '#gallery' },
+    { name: 'Екип', href: '#team' },
+    { name: 'ЧЗВ', href: '#faq' },
+    { name: 'Контакти', href: '#contact' },
   ];
 
   return (
@@ -66,9 +66,9 @@ const Header: React.FC = () => {
                   {link.name}
                 </a>
               ))}
-              <Button onClick={() => setIsLoginOpen(true)} variant="outline">Login</Button>
-              <Button onClick={() => setIsRegisterOpen(true)} variant="outline">Register</Button>
-              <Button href="#booking">Book Now</Button>
+              <Button onClick={() => setIsLoginOpen(true)} variant="outline">Вход</Button>
+              <Button onClick={() => setIsRegisterOpen(true)} variant="outline">Регистрация</Button>
+              <Button href="#booking">Резервирай сега</Button>
             </nav>
 
             {/* Mobile Navigation Button */}
@@ -97,13 +97,13 @@ const Header: React.FC = () => {
                   </a>
                 ))}
                 <Button onClick={() => { setIsLoginOpen(true); setIsMenuOpen(false); }} variant="outline">
-                  Login
+                  Вход
                 </Button>
                 <Button onClick={() => { setIsRegisterOpen(true); setIsMenuOpen(false); }} variant="outline">
-                  Register
+                  Регистрация
                 </Button>
                 <Button href="#booking" onClick={() => setIsMenuOpen(false)}>
-                  Book Now
+                  Резервирай сега
                 </Button>
               </div>
             </div>

@@ -17,49 +17,49 @@ const Gallery: React.FC = () => {
     {
       id: 1,
       src: 'https://images.pexels.com/photos/2253275/pexels-photo-2253275.jpeg',
-      alt: 'Dog playing in the park',
+      alt: 'Куче си играе в парка',
       category: 'dogs',
     },
     {
       id: 2,
       src: 'https://images.pexels.com/photos/1170986/pexels-photo-1170986.jpeg',
-      alt: 'Cat relaxing on couch',
+      alt: 'Котка си почива на дивана',
       category: 'cats',
     },
     {
       id: 3,
       src: 'https://images.pexels.com/photos/1254140/pexels-photo-1254140.jpeg',
-      alt: 'Dog enjoying a walk',
+      alt: 'Куче се наслаждава на разходка',
       category: 'dogs',
     },
     {
       id: 4,
       src: 'https://images.pexels.com/photos/2061057/pexels-photo-2061057.jpeg',
-      alt: 'Cat playing with toy',
+      alt: 'Котка си играе с играчка',
       category: 'cats',
     },
     {
       id: 5,
       src: 'https://images.pexels.com/photos/551628/pexels-photo-551628.jpeg',
-      alt: 'Guinea pig eating vegetables',
+      alt: 'Морско свинче яде зеленчуци',
       category: 'other',
     },
     {
       id: 6,
       src: 'https://images.pexels.com/photos/406014/pexels-photo-406014.jpeg',
-      alt: 'Rabbit in garden',
+      alt: 'Заек в градината',
       category: 'other',
     },
     {
       id: 7,
       src: 'https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg',
-      alt: 'Dog with toy on grass',
+      alt: 'Куче с играчка на тревата',
       category: 'dogs',
     },
     {
       id: 8,
       src: 'https://images.pexels.com/photos/617278/pexels-photo-617278.jpeg',
-      alt: 'Cat looking out window',
+      alt: 'Котка гледа през прозореца',
       category: 'cats',
     },
   ];
@@ -72,8 +72,8 @@ const Gallery: React.FC = () => {
     <section id="gallery" className="py-20 bg-white">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading
-          title="Pet Gallery"
-          subtitle="Happy pets in our care"
+          title="Галерия с домашни любимци"
+          subtitle="Щастливи домашни любимци под наша грижа"
           centered
         />
         
@@ -87,7 +87,7 @@ const Gallery: React.FC = () => {
                   : 'hover:bg-gray-200 text-gray-700'
               }`}
             >
-              All Pets
+              Всички домашни любимци
             </button>
             <button
               onClick={() => setFilter('dogs')}
@@ -97,7 +97,7 @@ const Gallery: React.FC = () => {
                   : 'hover:bg-gray-200 text-gray-700'
               }`}
             >
-              Dogs
+              Кучета
             </button>
             <button
               onClick={() => setFilter('cats')}
@@ -107,7 +107,7 @@ const Gallery: React.FC = () => {
                   : 'hover:bg-gray-200 text-gray-700'
               }`}
             >
-              Cats
+              Котки
             </button>
             <button
               onClick={() => setFilter('other')}
@@ -117,7 +117,7 @@ const Gallery: React.FC = () => {
                   : 'hover:bg-gray-200 text-gray-700'
               }`}
             >
-              Other Pets
+              Други домашни любимци
             </button>
           </div>
         </div>
@@ -145,7 +145,7 @@ const Gallery: React.FC = () => {
               <button
                 onClick={() => setSelectedImage(null)}
                 className="absolute top-4 right-4 bg-white rounded-full p-2 text-gray-900 hover:text-red-600 transition-colors duration-300 z-10"
-                aria-label="Close modal"
+                aria-label="Затвори модал"
               >
                 <X className="h-6 w-6" />
               </button>

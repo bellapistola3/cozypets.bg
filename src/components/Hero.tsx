@@ -23,19 +23,19 @@ const Hero: React.FC = () => {
         <div className="max-w-3xl mx-auto">
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6 animate-fadeInUp">
             Find Your Perfect <br />
-            <span className="text-accent-500">Pet Sitter</span>
+            <span className="text-green-400">Pet Sitter</span>
           </h1>
           <p className="text-xl text-gray-200 mb-8 animate-fadeInUp animation-delay-100">
             Connect with trusted pet sitters in your area who will treat your pets like family while you're away.
           </p>
           <div className="animate-fadeInUp animation-delay-200">
-            <Button 
+            <button 
               onClick={() => setIsSearchOpen(true)}
-              className="flex items-center justify-center gap-2 text-lg px-8 py-3"
+              className="inline-flex items-center justify-center gap-3 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold text-xl px-12 py-6 rounded-2xl shadow-2xl hover:shadow-green-500/25 transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 border-2 border-green-400/20"
             >
-              <Search className="h-5 w-5" />
+              <Search className="h-7 w-7" />
               Find a Pet Sitter
-            </Button>
+            </button>
           </div>
         </div>
       </div>

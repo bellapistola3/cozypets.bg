@@ -44,9 +44,9 @@ const Header: React.FC = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
             <div className="flex items-center">
-              <a href="#" className="flex items-center text-2xl font-bold text-blue-600">
+              <a href="#" className="flex items-center text-2xl font-bold text-green-600">
                 <PawPrint className="h-8 w-8 mr-2" />
-                <span>PawKeeper</span>
+                <span>CozyPets by Alice</span>
               </a>
             </div>
 
@@ -56,7 +56,7 @@ const Header: React.FC = () => {
                 <a
                   key={link.name}
                   href={link.href}
-                  className="text-gray-700 hover:text-blue-600 transition-colors duration-300 font-medium"
+                  className="text-gray-700 hover:text-green-600 transition-colors duration-300 font-medium"
                 >
                   {link.name}
                 </a>
@@ -70,7 +70,7 @@ const Header: React.FC = () => {
             <div className="md:hidden">
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="text-gray-700 hover:text-blue-600 focus:outline-none"
+                className="text-gray-700 hover:text-green-600 focus:outline-none"
               >
                 {isMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
               </button>
@@ -85,7 +85,7 @@ const Header: React.FC = () => {
                   <a
                     key={link.name}
                     href={link.href}
-                    className="text-gray-700 hover:text-blue-600 transition-colors duration-300 font-medium py-2"
+                    className="text-gray-700 hover:text-green-600 transition-colors duration-300 font-medium py-2"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     {link.name}

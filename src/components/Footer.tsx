@@ -1,5 +1,5 @@
-import React from 'react';import { Link } from "react-router-dom";
-
+import React from 'react';
+import { Link } from "react-router-dom";
 import { Facebook, Instagram, Twitter, Mail, Phone, MapPin } from 'lucide-react';
 
 const Footer: React.FC = () => {
@@ -8,7 +8,7 @@ const Footer: React.FC = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid md:grid-cols-4 gap-8">
           <div>
-            <h3 className="text-xl font-semibold mb-4">PawKeeper</h3>
+            <h3 className="text-xl font-semibold mb-4">CozyPets by Alice</h3>
             <p className="text-gray-400 mb-4">
               Professional pet care services you can trust. Keeping your pets happy, healthy, and safe.
             </p>
@@ -30,11 +30,10 @@ const Footer: React.FC = () => {
             <ul className="space-y-2">
               <li><a href="#services" className="text-gray-400 hover:text-white transition-colors">Services</a></li>
               <li>
-  <Link to="/about" className="text-gray-400 hover:text-white transition-colors">
-    About Us
-  </Link>
-</li>
-
+                <Link to="/about" className="text-gray-400 hover:text-white transition-colors">
+                  About Us
+                </Link>
+              </li>
               <li><a href="#team" className="text-gray-400 hover:text-white transition-colors">Our Team</a></li>
               <li><a href="#booking" className="text-gray-400 hover:text-white transition-colors">Book Now</a></li>
             </ul>
@@ -55,8 +54,8 @@ const Footer: React.FC = () => {
             <div className="space-y-3">
               <div className="flex items-center">
                 <Mail className="h-5 w-5 mr-2 text-gray-400" />
-                <a href="mailto:info@pawkeeper.com" className="text-gray-400 hover:text-white transition-colors">
-                  info@pawkeeper.com
+                <a href="mailto:info@cozypetsbyalice.com" className="text-gray-400 hover:text-white transition-colors">
+                  info@cozypetsbyalice.com
                 </a>
               </div>
               <div className="flex items-center">
@@ -76,7 +75,7 @@ const Footer: React.FC = () => {
         </div>
         
         <div className="mt-12 pt-8 border-t border-gray-800 text-center text-gray-400">
-          <p>&copy; {new Date().getFullYear()} PawKeeper. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} CozyPets by Alice. All rights reserved.</p>
         </div>
       </div>
     </footer>

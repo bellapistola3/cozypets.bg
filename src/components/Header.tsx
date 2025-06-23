@@ -48,7 +48,9 @@ const Header: React.FC = () => {
                 <img 
                   src="/src/components/assets/лого.png" 
                   alt="CozyPets by Alice" 
-                  className="h-12 w-auto mr-3 transition-all duration-300 hover:scale-105"
+                  className={`transition-all duration-300 hover:scale-105 ${
+                    isScrolled ? 'h-16 w-auto' : 'h-20 w-auto'
+                  }`}
                 />
               </a>
             </div>

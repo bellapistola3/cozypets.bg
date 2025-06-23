@@ -29,12 +29,12 @@ const Login: React.FC<LoginProps> = ({ onClose, onOpenRegister }) => {
         </button>
 
         <div className="p-8">
-          {/* Logo in Login Modal */}
-          <div className="text-center mb-6">
+          {/* Logo in Login Modal - Bigger */}
+          <div className="text-center mb-8">
             <img 
               src="/src/components/assets/лого.png" 
               alt="CozyPets by Alice" 
-              className="h-16 w-auto mx-auto mb-4"
+              className="h-24 w-auto mx-auto mb-6"
             />
             <h2 className="text-2xl font-bold text-gray-900">Welcome Back</h2>
           </div>

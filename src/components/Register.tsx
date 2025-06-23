@@ -39,12 +39,12 @@ const Register: React.FC<RegisterProps> = ({ onClose, onOpenLogin }) => {
         </button>
 
         <div className="p-8">
-          {/* Logo in Register Modal */}
-          <div className="text-center mb-6">
+          {/* Logo in Register Modal - Bigger */}
+          <div className="text-center mb-8">
             <img 
               src="/src/components/assets/лого.png" 
               alt="CozyPets by Alice" 
-              className="h-16 w-auto mx-auto mb-4"
+              className="h-24 w-auto mx-auto mb-6"
             />
             <h2 className="text-2xl font-bold text-gray-900">Create Account</h2>
           </div>

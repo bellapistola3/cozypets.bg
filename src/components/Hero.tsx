@@ -21,12 +21,12 @@ const Hero: React.FC = () => {
       {/* Content */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
         <div className="max-w-3xl mx-auto">
-          {/* Logo in Hero */}
-          <div className="mb-8 animate-fadeInUp">
+          {/* Logo in Hero - Much Bigger */}
+          <div className="mb-12 animate-fadeInUp">
             <img 
               src="/src/components/assets/лого.png" 
               alt="CozyPets by Alice" 
-              className="h-24 w-auto mx-auto mb-6 filter drop-shadow-2xl"
+              className="h-40 md:h-48 lg:h-56 w-auto mx-auto mb-8 filter drop-shadow-2xl"
             />
           </div>
           

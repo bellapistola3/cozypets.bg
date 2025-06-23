@@ -29,7 +29,15 @@ const Login: React.FC<LoginProps> = ({ onClose, onOpenRegister }) => {
         </button>
 
         <div className="p-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">Welcome Back</h2>
+          {/* Logo in Login Modal */}
+          <div className="text-center mb-6">
+            <img 
+              src="/src/components/assets/лого.png" 
+              alt="CozyPets by Alice" 
+              className="h-16 w-auto mx-auto mb-4"
+            />
+            <h2 className="text-2xl font-bold text-gray-900">Welcome Back</h2>
+          </div>
           
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>

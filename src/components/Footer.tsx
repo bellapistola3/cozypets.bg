@@ -8,7 +8,13 @@ const Footer: React.FC = () => {
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="grid md:grid-cols-4 gap-8">
           <div>
-            <h3 className="text-xl font-semibold mb-4">CozyPets by Alice</h3>
+            <div className="flex items-center mb-4">
+              <img 
+                src="/src/components/assets/лого.png" 
+                alt="CozyPets by Alice" 
+                className="h-10 w-auto mr-3 filter brightness-0 invert"
+              />
+            </div>
             <p className="text-gray-400 mb-4">
               Professional pet care services you can trust. Keeping your pets happy, healthy, and safe.
             </p>

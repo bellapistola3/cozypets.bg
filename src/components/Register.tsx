@@ -39,7 +39,15 @@ const Register: React.FC<RegisterProps> = ({ onClose, onOpenLogin }) => {
         </button>
 
         <div className="p-8">
-          <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">Create Account</h2>
+          {/* Logo in Register Modal */}
+          <div className="text-center mb-6">
+            <img 
+              src="/src/components/assets/лого.png" 
+              alt="CozyPets by Alice" 
+              className="h-16 w-auto mx-auto mb-4"
+            />
+            <h2 className="text-2xl font-bold text-gray-900">Create Account</h2>
+          </div>
           
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>

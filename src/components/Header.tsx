@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Menu, X, PawPrint } from 'lucide-react';
+import { Menu, X } from 'lucide-react';
 import Button from './common/Button';
 import Login from './Login';
 import Register from './Register';
@@ -44,9 +44,12 @@ const Header: React.FC = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
             <div className="flex items-center">
-              <a href="#" className="flex items-center text-2xl font-bold text-green-600">
-                <PawPrint className="h-8 w-8 mr-2" />
-                <span>CozyPets by Alice</span>
+              <a href="#" className="flex items-center">
+                <img 
+                  src="/src/components/assets/лого.png" 
+                  alt="CozyPets by Alice" 
+                  className="h-12 w-auto mr-3 transition-all duration-300 hover:scale-105"
+                />
               </a>
             </div>
 

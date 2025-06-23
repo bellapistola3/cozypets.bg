@@ -67,7 +67,7 @@ const Booking: React.FC = () => {
               <div className="flex border-b border-gray-200">
                 <div
                   className={`flex-1 py-4 text-center font-medium ${
-                    formStep === 1 ? 'bg-blue-50 text-blue-600' : 'bg-gray-50 text-gray-500'
+                    formStep === 1 ? 'bg-green-50 text-green-600' : 'bg-gray-50 text-gray-500'
                   }`}
                 >
                   <span className="hidden sm:inline">Your Information</span>
@@ -75,7 +75,7 @@ const Booking: React.FC = () => {
                 </div>
                 <div
                   className={`flex-1 py-4 text-center font-medium ${
-                    formStep === 2 ? 'bg-blue-50 text-blue-600' : 'bg-gray-50 text-gray-500'
+                    formStep === 2 ? 'bg-green-50 text-green-600' : 'bg-gray-50 text-gray-500'
                   }`}
                 >
                   <span className="hidden sm:inline">Pet Details</span>
@@ -83,7 +83,7 @@ const Booking: React.FC = () => {
                 </div>
                 <div
                   className={`flex-1 py-4 text-center font-medium ${
-                    formStep === 3 ? 'bg-blue-50 text-blue-600' : 'bg-gray-50 text-gray-500'
+                    formStep === 3 ? 'bg-green-50 text-green-600' : 'bg-gray-50 text-gray-500'
                   }`}
                 >
                   <span className="hidden sm:inline">Schedule & Confirm</span>
@@ -107,7 +107,7 @@ const Booking: React.FC = () => {
                         value={formData.name}
                         onChange={handleChange}
                         required
-                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500"
                       />
                     </div>
                     
@@ -122,7 +122,7 @@ const Booking: React.FC = () => {
                         value={formData.email}
                         onChange={handleChange}
                         required
-                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500"
                       />
                     </div>
                     
@@ -137,7 +137,7 @@ const Booking: React.FC = () => {
                         value={formData.phone}
                         onChange={handleChange}
                         required
-                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500"
                       />
                     </div>
                     
@@ -164,7 +164,7 @@ const Booking: React.FC = () => {
                         value={formData.petName}
                         onChange={handleChange}
                         required
-                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500"
                       />
                     </div>
                     
@@ -178,7 +178,7 @@ const Booking: React.FC = () => {
                         value={formData.petType}
                         onChange={handleChange}
                         required
-                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500"
                       >
                         <option value="dog">Dog</option>
                         <option value="cat">Cat</option>
@@ -199,7 +199,7 @@ const Booking: React.FC = () => {
                         value={formData.service}
                         onChange={handleChange}
                         required
-                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500"
                       >
                         <option value="daily-walks">Daily Dog Walks</option>
                         <option value="home-visits">In-Home Pet Sitting</option>
@@ -239,7 +239,7 @@ const Booking: React.FC = () => {
                             value={formData.date}
                             onChange={handleChange}
                             required
-                            className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                            className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500"
                           />
                         </div>
                       </div>
@@ -259,7 +259,7 @@ const Booking: React.FC = () => {
                             value={formData.time}
                             onChange={handleChange}
                             required
-                            className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                            className="w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500"
                           />
                         </div>
                       </div>
@@ -275,7 +275,7 @@ const Booking: React.FC = () => {
                         value={formData.notes}
                         onChange={handleChange}
                         rows={4}
-                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500"
                         placeholder="Any special requirements or information about your pet..."
                       ></textarea>
                     </div>
@@ -299,10 +299,10 @@ const Booking: React.FC = () => {
               </div>
               <h3 className="text-2xl font-bold text-gray-900 mb-2">Booking Submitted!</h3>
               <p className="text-gray-600 mb-6">
-                Thank you for booking with PawKeeper. We'll be in touch within 2 hours to confirm your appointment and discuss any additional details.
+                Thank you for booking with CozyPets by Alice. We'll be in touch within 2 hours to confirm your appointment and discuss any additional details.
               </p>
-              <div className="bg-blue-50 p-4 rounded-lg">
-                <p className="text-sm text-blue-700">
+              <div className="bg-green-50 p-4 rounded-lg">
+                <p className="text-sm text-green-700">
                   A confirmation email has been sent to <strong>{formData.email}</strong>
                 </p>
               </div>

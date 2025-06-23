@@ -11,7 +11,7 @@ const About = () => {
 
       <h2 className="text-2xl font-semibold mt-8 mb-4">Нашето начало</h2>
       <p className="text-lg mb-6">
-        Всичко започна с опита на Алис – като служител в уютен столичен хотел за домашни любимци. Именно там се ражда идеята, че добрата грижа може да бъде пренесена и в домашна среда. Следват участия в още два специализирани хотела за кучета, котки, папагали, гризачи, рибки и други. Натрупаният опит и страстта към животните прерастват в лична практика – предлагана в рамките на домашния уют.
+        Всичко започва с опита на Алис – като служител в уютен столичен хотел за домашни любимци. Именно там се ражда идеята, че добрата грижа може да бъде пренесена и в домашна среда. Следват участия в още два специализирани хотела за кучета, котки, папагали, гризачи, рибки и други. Натрупаният опит и страстта към животните прерастват в лична практика – предлагана в рамките на домашния уют.
       </p>
 
       <p className="text-lg mb-6">
@@ -39,7 +39,7 @@ const About = () => {
       <div className="text-center mt-10">
         <a
           href="/#contact"
-          className="bg-green-600 hover:bg-green-700 text-white font-semibold px-6 py-3 rounded-lg shadow-md transition duration-300"
+          className="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 hover:-translate-y-1"
         >
           Свържете се с нас
         </a>

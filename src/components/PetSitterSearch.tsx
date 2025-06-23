@@ -60,14 +60,14 @@ const PetSitterSearch: React.FC<PetSitterSearchProps> = ({ onClose }) => {
       <div className="bg-white rounded-xl shadow-xl w-full max-w-2xl relative animate-fadeIn">
         <button
           onClick={onClose}
-          className="absolute top-4 right-4 text-gray-500 hover:text-accent-500 transition-colors"
+          className="absolute top-4 right-4 text-gray-500 hover:text-green-600 transition-colors"
           aria-label="Затвори търсене"
         >
           <X className="h-6 w-6" />
         </button>
         
         <div className="p-6 md:p-8">
-          <h2 className="text-2xl font-bold text-secondary-900 mb-6">Намерете перфектния гледач на домашни любимци</h2>
+          <h2 className="text-2xl font-bold text-gray-900 mb-6">Намерете перфектния гледач на домашни любимци</h2>
           
           <form onSubmit={handleSubmit} className="space-y-6">
             <div>
@@ -84,7 +84,7 @@ const PetSitterSearch: React.FC<PetSitterSearchProps> = ({ onClose }) => {
                       type="checkbox"
                       checked={formData.petTypes.includes(option.value)}
                       onChange={() => handlePetTypeChange(option.value)}
-                      className="h-4 w-4 text-accent-500 rounded focus:ring-accent-500"
+                      className="h-4 w-4 text-green-600 rounded focus:ring-green-500"
                     />
                     <span className="text-gray-700">{option.label}</span>
                   </label>
@@ -103,7 +103,7 @@ const PetSitterSearch: React.FC<PetSitterSearchProps> = ({ onClose }) => {
                 value={formData.city}
                 onChange={handleChange}
                 placeholder="Въведете вашия град"
-                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-accent-500 focus:border-accent-500"
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500"
                 required
               />
             </div>
@@ -119,7 +119,7 @@ const PetSitterSearch: React.FC<PetSitterSearchProps> = ({ onClose }) => {
                   name="startDate"
                   value={formData.startDate}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-accent-500 focus:border-accent-500"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500"
                   required
                 />
               </div>
@@ -134,7 +134,7 @@ const PetSitterSearch: React.FC<PetSitterSearchProps> = ({ onClose }) => {
                   name="endDate"
                   value={formData.endDate}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-accent-500 focus:border-accent-500"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500"
                   required
                 />
               </div>

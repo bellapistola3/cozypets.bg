@@ -40,7 +40,7 @@ function App() {
                 <div className="text-center mt-12">
                   <a
                     href="/privacy"
-                    className="inline-block bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg shadow-md transition duration-300"
+                    className="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 hover:-translate-y-1"
                   >
                     Политика за поверителност
                   </a>
@@ -82,4 +82,3 @@ function App() {
 }
 
 export default App;
-

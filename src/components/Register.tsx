@@ -56,7 +56,7 @@ const Register: React.FC<RegisterProps> = ({ onClose, onOpenLogin }) => {
                   name="firstName"
                   value={formData.firstName}
                   onChange={handleChange}
-                  className="pl-10 w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                  className="pl-10 w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500"
                   placeholder="Enter your first name"
                   required
                 />
@@ -77,7 +77,7 @@ const Register: React.FC<RegisterProps> = ({ onClose, onOpenLogin }) => {
                   name="familyName"
                   value={formData.familyName}
                   onChange={handleChange}
-                  className="pl-10 w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                  className="pl-10 w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500"
                   placeholder="Enter your family name"
                   required
                 />
@@ -98,7 +98,7 @@ const Register: React.FC<RegisterProps> = ({ onClose, onOpenLogin }) => {
                   name="email"
                   value={formData.email}
                   onChange={handleChange}
-                  className="pl-10 w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                  className="pl-10 w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500"
                   placeholder="Enter your email"
                   required
                 />
@@ -119,7 +119,7 @@ const Register: React.FC<RegisterProps> = ({ onClose, onOpenLogin }) => {
                   name="password"
                   value={formData.password}
                   onChange={handleChange}
-                  className="pl-10 w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                  className="pl-10 w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500"
                   placeholder="Create a password"
                   required
                 />
@@ -140,7 +140,7 @@ const Register: React.FC<RegisterProps> = ({ onClose, onOpenLogin }) => {
                   name="phoneNumber"
                   value={formData.phoneNumber}
                   onChange={handleChange}
-                  className="pl-10 w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                  className="pl-10 w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500"
                   placeholder="Enter your phone number"
                   required
                 />
@@ -159,7 +159,7 @@ const Register: React.FC<RegisterProps> = ({ onClose, onOpenLogin }) => {
                   onClose();        // close the Register modal
                   onOpenLogin();    // open the Login modal
                 }}
-                className="font-medium text-blue-600 hover:text-blue-500"
+                className="font-medium text-green-600 hover:text-green-500"
               >
                 Sign in
               </button>

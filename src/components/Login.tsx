@@ -45,7 +45,7 @@ const Login: React.FC<LoginProps> = ({ onClose, onOpenRegister }) => {
                   id="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
-                  className="pl-10 w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                  className="pl-10 w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500"
                   placeholder="Enter your email"
                   required
                 />
@@ -65,7 +65,7 @@ const Login: React.FC<LoginProps> = ({ onClose, onOpenRegister }) => {
                   id="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
-                  className="pl-10 w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-blue-500 focus:border-blue-500"
+                  className="pl-10 w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500"
                   placeholder="Enter your password"
                   required
                 />
@@ -85,7 +85,7 @@ const Login: React.FC<LoginProps> = ({ onClose, onOpenRegister }) => {
                   onOpenRegister();   // open the Registration modal
                  
                 }}
-                className="font-medium text-blue-600 hover:text-blue-500"
+                className="font-medium text-green-600 hover:text-green-500"
               >
                 Sign up
               </button>

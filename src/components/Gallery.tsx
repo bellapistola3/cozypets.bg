@@ -81,32 +81,40 @@ const Gallery: React.FC = () => {
           <div className="flex space-x-2 bg-gray-100 p-1 rounded-lg">
             <button
               onClick={() => setFilter('all')}
-              className={`px-4 py-2 rounded-md transition-colors duration-300 ${
-                filter === 'all' ? 'bg-blue-600 text-white' : 'hover:bg-gray-200'
+              className={`px-6 py-3 rounded-lg font-semibold transition-all duration-300 ${
+                filter === 'all' 
+                  ? 'bg-gradient-to-r from-green-500 to-green-600 text-white shadow-lg' 
+                  : 'hover:bg-gray-200 text-gray-700'
               }`}
             >
               All Pets
             </button>
             <button
               onClick={() => setFilter('dogs')}
-              className={`px-4 py-2 rounded-md transition-colors duration-300 ${
-                filter === 'dogs' ? 'bg-blue-600 text-white' : 'hover:bg-gray-200'
+              className={`px-6 py-3 rounded-lg font-semibold transition-all duration-300 ${
+                filter === 'dogs' 
+                  ? 'bg-gradient-to-r from-green-500 to-green-600 text-white shadow-lg' 
+                  : 'hover:bg-gray-200 text-gray-700'
               }`}
             >
               Dogs
             </button>
             <button
               onClick={() => setFilter('cats')}
-              className={`px-4 py-2 rounded-md transition-colors duration-300 ${
-                filter === 'cats' ? 'bg-blue-600 text-white' : 'hover:bg-gray-200'
+              className={`px-6 py-3 rounded-lg font-semibold transition-all duration-300 ${
+                filter === 'cats' 
+                  ? 'bg-gradient-to-r from-green-500 to-green-600 text-white shadow-lg' 
+                  : 'hover:bg-gray-200 text-gray-700'
               }`}
             >
               Cats
             </button>
             <button
               onClick={() => setFilter('other')}
-              className={`px-4 py-2 rounded-md transition-colors duration-300 ${
-                filter === 'other' ? 'bg-blue-600 text-white' : 'hover:bg-gray-200'
+              className={`px-6 py-3 rounded-lg font-semibold transition-all duration-300 ${
+                filter === 'other' 
+                  ? 'bg-gradient-to-r from-green-500 to-green-600 text-white shadow-lg' 
+                  : 'hover:bg-gray-200 text-gray-700'
               }`}
             >
               Other Pets

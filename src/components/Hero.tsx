@@ -8,14 +8,14 @@ const Hero: React.FC = () => {
 
   return (
     <section id="hero" className="relative h-[calc(100vh-80px)] mt-20 min-h-[600px] flex items-center">
-      {/* Background Image */}
+      {/* Background Image - Updated to a more beautiful pet-focused image */}
       <div className="absolute inset-0">
         <img
-          src="https://images.pexels.com/photos/1904105/pexels-photo-1904105.jpeg"
-          alt="Pet sitting background"
+          src="https://images.pexels.com/photos/4587998/pexels-photo-4587998.jpeg"
+          alt="Beautiful pet care background"
           className="w-full h-full object-cover"
         />
-        <div className="absolute inset-0 bg-black/50"></div>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/30 to-black/50"></div>
       </div>
 
       {/* Content */}

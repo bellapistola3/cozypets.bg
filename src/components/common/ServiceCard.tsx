@@ -23,13 +23,6 @@ const ServiceCard: React.FC<ServiceCardProps> = ({ service }) => {
     } transition-all duration-300 hover:scale-105 hover:shadow-2xl ${
       service.popular ? 'hover:shadow-green-500/30' : 'hover:shadow-green-500/20'
     }`}>
-      {service.popular && (
-        <div className="absolute -top-4 left-1/2 transform -translate-x-1/2">
-          <span className="bg-gradient-to-r from-green-500 to-green-600 text-white px-6 py-2 rounded-full text-sm font-semibold shadow-lg">
-            Най-популярна
-          </span>
-        </div>
-      )}
       
       <div className={`w-16 h-16 rounded-2xl flex items-center justify-center mb-6 ${
         service.popular 

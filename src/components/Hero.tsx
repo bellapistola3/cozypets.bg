@@ -21,15 +21,6 @@ const Hero: React.FC = () => {
       {/* Content */}
       <div className="container mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
         <div className="max-w-3xl mx-auto">
-          {/* Logo in Hero - Much Bigger */}
-          <div className="mb-12 animate-fadeInUp">
-            <img 
-              src="/src/components/assets/лого.png" 
-              alt="CozyPets by Alice" 
-              className="h-40 md:h-48 lg:h-56 w-auto mx-auto mb-8 filter drop-shadow-2xl"
-            />
-          </div>
-          
           <h1 className="text-4xl md:text-5xl lg:text-6xl font-bold text-white leading-tight mb-6 animate-fadeInUp">
             Find Your Perfect <br />
             <span className="text-green-400">Pet Sitter</span>

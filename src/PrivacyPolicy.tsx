@@ -70,8 +70,8 @@ const PrivacyPolicy = () => {
         За въпроси относно тази политика или личните ви данни, можете да се свържете с нас на:
       </p>
       <ul className="list-inside text-lg space-y-2">
-        <li>📧 Имейл: <span className="italic">[вашия имейл тук]</span></li>
-        <li>🌐 Уебсайт: <span className="italic">[вашият домейн тук]</span></li>
+        <li>📧 Имейл: <span className="italic">cozypetsbyalis@gmail.com</span></li>
+        <li>🌐 Адрес: <span className="italic">Стара Загора, България</span></li>
       </ul>
 
       <div className="text-center mt-10">

@@ -24,7 +24,7 @@ const Team: React.FC = () => {
       bio: 'Алис има над 10 години опит в грижата за животни и е сертифицирана в първа помощ и КПР за домашни любимци. Тя основа CozyPets, за да предостави любяща, професионална грижа за домашните любимци в собствените им домове.',
       image: 'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg',
       social: {
-        email: 'alice@cozypetsbyalice.bg',
+        email: 'cozypetsbyalis@gmail.com',
         phone: '+359 888 123 456',
         instagram: '@alice_cozypets',
       },
@@ -36,7 +36,7 @@ const Team: React.FC = () => {
       bio: 'С опит като ветеринарен асистент, Мишо се специализира в грижата за домашни любимци с медицински нужди. Известен е със спокойното си поведение и способността да спечели дори най-тревожните домашни любимци.',
       image: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg',
       social: {
-        email: 'misho@cozypetsbyalice.bg',
+        email: 'cozypetsbyalis@gmail.com',
         phone: '+359 888 234 567',
         instagram: '@misho_petcare',
       },
@@ -48,7 +48,7 @@ const Team: React.FC = () => {
       bio: 'Борислав е нашият енергичен специалист по разходки с кучета, който управлява нашия екип от разходчици. Той е страстен планинар и гарантира, че всички наши кучета получават перфектното количество упражнения и обогатяване.',
       image: 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg',
       social: {
-        email: 'borislav@cozypetsbyalice.bg',
+        email: 'cozypetsbyalis@gmail.com',
         phone: '+359 888 345 678',
       },
     },
@@ -59,7 +59,7 @@ const Team: React.FC = () => {
       bio: 'Христо има специален начин с котките и разбира техните уникални нужди. Той е обучен в поведението на котките и може да помогне с всичко - от игрово обогатяване до прилагане на лекарства.',
       image: 'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg',
       social: {
-        email: 'hristo@cozypetsbyalice.bg',
+        email: 'cozypetsbyalis@gmail.com',
         phone: '+359 888 456 789',
         instagram: '@hristo_catwhisperer',
       },

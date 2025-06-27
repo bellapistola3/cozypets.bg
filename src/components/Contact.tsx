@@ -22,11 +22,11 @@ const Contact: React.FC = () => {
               </div>
               <div className="flex items-center">
                 <Mail className="h-5 w-5 text-green-600 mr-3" />
-                <span>contact@cozypetsbyalice.bg</span> {/* ← ако нямаш, остави празно */}
+                <span>cozypetsbyalis@gmail.com</span>
               </div>
               <div className="flex items-center">
                 <MapPin className="h-5 w-5 text-green-600 mr-3" />
-                <span>София, България</span>
+                <span>Стара Загора, България</span>
               </div>
             </div>
           </div>

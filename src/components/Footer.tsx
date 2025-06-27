@@ -60,8 +60,8 @@ const Footer: React.FC = () => {
             <div className="space-y-3">
               <div className="flex items-center">
                 <Mail className="h-5 w-5 mr-2 text-gray-400" />
-                <a href="mailto:info@cozypetsbyalice.bg" className="text-gray-400 hover:text-white transition-colors">
-                  info@cozypetsbyalice.bg
+                <a href="mailto:cozypetsbyalis@gmail.com" className="text-gray-400 hover:text-white transition-colors">
+                  cozypetsbyalis@gmail.com
                 </a>
               </div>
               <div className="flex items-center">
@@ -73,7 +73,7 @@ const Footer: React.FC = () => {
               <div className="flex items-center">
                 <MapPin className="h-5 w-5 mr-2 text-gray-400" />
                 <span className="text-gray-400">
-                  София, България
+                  Стара Загора, България
                 </span>
               </div>
             </div>

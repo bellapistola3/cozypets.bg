@@ -18,7 +18,7 @@ const Contact: React.FC = () => {
             <div className="space-y-4">
               <div className="flex items-center">
                 <Phone className="h-5 w-5 text-green-600 mr-3" />
-                <span>+359 XXX XXX XXX</span> {/* ← сложи реален номер */}
+                <span>+359 895 888 260</span>
               </div>
               <div className="flex items-center">
                 <Mail className="h-5 w-5 text-green-600 mr-3" />

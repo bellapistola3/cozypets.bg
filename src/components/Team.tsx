@@ -25,7 +25,7 @@ const Team: React.FC = () => {
       image: 'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg',
       social: {
         email: 'cozypetsbyalis@gmail.com',
-        phone: '+359 888 123 456',
+        phone: '+359 895 888 260',
         instagram: '@alice_cozypets',
       },
     },
@@ -37,7 +37,7 @@ const Team: React.FC = () => {
       image: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg',
       social: {
         email: 'cozypetsbyalis@gmail.com',
-        phone: '+359 888 234 567',
+        phone: '+359 895 888 260',
         instagram: '@misho_petcare',
       },
     },
@@ -49,7 +49,7 @@ const Team: React.FC = () => {
       image: 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg',
       social: {
         email: 'cozypetsbyalis@gmail.com',
-        phone: '+359 888 345 678',
+        phone: '+359 895 888 260',
       },
     },
     {
@@ -60,7 +60,7 @@ const Team: React.FC = () => {
       image: 'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg',
       social: {
         email: 'cozypetsbyalis@gmail.com',
-        phone: '+359 888 456 789',
+        phone: '+359 895 888 260',
         instagram: '@hristo_catwhisperer',
       },
     },

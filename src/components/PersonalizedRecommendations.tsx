@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Star, MapPin, Heart, TrendingUp } from 'lucide-react';
-import { Sitter } from '../types';
+import { SitterWithDetails, User, Review } from '../types';
 import SitterCard from './SitterCard';
 
 interface PersonalizedRecommendationsProps {
@@ -8,7 +8,7 @@ interface PersonalizedRecommendationsProps {
 }
 
 const PersonalizedRecommendations: React.FC<PersonalizedRecommendationsProps> = ({ userId }) => {
-  const [recommendations, setRecommendations] = useState<Sitter[]>([]);
+  const [recommendations, setRecommendations] = useState<SitterWithDetails[]>([]);
   const [loading, setLoading] = useState(true);
 
   // Mock user preferences (in a real app, this would come from user profile)
@@ -21,76 +21,56 @@ const PersonalizedRecommendations: React.FC<PersonalizedRecommendationsProps> = 
   };
 
   // Mock sitters data
-  const mockSitters: Sitter[] = [
+  const mockSitters: SitterWithDetails[] = [
     {
-      id: '1',
-      firstName: 'Мария',
-      lastName: 'Петкова',
-      email: 'maria@example.com',
-      phone: '+359888123456',
-      avatar: 'https://images.pexels.com/photos/3763188/pexels-photo-3763188.jpeg',
-      createdAt: new Date(),
-      isVerified: true,
+      sitter_id: 1,
+      user_id: 1,
       bio: 'Обожавам животните и имам над 5 години опит в грижата за домашни любимци.',
-      experience: 5,
-      services: ['daily-walks', 'home-visits'],
-      location: {
-        city: 'София',
-        address: 'кв. Лозенец',
-      },
-      pricing: {
-        'daily-walks': 25,
-        'home-visits': 60,
-        'overnight': 95,
-        'pet-taxi': 35,
-        'grooming': 50,
-      },
-      availability: {},
-      photos: ['https://images.pexels.com/photos/3763188/pexels-photo-3763188.jpeg'],
-      reviews: [],
+      photo_url: 'https://images.pexels.com/photos/3763188/pexels-photo-3763188.jpeg',
+      hourly_rate: 25.00,
+      location: 'София, кв. Лозенец',
+      qualifications: '5 години опит, сертификат за първа помощ за животни',
       rating: 4.9,
-      totalReviews: 47,
-      languages: ['Български', 'English'],
-      petTypes: ['dog', 'cat'],
-      emergencyContact: {
-        name: 'Иван Петков',
-        phone: '+359888654321',
+      average_rating: 4.9,
+      total_reviews: 47,
+      createdAt: new Date(),
+      updated_at: new Date(),
+      user: {
+        user_id: 1,
+        name: 'Мария Петкова',
+        email: 'maria@example.com',
+        phone: '+359888123456',
+        password_hash: '',
+        role: 'owner',
+        created_at: new Date(),
+        updated_at: new Date(),
       },
+      reviews: [],
     },
     {
-      id: '2',
-      firstName: 'Анна',
-      lastName: 'Георгиева',
-      email: 'anna@example.com',
-      phone: '+359888234567',
-      avatar: 'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg',
-      createdAt: new Date(),
-      isVerified: true,
+      sitter_id: 2,
+      user_id: 2,
       bio: 'Специализирам се в грижата за кучета от големи породи.',
-      experience: 3,
-      services: ['daily-walks', 'pet-taxi'],
-      location: {
-        city: 'София',
-        address: 'кв. Младост',
-      },
-      pricing: {
-        'daily-walks': 30,
-        'home-visits': 70,
-        'overnight': 100,
-        'pet-taxi': 40,
-        'grooming': 55,
-      },
-      availability: {},
-      photos: ['https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg'],
-      reviews: [],
+      photo_url: 'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg',
+      hourly_rate: 30.00,
+      location: 'София, кв. Младост',
+      qualifications: '3 години опит, специализация в големи породи кучета',
       rating: 4.8,
-      totalReviews: 32,
-      languages: ['Български'],
-      petTypes: ['dog'],
-      emergencyContact: {
-        name: 'Петър Георгиев',
-        phone: '+359888765432',
+      average_rating: 4.8,
+      total_reviews: 32,
+      createdAt: new Date(),
+      updated_at: new Date(),
+      user: {
+        user_id: 2,
+        name: 'Анна Георгиева',
+        email: 'anna@example.com',
+        phone: '+359888234567',
+        password_hash: '',
+        role: 'owner',
+        created_at: new Date(),
+        updated_at: new Date(),
       },
+      reviews: [],
     },
   ];
 
@@ -101,24 +81,18 @@ const PersonalizedRecommendations: React.FC<PersonalizedRecommendationsProps> = 
       
       // Filter sitters based on user preferences
       const filtered = mockSitters.filter(sitter => {
-        const hasPreferredService = sitter.services.some(service => 
-          userPreferences.preferredServices.includes(service)
-        );
-        const hasPreferredPetType = sitter.petTypes.some(petType => 
-          userPreferences.preferredPetTypes.includes(petType)
-        );
-        const isInPriceRange = Math.min(...Object.values(sitter.pricing)) <= userPreferences.maxPrice;
-        const isInPreferredLocation = sitter.location.city === userPreferences.preferredLocation;
-        const meetsRatingRequirement = sitter.rating >= userPreferences.minRating;
+        // Simplified filtering based on available data
+        const isInPriceRange = sitter.hourly_rate <= userPreferences.maxPrice;
+        const isInPreferredLocation = sitter.location.includes(userPreferences.preferredLocation);
+        const meetsRatingRequirement = sitter.average_rating >= userPreferences.minRating;
 
-        return hasPreferredService && hasPreferredPetType && isInPriceRange && 
-               isInPreferredLocation && meetsRatingRequirement;
+        return isInPriceRange && isInPreferredLocation && meetsRatingRequirement;
       });
 
       // Sort by rating and experience
       const sorted = filtered.sort((a, b) => {
-        const scoreA = a.rating * 0.7 + (a.experience / 10) * 0.3;
-        const scoreB = b.rating * 0.7 + (b.experience / 10) * 0.3;
+        const scoreA = a.average_rating * 0.7 + (a.hourly_rate / 100) * 0.3;
+        const scoreB = b.average_rating * 0.7 + (b.hourly_rate / 100) * 0.3;
         return scoreB - scoreA;
       });
 
@@ -131,22 +105,18 @@ const PersonalizedRecommendations: React.FC<PersonalizedRecommendationsProps> = 
     getRecommendations();
   }, [userId]);
 
-  const getRecommendationReason = (sitter: Sitter) => {
+  const getRecommendationReason = (sitter: SitterWithDetails) => {
     const reasons = [];
     
-    if (sitter.rating >= 4.8) {
+    if (sitter.average_rating >= 4.8) {
       reasons.push('Високо оценен');
     }
     
-    if (sitter.services.some(service => userPreferences.preferredServices.includes(service))) {
-      reasons.push('Предлага предпочитаните ви услуги');
-    }
-    
-    if (sitter.location.city === userPreferences.preferredLocation) {
+    if (sitter.location.includes(userPreferences.preferredLocation)) {
       reasons.push('В района ви');
     }
     
-    if (Math.min(...Object.values(sitter.pricing)) <= userPreferences.maxPrice * 0.8) {
+    if (sitter.hourly_rate <= userPreferences.maxPrice * 0.8) {
       reasons.push('Добра цена');
     }
 
@@ -198,7 +168,7 @@ const PersonalizedRecommendations: React.FC<PersonalizedRecommendationsProps> = 
       ) : (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {recommendations.map((sitter) => (
-            <div key={sitter.id} className="relative">
+            <div key={sitter.sitter_id} className="relative">
               {/* Recommendation badge */}
               <div className="absolute top-4 left-4 z-10 bg-green-600 text-white px-3 py-1 rounded-full text-sm font-medium">
                 {getRecommendationReason(sitter)}

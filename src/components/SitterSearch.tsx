@@ -1,113 +1,71 @@
 import React, { useState, useEffect } from 'react';
 import { Search, MapPin, Calendar, Filter, Star, Heart, Shield } from 'lucide-react';
-import { ServiceType, PetType, SearchFilters, Sitter } from '../types';
+import { SitterSearchFilters, SitterWithDetails, User } from '../types';
 import Button from './common/Button';
 import SitterCard from './SitterCard';
 import InteractiveMap from './InteractiveMap';
 import PersonalizedRecommendations from './PersonalizedRecommendations';
 
 const SitterSearch: React.FC = () => {
-  const [filters, setFilters] = useState<SearchFilters>({});
-  const [sitters, setSitters] = useState<Sitter[]>([]);
+  const [filters, setFilters] = useState<SitterSearchFilters>({});
+  const [sitters, setSitters] = useState<SitterWithDetails[]>([]);
   const [loading, setLoading] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
   const [viewMode, setViewMode] = useState<'list' | 'map'>('list');
-  const [selectedSitter, setSelectedSitter] = useState<Sitter | null>(null);
+  const [selectedSitter, setSelectedSitter] = useState<SitterWithDetails | null>(null);
 
   // Mock data for demonstration
-  const mockSitters: Sitter[] = [
+  const mockSitters: SitterWithDetails[] = [
     {
-      id: '1',
-      firstName: 'Мария',
-      lastName: 'Петкова',
-      email: 'maria@example.com',
-      phone: '+359888123456',
-      avatar: 'https://images.pexels.com/photos/3763188/pexels-photo-3763188.jpeg',
-      createdAt: new Date(),
-      isVerified: true,
-      bio: 'Обожавам животните и имам над 5 години опит в грижата за домашни любимци. Специализирам се в грижата за кучета и котки.',
-      experience: 5,
-      services: ['daily-walks', 'home-visits', 'overnight'],
-      location: {
-        city: 'София',
-        address: 'кв. Лозенец',
-      },
-      pricing: {
-        'daily-walks': 25,
-        'home-visits': 60,
-        'overnight': 95,
-        'pet-taxi': 35,
-        'grooming': 50,
-      },
-      availability: {},
-      photos: [
-        'https://images.pexels.com/photos/3763188/pexels-photo-3763188.jpeg',
-        'https://images.pexels.com/photos/2253275/pexels-photo-2253275.jpeg',
-      ],
-      reviews: [],
+      sitter_id: 1,
+      user_id: 1,
+      bio: 'Обожавам животните и имам над 5 години опит в грижата за домашни любимци.',
+      photo_url: 'https://images.pexels.com/photos/3763188/pexels-photo-3763188.jpeg',
+      hourly_rate: 25,
+      location: 'София, кв. Лозенец',
+      qualifications: 'Сертифициран гледач, първа помощ за животни',
       rating: 4.9,
-      totalReviews: 47,
-      languages: ['Български', 'English'],
-      petTypes: ['dog', 'cat'],
-      emergencyContact: {
-        name: 'Иван Петков',
-        phone: '+359888654321',
+      createdAt: new Date(),
+      updated_at: new Date(),
+      user: {
+        user_id: 1,
+        name: 'Мария Петкова',
+        email: 'maria@example.com',
+        phone: '+359888123456',
+        password_hash: '',
+        role: 'owner',
+        created_at: new Date(),
+        updated_at: new Date(),
       },
+      reviews: [],
+      total_reviews: 47,
+      average_rating: 4.9,
     },
     {
-      id: '2',
-      firstName: 'Георги',
-      lastName: 'Стоянов',
-      email: 'georgi@example.com',
-      phone: '+359888234567',
-      avatar: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg',
-      createdAt: new Date(),
-      isVerified: true,
-      bio: 'Ветеринарен асистент с опит в грижата за домашни любимци с медицински нужди. Специализирам се в грижата за възрастни животни.',
-      experience: 8,
-      services: ['home-visits', 'overnight', 'pet-taxi'],
-      location: {
-        city: 'Пловдив',
-        address: 'Център',
-      },
-      pricing: {
-        'daily-walks': 30,
-        'home-visits': 70,
-        'overnight': 110,
-        'pet-taxi': 40,
-        'grooming': 60,
-      },
-      availability: {},
-      photos: [
-        'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg',
-        'https://images.pexels.com/photos/1170986/pexels-photo-1170986.jpeg',
-      ],
-      reviews: [],
+      sitter_id: 2,
+      user_id: 2,
+      bio: 'Ветеринарен асистент с опит в грижата за домашни любимци с медицински нужди.',
+      photo_url: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg',
+      hourly_rate: 30,
+      location: 'Пловдив, Център',
+      qualifications: 'Ветеринарен асистент, специализация възрастни животни',
       rating: 5.0,
-      totalReviews: 32,
-      languages: ['Български'],
-      petTypes: ['dog', 'cat', 'bird'],
-      emergencyContact: {
-        name: 'Мария Стоянова',
-        phone: '+359888765432',
+      createdAt: new Date(),
+      updated_at: new Date(),
+      user: {
+        user_id: 2,
+        name: 'Георги Стоянов',
+        email: 'georgi@example.com',
+        phone: '+359888234567',
+        password_hash: '',
+        role: 'owner',
+        created_at: new Date(),
+        updated_at: new Date(),
       },
+      reviews: [],
+      total_reviews: 32,
+      average_rating: 5.0,
     },
-  ];
-
-  const serviceOptions = [
-    { value: 'daily-walks', label: 'Ежедневни разходки' },
-    { value: 'home-visits', label: 'Домашно гледане' },
-    { value: 'overnight', label: 'Нощна грижа' },
-    { value: 'pet-taxi', label: 'Такси за домашни любимци' },
-  ];
-
-  const petTypeOptions = [
-    { value: 'dog', label: 'Куче' },
-    { value: 'cat', label: 'Котка' },
-    { value: 'bird', label: 'Птица' },
-    { value: 'small-mammal', label: 'Дребен бозайник' },
-    { value: 'reptile', label: 'Влечуго' },
-    { value: 'other', label: 'Друг' },
   ];
 
   const handleSearch = async () => {
@@ -123,11 +81,11 @@ const SitterSearch: React.FC = () => {
     handleSearch();
   }, []);
 
-  const handleFilterChange = (key: keyof SearchFilters, value: any) => {
+  const handleFilterChange = (key: keyof SitterSearchFilters, value: any) => {
     setFilters(prev => ({ ...prev, [key]: value }));
   };
 
-  const handleSitterSelect = (sitter: Sitter) => {
+  const handleSitterSelect = (sitter: SitterWithDetails) => {
     setSelectedSitter(sitter);
     // Open sitter profile or booking modal
   };
@@ -149,24 +107,6 @@ const SitterSearch: React.FC = () => {
           <div className="grid md:grid-cols-4 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Услуга
-              </label>
-              <select
-                value={filters.serviceType || ''}
-                onChange={(e) => handleFilterChange('serviceType', e.target.value as ServiceType)}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500"
-              >
-                <option value="">Всички услуги</option>
-                {serviceOptions.map(option => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
-                  </option>
-                ))}
-              </select>
-            </div>
-
-            <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
                 Град
               </label>
               <div className="relative">
@@ -174,8 +114,8 @@ const SitterSearch: React.FC = () => {
                 <input
                   type="text"
                   placeholder="Въведете град"
-                  value={filters.city || ''}
-                  onChange={(e) => handleFilterChange('city', e.target.value)}
+                  value={filters.location || ''}
+                  onChange={(e) => handleFilterChange('location', e.target.value)}
                   className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500"
                 />
               </div>
@@ -190,12 +130,29 @@ const SitterSearch: React.FC = () => {
                 <input
                   type="date"
                   value={filters.startDate ? filters.startDate.toISOString().split('T')[0] : ''}
-                  onChange={(e) => handleFilterChange('startDate', new Date(e.target.value))}
+                  onChange={(e) => handleFilterChange('start_date', new Date(e.target.value))}
                   className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500"
                 />
               </div>
             </div>
 
+            <div>
+              <label className="block text-sm font-medium text-gray-700 mb-2">
+                Крайна дата
+              </label>
+              <div className="relative">
+                <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
+                <input
+                  type="date"
+                  value={filters.end_date ? filters.end_date.toISOString().split('T')[0] : ''}
+                  onChange={(e) => handleFilterChange('end_date', new Date(e.target.value))}
+                  className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="grid md:grid-cols-4 gap-4 mt-4">
             <div className="flex items-end">
               <Button onClick={handleSearch} className="w-full">
                 <Search className="h-5 w-5 mr-2" />
@@ -245,29 +202,11 @@ const SitterSearch: React.FC = () => {
               <div className="grid md:grid-cols-3 gap-4">
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Вид домашен любимец
-                  </label>
-                  <select
-                    value={filters.petType || ''}
-                    onChange={(e) => handleFilterChange('petType', e.target.value as PetType)}
-                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500"
-                  >
-                    <option value="">Всички видове</option>
-                    {petTypeOptions.map(option => (
-                      <option key={option.value} value={option.value}>
-                        {option.label}
-                      </option>
-                    ))}
-                  </select>
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
                     Минимален рейтинг
                   </label>
                   <select
-                    value={filters.rating || ''}
-                    onChange={(e) => handleFilterChange('rating', Number(e.target.value))}
+                    value={filters.min_rating || ''}
+                    onChange={(e) => handleFilterChange('min_rating', Number(e.target.value))}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500"
                   >
                     <option value="">Всички рейтинги</option>
@@ -279,16 +218,26 @@ const SitterSearch: React.FC = () => {
 
                 <div>
                   <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Максимална цена (лв.)
+                    Минимална цена (лв./час)
                   </label>
                   <input
                     type="number"
-                    placeholder="100"
-                    value={filters.priceRange?.max || ''}
-                    onChange={(e) => handleFilterChange('priceRange', { 
-                      ...filters.priceRange, 
-                      max: Number(e.target.value) 
-                    })}
+                    placeholder="20"
+                    value={filters.min_rate || ''}
+                    onChange={(e) => handleFilterChange('min_rate', Number(e.target.value))}
+                    className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-2">
+                    Максимална цена (лв./час)
+                  </label>
+                  <input
+                    type="number"
+                    placeholder="50"
+                    value={filters.max_rate || ''}
+                    onChange={(e) => handleFilterChange('max_rate', Number(e.target.value))}
                     className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500"
                   />
                 </div>
@@ -325,16 +274,16 @@ const SitterSearch: React.FC = () => {
         ) : viewMode === 'list' ? (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {sitters.map(sitter => (
-              <SitterCard key={sitter.id} sitter={sitter} />
+              <SitterCard key={sitter.sitter_id} sitter={sitter} />
             ))}
           </div>
         ) : (
           <InteractiveMap sitters={sitters} onSitterSelect={handleSitterSelect} />
         )}
       </div>
-        {/* Personalized Recommendations */}
-        <PersonalizedRecommendations userId="user1" />
-
+      
+      {/* Personalized Recommendations */}
+      <PersonalizedRecommendations userId={1} />
     </section>
   );
 };

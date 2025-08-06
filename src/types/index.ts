@@ -138,15 +138,3 @@ export interface PaymentMethod {
   brand?: string;
   isDefault: boolean;
 }
-
-export interface Insurance {
-  id: string;
-  bookingId: string;
-  coverage: {
-    veterinary: number;
-    liability: number;
-    property: number;
-  };
-  premium: number;
-  active: boolean;
-}

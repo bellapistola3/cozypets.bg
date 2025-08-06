@@ -275,8 +275,8 @@ const SitterSearch: React.FC = () => {
           </div>
           <div className="bg-white rounded-xl p-6 text-center shadow-md">
             <Heart className="h-12 w-12 text-green-600 mx-auto mb-4" />
-            <h3 className="font-semibold text-gray-900 mb-2">Застраховка включена</h3>
-            <p className="text-gray-600 text-sm">Покритие на ветеринарни разходи до 5000 лв.</p>
+            <h3 className="font-semibold text-gray-900 mb-2">Сигурни плащания</h3>
+            <p className="text-gray-600 text-sm">Защитени транзакции и гарантирано качество на услугите.</p>
           </div>
           <div className="bg-white rounded-xl p-6 text-center shadow-md">
             <Star className="h-12 w-12 text-green-600 mx-auto mb-4" />

@@ -402,7 +402,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ sitter, onClose, onBookingC
                   </Button>
                   <Button onClick={handleSubmit}>
                     <CreditCard className="h-5 w-5 mr-2" />
-                    Потвърди и плати {pricing.total.toFixed(2)} лв.
+                    Потвърди и плати {(pricing.subtotal + pricing.reservationFee + pricing.serviceFee).toFixed(2)} лв.
                   </Button>
                 </div>
               </div>

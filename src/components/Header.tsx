@@ -45,7 +45,7 @@ const Header: React.FC = () => {
         <div className="container mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
             <div className="flex items-center">
-              <a href="#" className="flex items-center">
+              <a href="/" className="flex items-center">
                 <img 
                   src="/src/components/assets/лого.png" 
                   alt="CozyPets by Alice" 
@@ -61,7 +61,7 @@ const Header: React.FC = () => {
               {navLinks.map((link) => (
                 <a
                   key={link.name}
-                  href={link.href}
+                  href={link.href.startsWith('#') ? `/${link.href}` : link.href}
                   className="text-gray-700 hover:text-green-600 transition-colors duration-300 font-medium"
                 >
                   {link.name}
@@ -82,7 +82,7 @@ const Header: React.FC = () => {
               <NotificationSystem />
               <Button onClick={() => setIsLoginOpen(true)} variant="outline">Вход</Button>
               <Button onClick={() => setIsRegisterOpen(true)} variant="outline">Регистрация</Button>
-              <Button href="#booking">Резервирай сега</Button>
+              <Button href="/#booking">Резервирай сега</Button>
             </nav>
 
             {/* Mobile Navigation Button */}
@@ -103,20 +103,34 @@ const Header: React.FC = () => {
                 {navLinks.map((link) => (
                   <a
                     key={link.name}
-                    href={link.href}
+                    href={link.href.startsWith('#') ? `/${link.href}` : link.href}
                     className="text-gray-700 hover:text-green-600 transition-colors duration-300 font-medium py-2"
                     onClick={() => setIsMenuOpen(false)}
                   >
                     {link.name}
                   </a>
                 ))}
+                <a
+                  href="/search"
+                  className="text-gray-700 hover:text-green-600 transition-colors duration-300 font-medium py-2"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Търси гледачи
+                </a>
+                <a
+                  href="/dashboard"
+                  className="text-gray-700 hover:text-green-600 transition-colors duration-300 font-medium py-2"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Моят профил
+                </a>
                 <Button onClick={() => { setIsLoginOpen(true); setIsMenuOpen(false); }} variant="outline">
                   Вход
                 </Button>
                 <Button onClick={() => { setIsRegisterOpen(true); setIsMenuOpen(false); }} variant="outline">
                   Регистрация
                 </Button>
-                <Button href="#booking" onClick={() => setIsMenuOpen(false)}>
+                <Button href="/#booking" onClick={() => setIsMenuOpen(false)}>
                   Резервирай сега
                 </Button>
               </div>

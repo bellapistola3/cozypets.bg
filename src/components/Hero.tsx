@@ -30,7 +30,7 @@ const Hero: React.FC = () => {
           </p>
           <div className="animate-fadeInUp animation-delay-200">
             <button 
-              onClick={() => setIsSearchOpen(true)}
+              onClick={() => window.location.href = '/search'}
               className="inline-flex items-center justify-center gap-3 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold text-xl px-12 py-6 rounded-2xl shadow-2xl hover:shadow-green-500/25 transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 border-2 border-green-400/20"
             >
               <Search className="h-7 w-7" />
@@ -39,10 +39,6 @@ const Hero: React.FC = () => {
           </div>
         </div>
       </div>
-
-      {isSearchOpen && (
-        <PetSitterSearch onClose={() => setIsSearchOpen(false)} />
-      )}
 
       <div className="absolute bottom-10 left-1/2 transform -translate-x-1/2 animate-bounce">
         <a href="#services" className="text-white flex flex-col items-center">

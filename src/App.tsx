@@ -13,6 +13,8 @@ import Footer from './components/Footer';
 import ScrollToTop from './components/common/ScrollToTop';
 import About from './About';
 import PrivacyPolicy from './PrivacyPolicy';
+import SitterSearch from './components/SitterSearch';
+import UserDashboard from './components/UserDashboard';
 
 function App() {
   return (
@@ -45,6 +47,32 @@ function App() {
                     Политика за поверителност
                   </a>
                 </div>
+              </main>
+              <Footer />
+            </>
+          }
+        />
+
+        {/* Страница за търсене на гледачи */}
+        <Route
+          path="/search"
+          element={
+            <>
+              <main>
+                <SitterSearch />
+              </main>
+              <Footer />
+            </>
+          }
+        />
+
+        {/* Потребителски профил */}
+        <Route
+          path="/dashboard"
+          element={
+            <>
+              <main>
+                <UserDashboard />
               </main>
               <Footer />
             </>

@@ -66,6 +66,18 @@ const Header: React.FC = () => {
                   {link.name}
                 </a>
               ))}
+              <a
+                href="/search"
+                className="text-gray-700 hover:text-green-600 transition-colors duration-300 font-medium"
+              >
+                Търси гледачи
+              </a>
+              <a
+                href="/dashboard"
+                className="text-gray-700 hover:text-green-600 transition-colors duration-300 font-medium"
+              >
+                Моят профил
+              </a>
               <Button onClick={() => setIsLoginOpen(true)} variant="outline">Вход</Button>
               <Button onClick={() => setIsRegisterOpen(true)} variant="outline">Регистрация</Button>
               <Button href="#booking">Резервирай сега</Button>

@@ -62,24 +62,6 @@ const Gallery: React.FC = () => {
       alt: 'Котка гледа през прозореца',
       category: 'cats',
     },
-    {
-      id: 9,
-      src: 'https://images.pexels.com/photos/1661506/pexels-photo-1661506.jpeg',
-      alt: 'Жълто канарче пее',
-      category: 'other',
-    },
-    {
-      id: 10,
-      src: 'https://images.pexels.com/photos/1618606/pexels-photo-1618606.jpeg',
-      alt: 'Костенурка на тревата',
-      category: 'other',
-    },
-    {
-      id: 11,
-      src: 'https://images.pexels.com/photos/2280549/pexels-photo-2280549.jpeg',
-      alt: 'Зелена гущерица на камък',
-      category: 'other',
-    },
   ];
 
   const filteredImages = filter === 'all' 

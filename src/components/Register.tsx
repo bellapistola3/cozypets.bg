@@ -32,12 +32,14 @@ const Register: React.FC<RegisterProps> = ({ onClose, onOpenLogin }) => {
     setLoading(true);
     setError('');
     
-    signUp(formData.email, formData.password, `${formData.firstName} ${formData.familyName}`, formData.phoneNumber)
+    const fullName = `${formData.firstName} ${formData.familyName}`;
+    signUp(formData.email, formData.password, fullName, formData.phoneNumber)
       .then(() => {
         onClose();
       })
       .catch((error) => {
-        setError(error.message || 'Възникна грешка при регистрация');
+        console.error('Registration error:', error);
+        setError(error.message || 'Възникна грешка при регистрация. Моля, опитайте отново.');
       })
       .finally(() => {
         setLoading(false);

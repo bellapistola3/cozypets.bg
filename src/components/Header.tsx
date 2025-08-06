@@ -4,6 +4,7 @@ import Button from './common/Button';
 import Login from './Login';
 import Register from './Register';
 import NotificationSystem from './NotificationSystem';
+import BecomeASitter from './BecomeASitter';
 import { useAuth } from '../contexts/AuthContext';
 
 const Header: React.FC = () => {
@@ -11,6 +12,7 @@ const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);
+  const [isBecomeASitterOpen, setIsBecomeASitterOpen] = useState(false);
   const { user, signOut } = useAuth();
 
   useEffect(() => {
@@ -75,6 +77,12 @@ const Header: React.FC = () => {
               >
                 Търси гледачи
               </a>
+              <button
+                onClick={() => setIsBecomeASitterOpen(true)}
+                className="text-gray-700 hover:text-green-600 transition-colors duration-300 font-medium"
+              >
+                Стани гледач
+              </button>
               <a
                 href="/dashboard"
                 className="text-gray-700 hover:text-green-600 transition-colors duration-300 font-medium"
@@ -128,6 +136,12 @@ const Header: React.FC = () => {
                 >
                   Търси гледачи
                 </a>
+                <button
+                  onClick={() => { setIsBecomeASitterOpen(true); setIsMenuOpen(false); }}
+                  className="text-gray-700 hover:text-green-600 transition-colors duration-300 font-medium py-2 text-left w-full"
+                >
+                  Стани гледач
+                </button>
                 <a
                   href="/dashboard"
                   className="text-gray-700 hover:text-green-600 transition-colors duration-300 font-medium py-2"
@@ -154,6 +168,7 @@ const Header: React.FC = () => {
 
       {isLoginOpen && <Login onClose={() => setIsLoginOpen(false)} onOpenRegister={() => setIsRegisterOpen(true)} />}
       {isRegisterOpen && <Register onClose={() => setIsRegisterOpen(false)} onOpenLogin={() => setIsLoginOpen(true)} />}
+      {isBecomeASitterOpen && <BecomeASitter onClose={() => setIsBecomeASitterOpen(false)} />}
     </>
   );
 };

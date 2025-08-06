@@ -10,13 +10,18 @@ import {
   PlusCircle,
   Star,
   Clock,
-  MapPin
+  MapPin,
+  Briefcase
 } from 'lucide-react';
 import { Booking, Pet, Message } from '../types';
 import Button from './common/Button';
+import BecomeASitter from './BecomeASitter';
+import { useAuth } from '../contexts/AuthContext';
 
 const UserDashboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState('bookings');
+  const [showBecomeASitter, setShowBecomeASitter] = useState(false);
+  const { user } = useAuth();
 
   // Mock data
   const mockBookings: Booking[] = [
@@ -189,6 +194,14 @@ const UserDashboard: React.FC = () => {
                 >
                   <Settings className="h-5 w-5 mr-3" />
                   Настройки
+                </button>
+                
+                <button
+                  onClick={() => setShowBecomeASitter(true)}
+                  className="w-full flex items-center px-4 py-2 text-left rounded-lg transition-colors text-gray-700 hover:bg-gray-100"
+                >
+                  <Briefcase className="h-5 w-5 mr-3" />
+                  Стани гледач
                 </button>
               </nav>
             </div>
@@ -366,6 +379,10 @@ const UserDashboard: React.FC = () => {
           </div>
         </div>
       </div>
+      
+      {showBecomeASitter && (
+        <BecomeASitter onClose={() => setShowBecomeASitter(false)} />
+      )}
     </div>
   );
 };

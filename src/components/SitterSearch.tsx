@@ -5,6 +5,8 @@ import Button from './common/Button';
 import SitterCard from './SitterCard';
 import InteractiveMap from './InteractiveMap';
 import PersonalizedRecommendations from './PersonalizedRecommendations';
+import { dbHelpers } from '../lib/supabase';
+import { useAuth } from '../contexts/AuthContext';
 
 const SitterSearch: React.FC = () => {
   const [filters, setFilters] = useState<SitterSearchFilters>({});
@@ -13,68 +15,26 @@ const SitterSearch: React.FC = () => {
   const [showFilters, setShowFilters] = useState(false);
   const [viewMode, setViewMode] = useState<'list' | 'map'>('list');
   const [selectedSitter, setSelectedSitter] = useState<SitterWithDetails | null>(null);
+  const { user } = useAuth();
 
-  // Mock data for demonstration
-  const mockSitters: SitterWithDetails[] = [
-    {
-      sitter_id: 1,
-      user_id: 1,
-      bio: 'Обожавам животните и имам над 5 години опит в грижата за домашни любимци.',
-      photo_url: 'https://images.pexels.com/photos/3763188/pexels-photo-3763188.jpeg',
-      hourly_rate: 25,
-      location: 'София, кв. Лозенец',
-      qualifications: 'Сертифициран гледач, първа помощ за животни',
-      rating: 4.9,
-      createdAt: new Date(),
-      updated_at: new Date(),
-      user: {
-        user_id: 1,
-        name: 'Мария Петкова',
-        email: 'maria@example.com',
-        phone: '+359888123456',
-        password_hash: '',
-        role: 'owner',
-        created_at: new Date(),
-        updated_at: new Date(),
-      },
-      reviews: [],
-      total_reviews: 47,
-      average_rating: 4.9,
-    },
-    {
-      sitter_id: 2,
-      user_id: 2,
-      bio: 'Ветеринарен асистент с опит в грижата за домашни любимци с медицински нужди.',
-      photo_url: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg',
-      hourly_rate: 30,
-      location: 'Пловдив, Център',
-      qualifications: 'Ветеринарен асистент, специализация възрастни животни',
-      rating: 5.0,
-      createdAt: new Date(),
-      updated_at: new Date(),
-      user: {
-        user_id: 2,
-        name: 'Георги Стоянов',
-        email: 'georgi@example.com',
-        phone: '+359888234567',
-        password_hash: '',
-        role: 'owner',
-        created_at: new Date(),
-        updated_at: new Date(),
-      },
-      reviews: [],
-      total_reviews: 32,
-      average_rating: 5.0,
-    },
-  ];
 
   const handleSearch = async () => {
     setLoading(true);
-    // Simulate API call
-    setTimeout(() => {
-      setSitters(mockSitters);
+    try {
+      const searchFilters = {
+        location: filters.location,
+        min_rate: filters.min_rate,
+        max_rate: filters.max_rate,
+        min_rating: filters.min_rating
+      };
+      
+      const sittersData = await dbHelpers.getSitters(searchFilters);
+      setSitters(sittersData);
+    } catch (error) {
+      console.error('Error searching sitters:', error);
+    } finally {
       setLoading(false);
-    }, 1000);
+    }
   };
 
   useEffect(() => {
@@ -283,7 +243,7 @@ const SitterSearch: React.FC = () => {
       </div>
       
       {/* Personalized Recommendations */}
-      <PersonalizedRecommendations userId={1} />
+      {user && <PersonalizedRecommendations userId={user.id} />}
     </section>
   );
 };

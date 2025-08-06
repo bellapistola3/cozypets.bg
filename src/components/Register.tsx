@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { X, Mail, Lock, User, Phone } from 'lucide-react';
 import Button from './common/Button';
 import SocialLogin from './SocialLogin';
+import { useAuth } from '../contexts/AuthContext';
 
 interface RegisterProps {
   onClose: () => void;
@@ -17,6 +18,9 @@ const Register: React.FC<RegisterProps> = ({ onClose, onOpenLogin }) => {
     phoneNumber: ''
   });
   const [showEmailForm, setShowEmailForm] = useState(false);
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const { signUp } = useAuth();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -25,8 +29,19 @@ const Register: React.FC<RegisterProps> = ({ onClose, onOpenLogin }) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle registration logic here
-    console.log('Register attempt:', formData);
+    setLoading(true);
+    setError('');
+    
+    signUp(formData.email, formData.password, `${formData.firstName} ${formData.familyName}`, formData.phoneNumber)
+      .then(() => {
+        onClose();
+      })
+      .catch((error) => {
+        setError(error.message || 'Възникна грешка при регистрация');
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   const handleSocialLogin = (provider: string) => {
@@ -72,6 +87,12 @@ const Register: React.FC<RegisterProps> = ({ onClose, onOpenLogin }) => {
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-4">
+            {error && (
+              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md text-sm">
+                {error}
+              </div>
+            )}
+            
             <div>
               <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 mb-1">
                 Име
@@ -177,8 +198,8 @@ const Register: React.FC<RegisterProps> = ({ onClose, onOpenLogin }) => {
               </div>
             </div>
 
-            <Button type="submit" className="w-full mt-6">
-              Създай акаунт
+            <Button type="submit" className="w-full mt-6" disabled={loading}>
+              {loading ? 'Създаване...' : 'Създай акаунт'}
             </Button>
 
             <div className="flex justify-between items-center text-sm">

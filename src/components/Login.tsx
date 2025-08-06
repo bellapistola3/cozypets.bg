@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { X, Mail, Lock } from 'lucide-react';
 import Button from './common/Button';
 import SocialLogin from './SocialLogin';
+import { useAuth } from '../contexts/AuthContext';
 
 interface LoginProps {
   onClose: () => void;
@@ -12,11 +13,25 @@ const Login: React.FC<LoginProps> = ({ onClose, onOpenRegister }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [showEmailForm, setShowEmailForm] = useState(false);
+  const [error, setError] = useState('');
+  const [loading, setLoading] = useState(false);
+  const { signIn } = useAuth();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle login logic here
-    console.log('Login attempt:', { email, password });
+    setLoading(true);
+    setError('');
+    
+    signIn(email, password)
+      .then(() => {
+        onClose();
+      })
+      .catch((error) => {
+        setError(error.message || 'Възникна грешка при влизане');
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   const handleSocialLogin = (provider: string) => {
@@ -62,6 +77,12 @@ const Login: React.FC<LoginProps> = ({ onClose, onOpenRegister }) => {
           </div>
         ) : (
           <form onSubmit={handleSubmit} className="space-y-6">
+            {error && (
+              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md text-sm">
+                {error}
+              </div>
+            )}
+            
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
                 Имейл адрес
@@ -102,8 +123,8 @@ const Login: React.FC<LoginProps> = ({ onClose, onOpenRegister }) => {
               </div>
             </div>
 
-            <Button type="submit" className="w-full">
-              Влез
+            <Button type="submit" className="w-full" disabled={loading}>
+              {loading ? 'Влизане...' : 'Влез'}
             </Button>
 
             <div className="flex justify-between items-center text-sm">

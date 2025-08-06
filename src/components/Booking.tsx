@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { Calendar, Clock, CheckCircle } from 'lucide-react';
 import SectionHeading from './common/SectionHeading';
 import Button from './common/Button';
+import { useAuth } from '../contexts/AuthContext';
+import { dbHelpers } from '../lib/supabase';
 
 interface BookingFormData {
   name: string;
@@ -30,6 +32,9 @@ const Booking: React.FC = () => {
 
   const [formStep, setFormStep] = useState(1);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const { user } = useAuth();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -46,10 +51,21 @@ const Booking: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Simulate form submission
+    
+    if (!user) {
+      setError('Моля, влезте в акаунта си, за да направите резервация.');
+      return;
+    }
+
+    setLoading(true);
+    setError('');
+    
+    // Here you would create the actual reservation
+    // For now, we'll simulate the process
     setTimeout(() => {
       setIsSubmitted(true);
-    }, 1000);
+      setLoading(false);
+    }, 2000);
   };
 
   return (

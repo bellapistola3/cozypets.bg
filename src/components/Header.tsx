@@ -4,12 +4,14 @@ import Button from './common/Button';
 import Login from './Login';
 import Register from './Register';
 import NotificationSystem from './NotificationSystem';
+import { useAuth } from '../contexts/AuthContext';
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
   const [isRegisterOpen, setIsRegisterOpen] = useState(false);
+  const { user, signOut } = useAuth();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -80,8 +82,17 @@ const Header: React.FC = () => {
                 Моят профил
               </a>
               <NotificationSystem />
-              <Button onClick={() => setIsLoginOpen(true)} variant="outline">Вход</Button>
-              <Button onClick={() => setIsRegisterOpen(true)} variant="outline">Регистрация</Button>
+              {user ? (
+                <div className="flex items-center gap-4">
+                  <span className="text-gray-700">Здравей, {user.name}</span>
+                  <Button onClick={signOut} variant="outline">Изход</Button>
+                </div>
+              ) : (
+                <>
+                  <Button onClick={() => setIsLoginOpen(true)} variant="outline">Вход</Button>
+                  <Button onClick={() => setIsRegisterOpen(true)} variant="outline">Регистрация</Button>
+                </>
+              )}
               <Button href="/#booking">Резервирай сега</Button>
             </nav>
 
@@ -125,11 +136,13 @@ const Header: React.FC = () => {
                   Моят профил
                 </a>
                 <Button onClick={() => { setIsLoginOpen(true); setIsMenuOpen(false); }} variant="outline">
-                  Вход
+                  {user ? 'Изход' : 'Вход'}
                 </Button>
-                <Button onClick={() => { setIsRegisterOpen(true); setIsMenuOpen(false); }} variant="outline">
-                  Регистрация
-                </Button>
+                {!user && (
+                  <Button onClick={() => { setIsRegisterOpen(true); setIsMenuOpen(false); }} variant="outline">
+                    Регистрация
+                  </Button>
+                )}
                 <Button href="/#booking" onClick={() => setIsMenuOpen(false)}>
                   Резервирай сега
                 </Button>

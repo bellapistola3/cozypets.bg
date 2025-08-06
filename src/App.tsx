@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { AuthProvider } from './contexts/AuthContext';
 import Header from './components/Header';
 import Hero from './components/Hero';
 import Services from './components/Services';
@@ -19,17 +20,19 @@ import PetOwnerProfile from './components/PetOwnerProfile';
 import InteractiveMap from './components/InteractiveMap';
 import AdminDashboard from './components/AdminDashboard';
 import PersonalizedRecommendations from './components/PersonalizedRecommendations';
+import ProtectedRoute from './components/ProtectedRoute';
 
 // Add database test route
 import DatabaseTest from './components/DatabaseTest';
 
 function App() {
   return (
-    <BrowserRouter>
-      <ScrollToTop />
-      <Header />
+    <AuthProvider>
+      <BrowserRouter>
+        <ScrollToTop />
+        <Header />
 
-      <Routes>
+        <Routes>
         {/* Начална страница */}
         <Route
           path="/"
@@ -89,12 +92,14 @@ function App() {
         <Route
           path="/dashboard"
           element={
-            <>
-              <main>
-                <UserDashboard />
-              </main>
-              <Footer />
-            </>
+            <ProtectedRoute>
+              <>
+                <main>
+                  <UserDashboard />
+                </main>
+                <Footer />
+              </>
+            </ProtectedRoute>
           }
         />
 
@@ -115,11 +120,13 @@ function App() {
         <Route
           path="/admin"
           element={
-            <>
-              <main>
-                <AdminDashboard />
-              </main>
-            </>
+            <ProtectedRoute requireAdmin={true}>
+              <>
+                <main>
+                  <AdminDashboard />
+                </main>
+              </>
+            </ProtectedRoute>
           }
         />
 
@@ -148,8 +155,9 @@ function App() {
             </>
           }
         />
-      </Routes>
-    </BrowserRouter>
+        </Routes>
+      </BrowserRouter>
+    </AuthProvider>
   );
 }
 

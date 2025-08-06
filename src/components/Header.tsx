@@ -3,6 +3,7 @@ import { Menu, X } from 'lucide-react';
 import Button from './common/Button';
 import Login from './Login';
 import Register from './Register';
+import NotificationSystem from './NotificationSystem';
 
 const Header: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -78,6 +79,7 @@ const Header: React.FC = () => {
               >
                 Моят профил
               </a>
+              <NotificationSystem />
               <Button onClick={() => setIsLoginOpen(true)} variant="outline">Вход</Button>
               <Button onClick={() => setIsRegisterOpen(true)} variant="outline">Регистрация</Button>
               <Button href="#booking">Резервирай сега</Button>

@@ -3,12 +3,16 @@ import { Search, MapPin, Calendar, Filter, Star, Heart, Shield } from 'lucide-re
 import { ServiceType, PetType, SearchFilters, Sitter } from '../types';
 import Button from './common/Button';
 import SitterCard from './SitterCard';
+import InteractiveMap from './InteractiveMap';
+import PersonalizedRecommendations from './PersonalizedRecommendations';
 
 const SitterSearch: React.FC = () => {
   const [filters, setFilters] = useState<SearchFilters>({});
   const [sitters, setSitters] = useState<Sitter[]>([]);
   const [loading, setLoading] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
+  const [viewMode, setViewMode] = useState<'list' | 'map'>('list');
+  const [selectedSitter, setSelectedSitter] = useState<Sitter | null>(null);
 
   // Mock data for demonstration
   const mockSitters: Sitter[] = [
@@ -123,6 +127,11 @@ const SitterSearch: React.FC = () => {
     setFilters(prev => ({ ...prev, [key]: value }));
   };
 
+  const handleSitterSelect = (sitter: Sitter) => {
+    setSelectedSitter(sitter);
+    // Open sitter profile or booking modal
+  };
+
   return (
     <section className="py-20 bg-gray-50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -205,6 +214,28 @@ const SitterSearch: React.FC = () => {
             </button>
             <div className="text-sm text-gray-600">
               Намерени {sitters.length} гледачи
+            </div>
+            <div className="flex items-center gap-2">
+              <button
+                onClick={() => setViewMode('list')}
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                  viewMode === 'list'
+                    ? 'bg-green-600 text-white'
+                    : 'bg-white text-gray-600 hover:bg-gray-50'
+                }`}
+              >
+                Списък
+              </button>
+              <button
+                onClick={() => setViewMode('map')}
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                  viewMode === 'map'
+                    ? 'bg-green-600 text-white'
+                    : 'bg-white text-gray-600 hover:bg-gray-50'
+                }`}
+              >
+                Карта
+              </button>
             </div>
           </div>
 
@@ -291,14 +322,19 @@ const SitterSearch: React.FC = () => {
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto"></div>
             <p className="mt-4 text-gray-600">Търсим най-добрите гледачи за вас...</p>
           </div>
-        ) : (
+        ) : viewMode === 'list' ? (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {sitters.map(sitter => (
               <SitterCard key={sitter.id} sitter={sitter} />
             ))}
           </div>
+        ) : (
+          <InteractiveMap sitters={sitters} onSitterSelect={handleSitterSelect} />
         )}
       </div>
+        {/* Personalized Recommendations */}
+        <PersonalizedRecommendations userId="user1" />
+
     </section>
   );
 };

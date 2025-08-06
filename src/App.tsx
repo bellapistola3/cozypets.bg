@@ -15,6 +15,10 @@ import About from './About';
 import PrivacyPolicy from './PrivacyPolicy';
 import SitterSearch from './components/SitterSearch';
 import UserDashboard from './components/UserDashboard';
+import PetOwnerProfile from './components/PetOwnerProfile';
+import InteractiveMap from './components/InteractiveMap';
+import AdminDashboard from './components/AdminDashboard';
+import PersonalizedRecommendations from './components/PersonalizedRecommendations';
 
 function App() {
   return (
@@ -75,6 +79,31 @@ function App() {
                 <UserDashboard />
               </main>
               <Footer />
+            </>
+          }
+        />
+
+        {/* Профил на собственик на домашни любимци */}
+        <Route
+          path="/owner-profile"
+          element={
+            <>
+              <main>
+                <PetOwnerProfile userId="user1" />
+              </main>
+              <Footer />
+            </>
+          }
+        />
+
+        {/* Административен панел */}
+        <Route
+          path="/admin"
+          element={
+            <>
+              <main>
+                <AdminDashboard />
+              </main>
             </>
           }
         />

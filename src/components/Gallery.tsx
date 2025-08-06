@@ -40,14 +40,14 @@ const Gallery: React.FC = () => {
     },
     {
       id: 5,
-      src: 'https://images.pexels.com/photos/551628/pexels-photo-551628.jpeg',
-      alt: 'Морско свинче яде зеленчуци',
+      src: 'https://images.pexels.com/photos/326012/pexels-photo-326012.jpeg',
+      alt: 'Красив заек в градината',
       category: 'other',
     },
     {
       id: 6,
-      src: 'https://images.pexels.com/photos/406014/pexels-photo-406014.jpeg',
-      alt: 'Заек в градината',
+      src: 'https://images.pexels.com/photos/1661179/pexels-photo-1661179.jpeg',
+      alt: 'Цветен папагал на клонка',
       category: 'other',
     },
     {
@@ -61,6 +61,24 @@ const Gallery: React.FC = () => {
       src: 'https://images.pexels.com/photos/617278/pexels-photo-617278.jpeg',
       alt: 'Котка гледа през прозореца',
       category: 'cats',
+    },
+    {
+      id: 9,
+      src: 'https://images.pexels.com/photos/1661506/pexels-photo-1661506.jpeg',
+      alt: 'Жълто канарче пее',
+      category: 'other',
+    },
+    {
+      id: 10,
+      src: 'https://images.pexels.com/photos/1618606/pexels-photo-1618606.jpeg',
+      alt: 'Костенурка на тревата',
+      category: 'other',
+    },
+    {
+      id: 11,
+      src: 'https://images.pexels.com/photos/2280549/pexels-photo-2280549.jpeg',
+      alt: 'Зелена гущерица на камък',
+      category: 'other',
     },
   ];
 

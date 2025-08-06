@@ -47,7 +47,7 @@ const Header: React.FC = () => {
             <div className="flex items-center">
               <a href="/" className="flex items-center">
                 <img 
-                  src="/src/components/assets/лого.png" 
+                  src="/src/components/assets/logo8808.png" 
                   alt="CozyPets by Alice" 
                   className={`transition-all duration-300 hover:scale-105 ${
                     isScrolled ? 'h-16 w-auto' : 'h-20 w-auto'

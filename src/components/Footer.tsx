@@ -10,7 +10,7 @@ const Footer: React.FC = () => {
           <div>
             <div className="flex items-center mb-6">
               <img 
-                src="/src/components/assets/лого.png" 
+                src="/src/components/assets/logo8808.png" 
                 alt="CozyPets by Alice" 
                 className="h-16 w-auto filter brightness-0 invert"
               />

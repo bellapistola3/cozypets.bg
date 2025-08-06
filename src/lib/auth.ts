@@ -78,9 +78,9 @@ export const authHelpers = {
   // Get current user
   async getCurrentUser(): Promise<AuthUser | null> {
     try {
-      const { data: { user } } = await supabase.auth.getUser();
+      const { data: { user }, error } = await supabase.auth.getUser();
       
-      if (!user) return null;
+      if (error || !user) return null;
 
       // Get user profile
       const { data: profile, error } = await supabase
@@ -89,7 +89,7 @@ export const authHelpers = {
         .eq('email', user.email)
         .single();
 
-      if (error) throw error;
+      if (error) return null;
 
       return {
         id: user.id,
@@ -105,13 +105,18 @@ export const authHelpers = {
 
   // Listen to auth changes
   onAuthStateChange(callback: (user: AuthUser | null) => void) {
-    return supabase.auth.onAuthStateChange(async (event, session) => {
-      if (session?.user) {
-        const user = await this.getCurrentUser();
-        callback(user);
-      } else {
-        callback(null);
-      }
-    });
+    try {
+      return supabase.auth.onAuthStateChange(async (event, session) => {
+        if (session?.user) {
+          const user = await this.getCurrentUser();
+          callback(user);
+        } else {
+          callback(null);
+        }
+      });
+    } catch (error) {
+      console.error('Auth state change error:', error);
+      return { data: { subscription: { unsubscribe: () => {} } } };
+    }
   }
 };

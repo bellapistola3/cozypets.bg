@@ -9,6 +9,15 @@ if (!supabaseUrl || !supabaseAnonKey || supabaseUrl === 'your_supabase_project_u
   console.warn('Supabase environment variables not configured. Using mock client.');
   // Create a mock client that won't cause errors
   supabase = {
+    auth: {
+      getUser: () => Promise.resolve({ data: { user: null }, error: null }),
+      signUp: () => Promise.resolve({ data: { user: null }, error: new Error('Supabase not configured') }),
+      signInWithPassword: () => Promise.resolve({ data: { user: null }, error: new Error('Supabase not configured') }),
+      signOut: () => Promise.resolve({ error: null }),
+      onAuthStateChange: () => ({
+        data: { subscription: { unsubscribe: () => {} } }
+      })
+    },
     from: () => ({
       select: () => ({ data: [], error: new Error('Supabase not configured') }),
       insert: () => ({ data: null, error: new Error('Supabase not configured') }),

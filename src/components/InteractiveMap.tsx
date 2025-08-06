@@ -1,15 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { MapPin, Navigation, Filter, Star, Phone } from 'lucide-react';
-import { Sitter } from '../types';
+import { SitterWithDetails } from '../types';
 import Button from './common/Button';
 
 interface InteractiveMapProps {
-  sitters: Sitter[];
-  onSitterSelect: (sitter: Sitter) => void;
+  sitters: SitterWithDetails[];
+  onSitterSelect: (sitter: SitterWithDetails) => void;
 }
 
 const InteractiveMap: React.FC<InteractiveMapProps> = ({ sitters, onSitterSelect }) => {
-  const [selectedSitter, setSelectedSitter] = useState<Sitter | null>(null);
+  const [selectedSitter, setSelectedSitter] = useState<SitterWithDetails | null>(null);
   const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
   const [mapCenter, setMapCenter] = useState({ lat: 42.6977, lng: 23.3219 }); // Sofia coordinates
   const [zoom, setZoom] = useState(12);
@@ -61,11 +61,11 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ sitters, onSitterSelect
     );
   };
 
-  const handleSitterClick = (sitter: Sitter) => {
+  const handleSitterClick = (sitter: SitterWithDetails) => {
     setSelectedSitter(sitter);
   };
 
-  const handleContactSitter = (sitter: Sitter) => {
+  const handleContactSitter = (sitter: SitterWithDetails) => {
     onSitterSelect(sitter);
   };
 
@@ -113,9 +113,9 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ sitters, onSitterSelect
             const distance = getDistanceFromUser(sitter);
             return (
               <div
-                key={sitter.id}
+                key={sitter.sitter_id}
                 className={`absolute transform -translate-x-1/2 -translate-y-1/2 cursor-pointer z-20 ${
-                  selectedSitter?.id === sitter.id ? 'scale-110' : 'hover:scale-105'
+                  selectedSitter?.sitter_id === sitter.sitter_id ? 'scale-110' : 'hover:scale-105'
                 } transition-transform duration-200`}
                 style={{
                   left: `${30 + (index % 3) * 20}%`,
@@ -125,18 +125,18 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ sitters, onSitterSelect
               >
                 <div className="relative">
                   <div className={`w-12 h-12 rounded-full border-3 shadow-lg overflow-hidden ${
-                    selectedSitter?.id === sitter.id 
+                    selectedSitter?.sitter_id === sitter.sitter_id 
                       ? 'border-green-500 ring-4 ring-green-200' 
                       : 'border-white'
                   }`}>
                     <img
-                      src={sitter.avatar}
-                      alt={`${sitter.firstName} ${sitter.lastName}`}
+                      src={sitter.photo_url || 'https://images.pexels.com/photos/1851164/pexels-photo-1851164.jpeg'}
+                      alt={sitter.user?.name || 'Pet Sitter'}
                       className="w-full h-full object-cover"
                     />
                   </div>
                   <div className="absolute -top-2 -right-2 bg-green-600 text-white text-xs px-1.5 py-0.5 rounded-full">
-                    {sitter.rating}
+                    {sitter.average_rating?.toFixed(1) || '5.0'}
                   </div>
                   {distance && (
                     <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 bg-white px-2 py-1 rounded-full text-xs font-medium shadow-md whitespace-nowrap">
@@ -170,27 +170,27 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ sitters, onSitterSelect
           <div className="absolute bottom-4 left-4 right-4 bg-white rounded-xl shadow-lg p-4 z-30">
             <div className="flex items-center gap-4">
               <img
-                src={selectedSitter.avatar}
-                alt={`${selectedSitter.firstName} ${selectedSitter.lastName}`}
+                src={selectedSitter.photo_url || 'https://images.pexels.com/photos/1851164/pexels-photo-1851164.jpeg'}
+                alt={selectedSitter.user?.name || 'Pet Sitter'}
                 className="w-16 h-16 rounded-full object-cover"
               />
               <div className="flex-1">
                 <h3 className="font-semibold text-gray-900">
-                  {selectedSitter.firstName} {selectedSitter.lastName}
+                  {selectedSitter.user?.name || 'Pet Sitter'}
                 </h3>
                 <div className="flex items-center text-gray-600 text-sm mb-1">
                   <MapPin className="h-4 w-4 mr-1" />
-                  <span>{selectedSitter.location.city}</span>
+                  <span>{selectedSitter.location || 'София'}</span>
                 </div>
                 <div className="flex items-center">
                   <Star className="h-4 w-4 text-yellow-400 fill-current mr-1" />
-                  <span className="font-medium">{selectedSitter.rating}</span>
-                  <span className="text-gray-600 text-sm ml-1">({selectedSitter.totalReviews})</span>
+                  <span className="font-medium">{selectedSitter.average_rating?.toFixed(1) || '5.0'}</span>
+                  <span className="text-gray-600 text-sm ml-1">({selectedSitter.total_reviews || 0})</span>
                 </div>
               </div>
               <div className="text-right">
                 <div className="text-lg font-bold text-green-600 mb-2">
-                  От {Math.min(...Object.values(selectedSitter.pricing))} лв.
+                  {selectedSitter.hourly_rate || 15} лв./час
                 </div>
                 <div className="flex gap-2">
                   <button 
@@ -225,24 +225,24 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ sitters, onSitterSelect
                 <div
                   key={sitter.id}
                   className={`flex items-center gap-4 p-3 rounded-lg cursor-pointer transition-colors ${
-                    selectedSitter?.id === sitter.id 
+                    selectedSitter?.sitter_id === sitter.sitter_id 
                       ? 'bg-green-50 border border-green-200' 
                       : 'hover:bg-gray-50'
                   }`}
                   onClick={() => handleSitterClick(sitter)}
                 >
                   <img
-                    src={sitter.avatar}
-                    alt={`${sitter.firstName} ${sitter.lastName}`}
+                    src={sitter.photo_url || 'https://images.pexels.com/photos/1851164/pexels-photo-1851164.jpeg'}
+                    alt={sitter.user?.name || 'Pet Sitter'}
                     className="w-12 h-12 rounded-full object-cover"
                   />
                   <div className="flex-1">
                     <h4 className="font-medium text-gray-900">
-                      {sitter.firstName} {sitter.lastName}
+                      {sitter.user?.name || 'Pet Sitter'}
                     </h4>
                     <div className="flex items-center text-sm text-gray-600">
                       <Star className="h-3 w-3 text-yellow-400 fill-current mr-1" />
-                      <span>{sitter.rating}</span>
+                      <span>{sitter.average_rating?.toFixed(1) || '5.0'}</span>
                       {distance && (
                         <>
                           <span className="mx-2">•</span>
@@ -253,9 +253,9 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ sitters, onSitterSelect
                   </div>
                   <div className="text-right">
                     <div className="font-semibold text-green-600">
-                      {Math.min(...Object.values(sitter.pricing))} лв.
+                      {sitter.hourly_rate || 15} лв.
                     </div>
-                    <div className="text-xs text-gray-500">от</div>
+                    <div className="text-xs text-gray-500">час</div>
                   </div>
                 </div>
               );

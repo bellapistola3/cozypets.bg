@@ -20,6 +20,9 @@ import InteractiveMap from './components/InteractiveMap';
 import AdminDashboard from './components/AdminDashboard';
 import PersonalizedRecommendations from './components/PersonalizedRecommendations';
 
+// Add database test route
+import DatabaseTest from './components/DatabaseTest';
+
 function App() {
   return (
     <BrowserRouter>
@@ -53,6 +56,18 @@ function App() {
                 </div>
               </main>
               <Footer />
+            </>
+          }
+        />
+
+        {/* Database Test Route */}
+        <Route
+          path="/database-test"
+          element={
+            <>
+              <main>
+                <DatabaseTest />
+              </main>
             </>
           }
         />

@@ -217,3 +217,6 @@ const Register: React.FC<RegisterProps> = ({ onClose, onOpenLogin }) => {
 };
 
 export default Register;
+        )
+        }
+}

@@ -142,3 +142,7 @@ const Login: React.FC<LoginProps> = ({ onClose, onOpenRegister }) => {
 };
 
 export default Login;
+        )
+        }
+  )
+}

@@ -1,228 +1,94 @@
 /*
-  # CozyPets Database Schema
+  # Insert Test Data for CozyPets Platform
 
-  1. New Tables
-    - `users` - User accounts (owners and potential sitters)
-    - `sitters` - Pet sitter profiles linked to users
-    - `pets` - Pet information owned by users
-    - `reservations` - Booking records between owners and sitters
-    - `reviews` - Reviews written by owners for sitters
-    - `payments` - Payment records for reservations
+  1. Test Users
+    - Pet owners
+    - Pet sitters
+    - Admin users
 
-  2. Security
-    - Enable RLS on all tables
-    - Add policies for authenticated users
-    - Secure data access based on user roles
+  2. Test Sitters
+    - Various locations and specialties
+    - Different pricing and ratings
 
-  3. Relationships
-    - Users can own multiple pets
-    - Users can become sitters
-    - Reservations link owners, sitters, and pets
-    - Reviews are tied to completed reservations
-    - Payments are linked to reservations
+  3. Test Pets
+    - Different types and breeds
+    - Various ages and characteristics
+
+  4. Test Reservations
+    - Different statuses and date ranges
+    - Various service types
+
+  5. Test Reviews
+    - Different ratings and comments
+    - Realistic feedback
+
+  6. Test Payments
+    - Different payment methods and statuses
 */
 
--- Create users table
-CREATE TABLE IF NOT EXISTS users (
-  user_id SERIAL PRIMARY KEY,
-  name VARCHAR(255) NOT NULL,
-  email VARCHAR(255) UNIQUE NOT NULL,
-  phone VARCHAR(20),
-  password_hash VARCHAR(255) NOT NULL,
-  role VARCHAR(20) DEFAULT 'owner' CHECK (role IN ('owner', 'admin')),
-  created_at TIMESTAMPTZ DEFAULT now(),
-  updated_at TIMESTAMPTZ DEFAULT now()
-);
+-- Insert test users (pet owners)
+INSERT INTO users (name, email, phone, password_hash, role) VALUES
+('Елена Димитрова', 'elena@example.com', '+359888123456', '$2b$10$example_hash_1', 'owner'),
+('Иван Петров', 'ivan@example.com', '+359888234567', '$2b$10$example_hash_2', 'owner'),
+('Мария Георгиева', 'maria@example.com', '+359888345678', '$2b$10$example_hash_3', 'owner'),
+('Георги Стоянов', 'georgi@example.com', '+359888456789', '$2b$10$example_hash_4', 'owner'),
+('Анна Николова', 'anna@example.com', '+359888567890', '$2b$10$example_hash_5', 'owner');
 
--- Create sitters table
-CREATE TABLE IF NOT EXISTS sitters (
-  sitter_id SERIAL PRIMARY KEY,
-  user_id INTEGER REFERENCES users(user_id) ON DELETE CASCADE,
-  bio TEXT,
-  photo_url TEXT,
-  hourly_rate DECIMAL(10,2) NOT NULL DEFAULT 0.00,
-  location VARCHAR(255) NOT NULL,
-  qualifications TEXT,
-  rating DECIMAL(3,2) DEFAULT 0.00 CHECK (rating >= 0 AND rating <= 5),
-  created_at TIMESTAMPTZ DEFAULT now(),
-  updated_at TIMESTAMPTZ DEFAULT now()
-);
+-- Insert test users who will become sitters
+INSERT INTO users (name, email, phone, password_hash, role) VALUES
+('Мария Петкова', 'maria.sitter@example.com', '+359888111111', '$2b$10$example_hash_6', 'owner'),
+('Христо Димитров', 'hristo.sitter@example.com', '+359888222222', '$2b$10$example_hash_7', 'owner'),
+('Борислав Иванов', 'boris.sitter@example.com', '+359888333333', '$2b$10$example_hash_8', 'owner'),
+('Петя Василева', 'petya.sitter@example.com', '+359888444444', '$2b$10$example_hash_9', 'owner'),
+('Стефан Тодоров', 'stefan.sitter@example.com', '+359888555555', '$2b$10$example_hash_10', 'owner');
 
--- Create pets table
-CREATE TABLE IF NOT EXISTS pets (
-  pet_id SERIAL PRIMARY KEY,
-  user_id INTEGER REFERENCES users(user_id) ON DELETE CASCADE,
-  name VARCHAR(100) NOT NULL,
-  breed VARCHAR(100),
-  age INTEGER CHECK (age >= 0),
-  health_status TEXT,
-  photo_url TEXT,
-  created_at TIMESTAMPTZ DEFAULT now(),
-  updated_at TIMESTAMPTZ DEFAULT now()
-);
+-- Insert admin user
+INSERT INTO users (name, email, phone, password_hash, role) VALUES
+('Алис Петрова', 'admin@cozypets.bg', '+359895888260', '$2b$10$example_hash_admin', 'admin');
 
--- Create reservations table
-CREATE TABLE IF NOT EXISTS reservations (
-  reservation_id SERIAL PRIMARY KEY,
-  owner_id INTEGER REFERENCES users(user_id) ON DELETE CASCADE,
-  sitter_id INTEGER REFERENCES sitters(sitter_id) ON DELETE CASCADE,
-  pet_id INTEGER REFERENCES pets(pet_id) ON DELETE CASCADE,
-  start_date TIMESTAMPTZ NOT NULL,
-  end_date TIMESTAMPTZ NOT NULL,
-  total_price DECIMAL(10,2) NOT NULL,
-  status VARCHAR(20) DEFAULT 'pending' CHECK (status IN ('pending', 'confirmed', 'completed', 'canceled')),
-  created_at TIMESTAMPTZ DEFAULT now(),
-  updated_at TIMESTAMPTZ DEFAULT now(),
-  CONSTRAINT valid_date_range CHECK (end_date > start_date)
-);
+-- Insert test sitters
+INSERT INTO sitters (user_id, bio, photo_url, hourly_rate, location, qualifications, rating) VALUES
+(6, 'Обожавам животните и имам над 5 години опит в грижата за домашни любимци. Специализирам се в грижата за кучета от всички размери.', 'https://images.pexels.com/photos/3763188/pexels-photo-3763188.jpeg', 25.00, 'София, кв. Лозенец', 'Сертифициран гледач, първа помощ за животни', 4.9),
+(7, 'Ветеринарен асистент с опит в грижата за домашни любимци с медицински нужди. Специалист по поведение на котки.', 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg', 30.00, 'Пловдив, Център', 'Ветеринарен асистент, специализация възрастни животни', 5.0),
+(8, 'Енергичен специалист по разходки с кучета. Планинар с опит в дългите разходки и упражнения за активни кучета.', 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg', 20.00, 'София, кв. Младост', 'Инструктор по кучешки спорт, 3 години опит', 4.7),
+(9, 'Грижовна и отговорна гледачка с опит в домашното гледане. Обичам да прекарвам време с домашните любимци в тяхната среда.', 'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg', 22.00, 'Варна, Център', 'Сертификат за грижа за домашни любимци', 4.8),
+(10, 'Специалист по грижа за екзотични животни - птици, зайци, хамстери. Имам опит с различни видове домашни любимци.', 'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg', 28.00, 'Бургас, Център', 'Специализация екзотични животни', 4.6);
 
--- Create reviews table
-CREATE TABLE IF NOT EXISTS reviews (
-  review_id SERIAL PRIMARY KEY,
-  reservation_id INTEGER REFERENCES reservations(reservation_id) ON DELETE CASCADE,
-  reviewer_id INTEGER REFERENCES users(user_id) ON DELETE CASCADE,
-  sitter_id INTEGER REFERENCES sitters(sitter_id) ON DELETE CASCADE,
-  rating INTEGER NOT NULL CHECK (rating >= 1 AND rating <= 5),
-  comment TEXT,
-  created_at TIMESTAMPTZ DEFAULT now(),
-  updated_at TIMESTAMPTZ DEFAULT now()
-);
+-- Insert test pets
+INSERT INTO pets (user_id, name, breed, age, health_status, photo_url) VALUES
+(1, 'Макс', 'Голдън ретрийвър', 3, 'Здрав, алергичен към пилешко месо', 'https://images.pexels.com/photos/2253275/pexels-photo-2253275.jpeg'),
+(1, 'Луна', 'Персийска котка', 2, 'Здрава', 'https://images.pexels.com/photos/1170986/pexels-photo-1170986.jpeg'),
+(2, 'Рекс', 'Немска овчарка', 5, 'Здрав, нуждае се от много упражнения', 'https://images.pexels.com/photos/1254140/pexels-photo-1254140.jpeg'),
+(3, 'Мила', 'Британска късокосместа котка', 4, 'Здрава, малко свенлива', 'https://images.pexels.com/photos/2061057/pexels-photo-2061057.jpeg'),
+(4, 'Бъди', 'Лабрадор микс', 2, 'Здрав, много енергичен', 'https://images.pexels.com/photos/1108099/pexels-photo-1108099.jpeg'),
+(5, 'Снежко', 'Заек', 1, 'Здрав', 'https://images.pexels.com/photos/326012/pexels-photo-326012.jpeg');
 
--- Create payments table
-CREATE TABLE IF NOT EXISTS payments (
-  payment_id SERIAL PRIMARY KEY,
-  reservation_id INTEGER REFERENCES reservations(reservation_id) ON DELETE CASCADE,
-  amount DECIMAL(10,2) NOT NULL,
-  payment_method VARCHAR(50) DEFAULT 'credit_card' CHECK (payment_method IN ('credit_card', 'paypal', 'bank_transfer')),
-  payment_status VARCHAR(20) DEFAULT 'pending' CHECK (payment_status IN ('pending', 'completed', 'failed')),
-  payment_date TIMESTAMPTZ DEFAULT now()
-);
+-- Insert test reservations
+INSERT INTO reservations (owner_id, sitter_id, pet_id, start_date, end_date, total_price, status) VALUES
+(1, 1, 1, '2024-02-01 09:00:00', '2024-02-05 18:00:00', 500.00, 'completed'),
+(2, 2, 3, '2024-02-10 08:00:00', '2024-02-12 20:00:00', 360.00, 'completed'),
+(3, 3, 4, '2024-02-15 10:00:00', '2024-02-15 16:00:00', 120.00, 'confirmed'),
+(1, 4, 2, '2024-02-20 09:00:00', '2024-02-22 18:00:00', 264.00, 'pending'),
+(4, 1, 5, '2024-02-25 08:00:00', '2024-02-28 19:00:00', 750.00, 'confirmed'),
+(5, 5, 6, '2024-03-01 10:00:00', '2024-03-03 16:00:00', 336.00, 'pending');
 
--- Enable Row Level Security
-ALTER TABLE users ENABLE ROW LEVEL SECURITY;
-ALTER TABLE sitters ENABLE ROW LEVEL SECURITY;
-ALTER TABLE pets ENABLE ROW LEVEL SECURITY;
-ALTER TABLE reservations ENABLE ROW LEVEL SECURITY;
-ALTER TABLE reviews ENABLE ROW LEVEL SECURITY;
-ALTER TABLE payments ENABLE ROW LEVEL SECURITY;
+-- Insert test reviews
+INSERT INTO reviews (reservation_id, reviewer_id, sitter_id, rating, comment) VALUES
+(1, 1, 1, 5, 'Мария беше невероятна с нашето куче Макс! Той се върна щастлив и уморен след всяка разходка. Получавахме подробни актуализации със снимки. Определено ще резервираме отново.'),
+(2, 2, 2, 5, 'Христо беше професионален и грижовен с Рекс. Като ветеринарен асистент, той знаеше точно как да се справи с енергичното ни куче. Отличен сервис!'),
+(1, 1, 1, 5, 'Втори път ползваме услугите на Мария и отново сме изключително доволни. Макс я обожава и винаги се радва да я види.');
 
--- Create policies for users table
-CREATE POLICY "Users can read own data"
-  ON users
-  FOR SELECT
-  TO authenticated
-  USING (auth.uid()::text = user_id::text);
+-- Insert test payments
+INSERT INTO payments (reservation_id, amount, payment_method, payment_status) VALUES
+(1, 500.00, 'credit_card', 'completed'),
+(2, 360.00, 'paypal', 'completed'),
+(3, 120.00, 'credit_card', 'completed'),
+(4, 264.00, 'bank_transfer', 'pending'),
+(5, 750.00, 'credit_card', 'pending');
 
-CREATE POLICY "Users can update own data"
-  ON users
-  FOR UPDATE
-  TO authenticated
-  USING (auth.uid()::text = user_id::text);
-
--- Create policies for sitters table
-CREATE POLICY "Anyone can read sitter profiles"
-  ON sitters
-  FOR SELECT
-  TO authenticated
-  USING (true);
-
-CREATE POLICY "Sitters can update own profile"
-  ON sitters
-  FOR UPDATE
-  TO authenticated
-  USING (auth.uid()::text = user_id::text);
-
-CREATE POLICY "Users can create sitter profile"
-  ON sitters
-  FOR INSERT
-  TO authenticated
-  WITH CHECK (auth.uid()::text = user_id::text);
-
--- Create policies for pets table
-CREATE POLICY "Users can read own pets"
-  ON pets
-  FOR SELECT
-  TO authenticated
-  USING (auth.uid()::text = user_id::text);
-
-CREATE POLICY "Users can manage own pets"
-  ON pets
-  FOR ALL
-  TO authenticated
-  USING (auth.uid()::text = user_id::text);
-
--- Create policies for reservations table
-CREATE POLICY "Users can read own reservations"
-  ON reservations
-  FOR SELECT
-  TO authenticated
-  USING (
-    auth.uid()::text = owner_id::text OR 
-    auth.uid()::text IN (SELECT user_id::text FROM sitters WHERE sitter_id = reservations.sitter_id)
-  );
-
-CREATE POLICY "Owners can create reservations"
-  ON reservations
-  FOR INSERT
-  TO authenticated
-  WITH CHECK (auth.uid()::text = owner_id::text);
-
-CREATE POLICY "Participants can update reservations"
-  ON reservations
-  FOR UPDATE
-  TO authenticated
-  USING (
-    auth.uid()::text = owner_id::text OR 
-    auth.uid()::text IN (SELECT user_id::text FROM sitters WHERE sitter_id = reservations.sitter_id)
-  );
-
--- Create policies for reviews table
-CREATE POLICY "Anyone can read reviews"
-  ON reviews
-  FOR SELECT
-  TO authenticated
-  USING (true);
-
-CREATE POLICY "Owners can create reviews"
-  ON reviews
-  FOR INSERT
-  TO authenticated
-  WITH CHECK (auth.uid()::text = reviewer_id::text);
-
--- Create policies for payments table
-CREATE POLICY "Users can read own payments"
-  ON payments
-  FOR SELECT
-  TO authenticated
-  USING (
-    auth.uid()::text IN (
-      SELECT owner_id::text FROM reservations WHERE reservation_id = payments.reservation_id
-    )
-  );
-
--- Create indexes for better performance
-CREATE INDEX IF NOT EXISTS idx_sitters_user_id ON sitters(user_id);
-CREATE INDEX IF NOT EXISTS idx_sitters_location ON sitters(location);
-CREATE INDEX IF NOT EXISTS idx_sitters_rating ON sitters(rating);
-CREATE INDEX IF NOT EXISTS idx_pets_user_id ON pets(user_id);
-CREATE INDEX IF NOT EXISTS idx_reservations_owner_id ON reservations(owner_id);
-CREATE INDEX IF NOT EXISTS idx_reservations_sitter_id ON reservations(sitter_id);
-CREATE INDEX IF NOT EXISTS idx_reservations_status ON reservations(status);
-CREATE INDEX IF NOT EXISTS idx_reviews_sitter_id ON reviews(sitter_id);
-CREATE INDEX IF NOT EXISTS idx_payments_reservation_id ON payments(reservation_id);
-
--- Create function to update updated_at timestamp
-CREATE OR REPLACE FUNCTION update_updated_at_column()
-RETURNS TRIGGER AS $$
-BEGIN
-    NEW.updated_at = now();
-    RETURN NEW;
-END;
-$$ language 'plpgsql';
-
--- Create triggers for updated_at
-CREATE TRIGGER update_users_updated_at BEFORE UPDATE ON users FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
-CREATE TRIGGER update_sitters_updated_at BEFORE UPDATE ON sitters FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
-CREATE TRIGGER update_pets_updated_at BEFORE UPDATE ON pets FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
-CREATE TRIGGER update_reservations_updated_at BEFORE UPDATE ON reservations FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
-CREATE TRIGGER update_reviews_updated_at BEFORE UPDATE ON reviews FOR EACH ROW EXECUTE FUNCTION update_updated_at_column();
+-- Update sitter ratings based on reviews
+UPDATE sitters SET rating = (
+  SELECT AVG(rating::DECIMAL) 
+  FROM reviews 
+  WHERE reviews.sitter_id = sitters.sitter_id
+) WHERE sitter_id IN (SELECT DISTINCT sitter_id FROM reviews);

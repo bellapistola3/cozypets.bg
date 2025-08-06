@@ -83,13 +83,13 @@ export const authHelpers = {
       if (error || !user) return null;
 
       // Get user profile
-      const { data: profile, error } = await supabase
+      const { data: profile, error: profileError } = await supabase
         .from('users')
         .select('*')
         .eq('email', user.email)
         .single();
 
-      if (error) return null;
+      if (profileError) return null;
 
       return {
         id: user.id,

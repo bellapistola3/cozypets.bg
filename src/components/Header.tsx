@@ -84,6 +84,12 @@ const Header: React.FC = () => {
                 Стани гледач
               </button>
               <a
+                href="/become-sitter"
+                className="text-gray-700 hover:text-green-600 transition-colors duration-300 font-medium"
+              >
+                Профил на гледач
+              </a>
+              <a
                 href="/dashboard"
                 className="text-gray-700 hover:text-green-600 transition-colors duration-300 font-medium"
               >
@@ -142,6 +148,13 @@ const Header: React.FC = () => {
                 >
                   Стани гледач
                 </button>
+                <a
+                  href="/become-sitter"
+                  className="text-gray-700 hover:text-green-600 transition-colors duration-300 font-medium py-2"
+                  onClick={() => setIsMenuOpen(false)}
+                >
+                  Профил на гледач
+                </a>
                 <a
                   href="/dashboard"
                   className="text-gray-700 hover:text-green-600 transition-colors duration-300 font-medium py-2"

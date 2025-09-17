@@ -21,6 +21,7 @@ import InteractiveMap from './components/InteractiveMap';
 import AdminDashboard from './components/AdminDashboard';
 import PersonalizedRecommendations from './components/PersonalizedRecommendations';
 import ProtectedRoute from './components/ProtectedRoute';
+import SitterProfileForm from './pages/SitterProfileForm';
 
 // Add database test route
 import DatabaseTest from './components/DatabaseTest';
@@ -72,6 +73,21 @@ function App() {
                 <DatabaseTest />
               </main>
             </>
+          }
+        />
+
+        {/* Sitter Profile Form */}
+        <Route
+          path="/become-sitter"
+          element={
+            <ProtectedRoute>
+              <>
+                <main>
+                  <SitterProfileForm />
+                </main>
+                <Footer />
+              </>
+            </ProtectedRoute>
           }
         />
 

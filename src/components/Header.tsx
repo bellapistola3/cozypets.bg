@@ -31,252 +31,219 @@ const Header: React.FC = () => {
   }, []);
 
   const navLinks = [
-    { name: 'Начало', href: '/', icon: Home },
-    { name: 'Услуги', href: '#services', icon: Heart },
-    { name: 'Отзиви', href: '#testimonials', icon: User },
-    { name: 'Галерия', href: '#gallery', icon: Search },
-    { name: 'Екип', href: '#team', icon: User },
-    { name: 'Контакти', href: '#contact', icon: Phone },
+    { name: 'Начало', href: '/' },
+    { name: 'Услуги', href: '#services' },
+    { name: 'Отзиви', href: '#testimonials' },
+    { name: 'Галерия', href: '#gallery' },
+    { name: 'Екип', href: '#team' },
+    { name: 'Контакти', href: '#contact' },
   ];
 
   return (
     <>
       <header 
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-700 ${
+        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
           isScrolled 
-            ? 'bg-gradient-to-r from-purple-900 via-blue-900 to-indigo-900 shadow-2xl border-b-4 border-yellow-400 py-2' 
-            : 'bg-gradient-to-r from-orange-600 via-red-600 to-pink-600 py-4'
+            ? 'bg-white shadow-lg py-3' 
+            : 'bg-white/95 backdrop-blur-sm py-4'
         }`}
       >
-        <div className="container mx-auto px-6 lg:px-12">
+        <div className="container mx-auto px-6">
           <div className="flex items-center justify-between">
-            {/* Logo Section - Много по-голям и ярък */}
+            {/* Logo Section */}
             <div className="flex items-center">
-              <a href="/" className="flex items-center group transform hover:scale-110 transition-all duration-500">
-                <div className="bg-gradient-to-br from-yellow-300 to-orange-400 p-4 rounded-2xl shadow-2xl mr-4">
+              <a href="/" className="flex items-center group">
+                <div className="bg-gradient-to-br from-green-400 to-green-600 p-3 rounded-xl shadow-md mr-4">
                   <img 
                     src="/src/components/assets/logo8808.png" 
                     alt="CozyPets by Alice" 
-                    className={`transition-all duration-500 filter drop-shadow-2xl ${
-                      isScrolled ? 'h-16 w-auto' : 'h-20 w-auto'
-                    }`}
+                    className="h-10 w-auto"
                   />
                 </div>
-                <div className="text-white">
-                  <h1 className="text-2xl font-black tracking-wider">COZYPETS</h1>
-                  <p className="text-sm font-medium opacity-90">by Alice</p>
+                <div className="text-gray-800">
+                  <h1 className="text-2xl font-bold">CozyPets</h1>
+                  <p className="text-sm text-green-600 font-medium">by Alice</p>
                 </div>
               </a>
             </div>
 
-            {/* Desktop Navigation - Нов стил с икони */}
-            <nav className="hidden lg:flex items-center space-x-1">
-              {navLinks.map((link) => {
-                const IconComponent = link.icon;
-                return (
-                  <a
-                    key={link.name}
-                    href={link.href.startsWith('#') ? `/${link.href}` : link.href}
-                    className={`flex items-center gap-1 px-3 py-2 rounded-full font-medium text-xs transition-all duration-300 transform hover:scale-105 ${
-                      isScrolled 
-                        ? 'text-white hover:bg-yellow-400 hover:text-black shadow-lg' 
-                        : 'text-white hover:bg-white hover:text-purple-600 shadow-xl'
-                    } border-2 border-transparent hover:border-yellow-300`}
-                  >
-                    <IconComponent className="h-3 w-3" />
-                    {link.name}
-                  </a>
-                );
-              })}
+            {/* Desktop Navigation */}
+            <nav className="hidden lg:flex items-center space-x-8">
+              {navLinks.map((link) => (
+                <a
+                  key={link.name}
+                  href={link.href.startsWith('#') ? `/${link.href}` : link.href}
+                  className="text-gray-700 hover:text-green-600 font-medium text-base transition-colors duration-300 relative group"
+                >
+                  {link.name}
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-green-600 transition-all duration-300 group-hover:w-full"></span>
+                </a>
+              ))}
             </nav>
 
-            {/* Action Buttons - Нов ярък дизайн */}
-            <div className="hidden lg:flex items-center space-x-1">
+            {/* Action Buttons */}
+            <div className="hidden lg:flex items-center space-x-4">
               {/* Search Button */}
               <a
                 href="/search"
-                className="flex items-center gap-1 px-3 py-2 bg-gradient-to-r from-green-400 to-blue-500 hover:from-green-500 hover:to-blue-600 text-white font-medium text-xs rounded-full shadow-lg transform hover:scale-105 transition-all duration-300"
+                className="flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-all duration-300 transform hover:scale-105"
               >
-                <Search className="h-3 w-3" />
-                <span>ТЪРСИ</span>
-              </a>
-
-              {/* Become Sitter Button */}
-              <button
-                onClick={() => setIsBecomeASitterOpen(true)}
-                className="flex items-center gap-1 px-3 py-2 bg-gradient-to-r from-pink-500 to-red-500 hover:from-pink-600 hover:to-red-600 text-white font-medium text-xs rounded-full shadow-lg transform hover:scale-105 transition-all duration-300"
-              >
-                <Heart className="h-3 w-3" />
-                <span>ГЛЕДАЧ</span>
-              </button>
-
-              {/* Profile Link */}
-              <a
-                href="/become-sitter"
-                className="flex items-center gap-1 px-3 py-2 bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white font-medium text-xs rounded-full shadow-lg transform hover:scale-105 transition-all duration-300"
-              >
-                <User className="h-3 w-3" />
-                <span>ПРОФИЛ</span>
+                <Search className="h-4 w-4" />
+                <span>Търси гледач</span>
               </a>
 
               {/* Notifications */}
-              <div className="relative ml-2">
-                <div className="bg-gradient-to-r from-yellow-400 to-orange-400 p-2 rounded-full shadow-lg">
-                  <NotificationSystem />
-                </div>
+              <div className="relative">
+                <NotificationSystem />
               </div>
 
               {/* User Section */}
               {user ? (
-                <div className="flex items-center gap-1 ml-2">
-                  <div className="flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-emerald-400 to-teal-500 rounded-full shadow-lg">
-                    <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center text-emerald-600 text-sm font-bold shadow-md">
+                <div className="flex items-center gap-3">
+                  <div className="flex items-center gap-2 px-3 py-2 bg-gray-100 rounded-lg">
+                    <div className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center text-white font-semibold">
                       {user.name.charAt(0).toUpperCase()}
                     </div>
-                    <span className="font-medium text-white text-xs">{user.name}</span>
+                    <span className="font-medium text-gray-800">{user.name}</span>
                   </div>
                   <button 
                     onClick={signOut} 
-                    className="px-3 py-2 bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white font-medium text-xs rounded-full shadow-lg transform hover:scale-105 transition-all duration-300"
+                    className="px-4 py-2 text-gray-600 hover:text-red-600 font-medium transition-colors duration-300"
                   >
-                    ИЗХОД
+                    Изход
                   </button>
                 </div>
               ) : (
-                <div className="flex items-center gap-1 ml-2">
+                <div className="flex items-center gap-3">
                   <button 
                     onClick={() => setIsLoginOpen(true)} 
-                    className="px-3 py-2 bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-500 hover:to-blue-600 text-white font-medium text-xs rounded-full shadow-lg transform hover:scale-105 transition-all duration-300"
+                    className="px-4 py-2 text-gray-700 hover:text-green-600 font-medium transition-colors duration-300"
                   >
-                    ВХОД
+                    Вход
                   </button>
                   <button 
                     onClick={() => setIsRegisterOpen(true)}
-                    className="px-3 py-2 bg-gradient-to-r from-lime-400 to-green-500 hover:from-lime-500 hover:to-green-600 text-white font-medium text-xs rounded-full shadow-lg transform hover:scale-105 transition-all duration-300"
+                    className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-all duration-300"
                   >
-                    РЕГИСТРАЦИЯ
+                    Регистрация
                   </button>
                 </div>
               )}
 
-              {/* CTA Button - Много по-ярък */}
+              {/* CTA Button */}
               <button 
                 onClick={() => window.location.href = '/#booking'}
-                className="ml-2 px-4 py-2 bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 hover:from-yellow-500 hover:via-orange-600 hover:to-red-600 text-white font-bold text-sm rounded-full shadow-xl transform hover:scale-110 hover:-translate-y-1 transition-all duration-300 animate-pulse"
+                className="px-6 py-3 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold rounded-lg shadow-lg transform hover:scale-105 transition-all duration-300"
               >
-                🐾 РЕЗЕРВИРАЙ СЕГА 🐾
+                🐾 Резервирай сега
               </button>
             </div>
 
-            {/* Mobile Menu Button - Нов стил */}
+            {/* Mobile Menu Button */}
             <div className="lg:hidden">
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="p-4 bg-gradient-to-r from-yellow-400 to-orange-500 rounded-full shadow-2xl transform hover:scale-110 transition-all duration-300 border-2 border-white"
+                className="p-2 text-gray-700 hover:text-green-600 transition-colors duration-300"
               >
                 {isMenuOpen ? 
-                  <X className="h-8 w-8 text-white font-bold" /> : 
-                  <Menu className="h-8 w-8 text-white font-bold" />
+                  <X className="h-6 w-6" /> : 
+                  <Menu className="h-6 w-6" />
                 }
               </button>
             </div>
           </div>
 
-          {/* Mobile Navigation Menu - Нов ярък дизайн */}
+          {/* Mobile Navigation Menu */}
           {isMenuOpen && (
-            <div className="lg:hidden mt-6 pb-6 animate-fadeIn">
-              <div className="bg-gradient-to-br from-purple-900 via-blue-900 to-indigo-900 backdrop-blur-xl rounded-3xl shadow-2xl border-4 border-yellow-400 p-8">
+            <div className="lg:hidden mt-4 pb-4">
+              <div className="bg-white rounded-xl shadow-lg border p-6">
                 <div className="flex flex-col space-y-4">
-                  {navLinks.map((link) => {
-                    const IconComponent = link.icon;
-                    return (
-                      <a
-                        key={link.name}
-                        href={link.href.startsWith('#') ? `/${link.href}` : link.href}
-                        className="flex items-center gap-4 text-white hover:text-yellow-300 transition-colors duration-300 font-bold text-lg py-4 px-6 rounded-2xl hover:bg-white/10 border-2 border-transparent hover:border-yellow-400 transform hover:scale-105"
-                        onClick={() => setIsMenuOpen(false)}
-                      >
-                        <IconComponent className="h-6 w-6" />
-                        {link.name}
-                      </a>
-                    );
-                  })}
-                  
-                  <div className="border-t-4 border-yellow-400 pt-6 mt-6">
+                  {navLinks.map((link) => (
                     <a
-                      href="/search"
-                      className="flex items-center gap-4 text-white hover:text-green-300 transition-colors duration-300 font-bold text-lg py-4 px-6 rounded-2xl hover:bg-green-500/20 border-2 border-transparent hover:border-green-400 transform hover:scale-105"
+                      key={link.name}
+                      href={link.href.startsWith('#') ? `/${link.href}` : link.href}
+                      className="text-gray-700 hover:text-green-600 font-medium text-lg py-2 transition-colors duration-300"
                       onClick={() => setIsMenuOpen(false)}
                     >
-                      <Search className="h-6 w-6" />
+                      {link.name}
+                    </a>
+                  ))}
+                  
+                  <div className="border-t pt-4 mt-4 space-y-3">
+                    <a
+                      href="/search"
+                      className="flex items-center gap-3 text-gray-700 hover:text-green-600 font-medium text-lg py-2 transition-colors duration-300"
+                      onClick={() => setIsMenuOpen(false)}
+                    >
+                      <Search className="h-5 w-5" />
                       Търси гледачи
                     </a>
                     
                     <button
                       onClick={() => { setIsBecomeASitterOpen(true); setIsMenuOpen(false); }}
-                      className="flex items-center gap-4 text-white hover:text-pink-300 transition-colors duration-300 font-bold text-lg py-4 px-6 rounded-2xl hover:bg-pink-500/20 w-full text-left border-2 border-transparent hover:border-pink-400 transform hover:scale-105"
+                      className="flex items-center gap-3 text-gray-700 hover:text-green-600 font-medium text-lg py-2 w-full text-left transition-colors duration-300"
                     >
-                      <Heart className="h-6 w-6" />
+                      <Heart className="h-5 w-5" />
                       Стани гледач
                     </button>
                     
                     <a
                       href="/become-sitter"
-                      className="flex items-center gap-4 text-white hover:text-purple-300 transition-colors duration-300 font-bold text-lg py-4 px-6 rounded-2xl hover:bg-purple-500/20 border-2 border-transparent hover:border-purple-400 transform hover:scale-105"
+                      className="flex items-center gap-3 text-gray-700 hover:text-green-600 font-medium text-lg py-2 transition-colors duration-300"
                       onClick={() => setIsMenuOpen(false)}
                     >
-                      <User className="h-6 w-6" />
+                      <User className="h-5 w-5" />
                       Профил на гледач
                     </a>
                     
                     <a
                       href="/dashboard"
-                      className="flex items-center gap-4 text-white hover:text-blue-300 transition-colors duration-300 font-bold text-lg py-4 px-6 rounded-2xl hover:bg-blue-500/20 border-2 border-transparent hover:border-blue-400 transform hover:scale-105"
+                      className="flex items-center gap-3 text-gray-700 hover:text-green-600 font-medium text-lg py-2 transition-colors duration-300"
                       onClick={() => setIsMenuOpen(false)}
                     >
-                      <User className="h-6 w-6" />
+                      <User className="h-5 w-5" />
                       Моят профил
                     </a>
                   </div>
 
-                  <div className="border-t-4 border-yellow-400 pt-6 mt-6 space-y-4">
+                  <div className="border-t pt-4 mt-4 space-y-3">
                     {user ? (
-                      <div className="space-y-4">
-                        <div className="flex items-center gap-4 px-6 py-4 bg-gradient-to-r from-emerald-500 to-teal-600 rounded-2xl shadow-xl border-2 border-white">
-                          <div className="w-12 h-12 bg-white rounded-full flex items-center justify-center text-emerald-600 font-black text-xl shadow-lg">
+                      <div className="space-y-3">
+                        <div className="flex items-center gap-3 p-3 bg-green-50 rounded-lg">
+                          <div className="w-10 h-10 bg-green-600 rounded-full flex items-center justify-center text-white font-semibold">
                             {user.name.charAt(0).toUpperCase()}
                           </div>
-                          <span className="font-bold text-white text-lg">Здравей, {user.name}</span>
+                          <span className="font-medium text-gray-800">Здравей, {user.name}</span>
                         </div>
                         <button 
                           onClick={() => { signOut(); setIsMenuOpen(false); }} 
-                          className="w-full px-6 py-4 bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white font-bold rounded-2xl shadow-xl transform hover:scale-105 transition-all duration-300 border-2 border-white"
+                          className="w-full px-4 py-3 text-red-600 hover:bg-red-50 font-medium rounded-lg transition-all duration-300"
                         >
-                          ИЗХОД
+                          Изход
                         </button>
                       </div>
                     ) : (
-                      <div className="space-y-4">
+                      <div className="space-y-3">
                         <button 
                           onClick={() => { setIsLoginOpen(true); setIsMenuOpen(false); }} 
-                          className="w-full px-6 py-4 bg-gradient-to-r from-cyan-500 to-blue-600 hover:from-cyan-600 hover:to-blue-700 text-white font-bold rounded-2xl shadow-xl transform hover:scale-105 transition-all duration-300 border-2 border-white"
+                          className="w-full px-4 py-3 text-gray-700 hover:bg-gray-50 font-medium rounded-lg transition-all duration-300"
                         >
-                          ВХОД
+                          Вход
                         </button>
                         <button 
                           onClick={() => { setIsRegisterOpen(true); setIsMenuOpen(false); }}
-                          className="w-full px-6 py-4 bg-gradient-to-r from-lime-500 to-green-600 hover:from-lime-600 hover:to-green-700 text-white font-bold rounded-2xl shadow-xl transform hover:scale-105 transition-all duration-300 border-2 border-white"
+                          className="w-full px-4 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-all duration-300"
                         >
-                          РЕГИСТРАЦИЯ
+                          Регистрация
                         </button>
                       </div>
                     )}
                     
                     <button 
                       onClick={() => { window.location.href = '/#booking'; setIsMenuOpen(false); }}
-                      className="w-full px-8 py-6 bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 hover:from-yellow-500 hover:via-orange-600 hover:to-red-600 text-white font-black text-xl rounded-2xl shadow-2xl transform hover:scale-105 transition-all duration-300 border-4 border-white animate-pulse"
+                      className="w-full px-6 py-4 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold rounded-lg shadow-lg transition-all duration-300"
                     >
-                      🐾 РЕЗЕРВИРАЙ СЕГА 🐾
+                      🐾 Резервирай сега
                     </button>
                   </div>
                 </div>

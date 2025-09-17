@@ -49,9 +49,9 @@ const Header: React.FC = () => {
         }`}
       >
         <div className="container mx-auto px-6">
-          <div className="flex items-center justify-between">
+          <div className="flex items-center justify-between min-h-[60px]">
             {/* Logo Section */}
-            <div className="flex items-center">
+            <div className="flex items-center flex-shrink-0">
               <a href="/" className="flex items-center group">
                 <div className="bg-gradient-to-br from-green-400 to-green-600 p-3 rounded-xl shadow-md mr-4">
                   <img 
@@ -68,12 +68,12 @@ const Header: React.FC = () => {
             </div>
 
             {/* Desktop Navigation */}
-            <nav className="hidden lg:flex items-center space-x-8">
+            <nav className="hidden xl:flex items-center space-x-8 flex-1 justify-center">
               {navLinks.map((link) => (
                 <a
                   key={link.name}
                   href={link.href.startsWith('#') ? `/${link.href}` : link.href}
-                  className="text-gray-700 hover:text-green-600 font-medium text-base transition-colors duration-300 relative group"
+                  className="text-gray-700 hover:text-green-600 font-medium text-lg transition-colors duration-300 relative group"
                 >
                   {link.name}
                   <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-green-600 transition-all duration-300 group-hover:w-full"></span>
@@ -82,7 +82,7 @@ const Header: React.FC = () => {
             </nav>
 
             {/* Action Buttons */}
-            <div className="hidden lg:flex items-center space-x-4">
+            <div className="hidden lg:flex items-center space-x-4 flex-shrink-0">
               {/* Search Button */}
               <a
                 href="/search"
@@ -92,14 +92,14 @@ const Header: React.FC = () => {
                 <span>Търси гледач</span>
               </a>
 
-              {/* Notifications */}
-              <div className="relative">
-                <NotificationSystem />
-              </div>
-
               {/* User Section */}
               {user ? (
                 <div className="flex items-center gap-3">
+                  {/* Notifications */}
+                  <div className="relative">
+                    <NotificationSystem />
+                  </div>
+                  
                   <div className="flex items-center gap-2 px-3 py-2 bg-gray-100 rounded-lg">
                     <div className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center text-white font-semibold">
                       {user.name.charAt(0).toUpperCase()}
@@ -115,6 +115,11 @@ const Header: React.FC = () => {
                 </div>
               ) : (
                 <div className="flex items-center gap-3">
+                  {/* Notifications for non-logged users */}
+                  <div className="relative">
+                    <NotificationSystem />
+                  </div>
+                  
                   <button 
                     onClick={() => setIsLoginOpen(true)} 
                     className="px-4 py-2 text-gray-700 hover:text-green-600 font-medium transition-colors duration-300"

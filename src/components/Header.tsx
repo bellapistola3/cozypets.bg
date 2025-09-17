@@ -45,11 +45,11 @@ const Header: React.FC = () => {
               <img 
                 src="/src/components/assets/logo8808.png" 
                 alt="CozyPets by Alice" 
-                className="h-14 w-14 mr-4"
+                className="h-20 w-20 mr-4"
               />
               <div>
-                <h1 className="text-3xl font-bold text-gray-800">CozyPets</h1>
-                <p className="text-lg text-green-600">by Alice</p>
+                <h1 className="text-4xl font-bold text-gray-800">CozyPets</h1>
+                <p className="text-xl text-green-600">by Alice</p>
               </div>
             </div>
 

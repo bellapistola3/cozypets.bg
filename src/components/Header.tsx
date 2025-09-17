@@ -70,20 +70,20 @@ const Header: React.FC = () => {
             </div>
 
             {/* Desktop Navigation - Нов стил с икони */}
-            <nav className="hidden lg:flex items-center space-x-2">
+            <nav className="hidden lg:flex items-center space-x-1">
               {navLinks.map((link) => {
                 const IconComponent = link.icon;
                 return (
                   <a
                     key={link.name}
                     href={link.href.startsWith('#') ? `/${link.href}` : link.href}
-                    className={`flex items-center gap-2 px-6 py-3 rounded-full font-bold text-sm transition-all duration-300 transform hover:scale-110 hover:-translate-y-1 ${
+                    className={`flex items-center gap-1 px-3 py-2 rounded-full font-medium text-xs transition-all duration-300 transform hover:scale-105 ${
                       isScrolled 
                         ? 'text-white hover:bg-yellow-400 hover:text-black shadow-lg' 
                         : 'text-white hover:bg-white hover:text-purple-600 shadow-xl'
                     } border-2 border-transparent hover:border-yellow-300`}
                   >
-                    <IconComponent className="h-4 w-4" />
+                    <IconComponent className="h-3 w-3" />
                     {link.name}
                   </a>
                 );
@@ -91,68 +91,68 @@ const Header: React.FC = () => {
             </nav>
 
             {/* Action Buttons - Нов ярък дизайн */}
-            <div className="hidden lg:flex items-center space-x-3">
+            <div className="hidden lg:flex items-center space-x-1">
               {/* Search Button */}
               <a
                 href="/search"
-                className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-green-400 to-blue-500 hover:from-green-500 hover:to-blue-600 text-white font-bold rounded-full shadow-2xl transform hover:scale-110 transition-all duration-300 border-2 border-white"
+                className="flex items-center gap-1 px-3 py-2 bg-gradient-to-r from-green-400 to-blue-500 hover:from-green-500 hover:to-blue-600 text-white font-medium text-xs rounded-full shadow-lg transform hover:scale-105 transition-all duration-300"
               >
-                <Search className="h-5 w-5" />
+                <Search className="h-3 w-3" />
                 <span>ТЪРСИ</span>
               </a>
 
               {/* Become Sitter Button */}
               <button
                 onClick={() => setIsBecomeASitterOpen(true)}
-                className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-pink-500 to-red-500 hover:from-pink-600 hover:to-red-600 text-white font-bold rounded-full shadow-2xl transform hover:scale-110 transition-all duration-300 border-2 border-white"
+                className="flex items-center gap-1 px-3 py-2 bg-gradient-to-r from-pink-500 to-red-500 hover:from-pink-600 hover:to-red-600 text-white font-medium text-xs rounded-full shadow-lg transform hover:scale-105 transition-all duration-300"
               >
-                <Heart className="h-5 w-5" />
+                <Heart className="h-3 w-3" />
                 <span>ГЛЕДАЧ</span>
               </button>
 
               {/* Profile Link */}
               <a
                 href="/become-sitter"
-                className="flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white font-bold rounded-full shadow-2xl transform hover:scale-110 transition-all duration-300 border-2 border-white"
+                className="flex items-center gap-1 px-3 py-2 bg-gradient-to-r from-purple-500 to-indigo-500 hover:from-purple-600 hover:to-indigo-600 text-white font-medium text-xs rounded-full shadow-lg transform hover:scale-105 transition-all duration-300"
               >
-                <User className="h-5 w-5" />
+                <User className="h-3 w-3" />
                 <span>ПРОФИЛ</span>
               </a>
 
               {/* Notifications */}
-              <div className="relative">
-                <div className="bg-gradient-to-r from-yellow-400 to-orange-400 p-3 rounded-full shadow-2xl">
+              <div className="relative ml-2">
+                <div className="bg-gradient-to-r from-yellow-400 to-orange-400 p-2 rounded-full shadow-lg">
                   <NotificationSystem />
                 </div>
               </div>
 
               {/* User Section */}
               {user ? (
-                <div className="flex items-center gap-3">
-                  <div className="flex items-center gap-3 px-6 py-3 bg-gradient-to-r from-emerald-400 to-teal-500 rounded-full shadow-2xl border-2 border-white">
-                    <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center text-emerald-600 text-lg font-black shadow-lg">
+                <div className="flex items-center gap-1 ml-2">
+                  <div className="flex items-center gap-2 px-3 py-2 bg-gradient-to-r from-emerald-400 to-teal-500 rounded-full shadow-lg">
+                    <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center text-emerald-600 text-sm font-bold shadow-md">
                       {user.name.charAt(0).toUpperCase()}
                     </div>
-                    <span className="font-bold text-white">{user.name}</span>
+                    <span className="font-medium text-white text-xs">{user.name}</span>
                   </div>
                   <button 
                     onClick={signOut} 
-                    className="px-6 py-3 bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white font-bold rounded-full shadow-2xl transform hover:scale-110 transition-all duration-300 border-2 border-white"
+                    className="px-3 py-2 bg-gradient-to-r from-red-500 to-pink-500 hover:from-red-600 hover:to-pink-600 text-white font-medium text-xs rounded-full shadow-lg transform hover:scale-105 transition-all duration-300"
                   >
                     ИЗХОД
                   </button>
                 </div>
               ) : (
-                <div className="flex items-center gap-3">
+                <div className="flex items-center gap-1 ml-2">
                   <button 
                     onClick={() => setIsLoginOpen(true)} 
-                    className="px-6 py-3 bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-500 hover:to-blue-600 text-white font-bold rounded-full shadow-2xl transform hover:scale-110 transition-all duration-300 border-2 border-white"
+                    className="px-3 py-2 bg-gradient-to-r from-cyan-400 to-blue-500 hover:from-cyan-500 hover:to-blue-600 text-white font-medium text-xs rounded-full shadow-lg transform hover:scale-105 transition-all duration-300"
                   >
                     ВХОД
                   </button>
                   <button 
                     onClick={() => setIsRegisterOpen(true)}
-                    className="px-6 py-3 bg-gradient-to-r from-lime-400 to-green-500 hover:from-lime-500 hover:to-green-600 text-white font-bold rounded-full shadow-2xl transform hover:scale-110 transition-all duration-300 border-2 border-white"
+                    className="px-3 py-2 bg-gradient-to-r from-lime-400 to-green-500 hover:from-lime-500 hover:to-green-600 text-white font-medium text-xs rounded-full shadow-lg transform hover:scale-105 transition-all duration-300"
                   >
                     РЕГИСТРАЦИЯ
                   </button>
@@ -162,7 +162,7 @@ const Header: React.FC = () => {
               {/* CTA Button - Много по-ярък */}
               <button 
                 onClick={() => window.location.href = '/#booking'}
-                className="px-8 py-4 bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 hover:from-yellow-500 hover:via-orange-600 hover:to-red-600 text-white font-black text-lg rounded-full shadow-2xl transform hover:scale-125 hover:-translate-y-2 transition-all duration-500 border-4 border-white animate-pulse"
+                className="ml-2 px-4 py-2 bg-gradient-to-r from-yellow-400 via-orange-500 to-red-500 hover:from-yellow-500 hover:via-orange-600 hover:to-red-600 text-white font-bold text-sm rounded-full shadow-xl transform hover:scale-110 hover:-translate-y-1 transition-all duration-300 animate-pulse"
               >
                 🐾 РЕЗЕРВИРАЙ СЕГА 🐾
               </button>

@@ -38,28 +38,28 @@ const Header: React.FC = () => {
         <div className="container mx-auto px-6 py-4">
           
           {/* DESKTOP ВЕРСИЯ */}
-          <div className="hidden lg:flex items-center justify-between">
+          <div className="hidden lg:flex items-center justify-between py-2">
             
             {/* ЛОГО */}
-            <div className="flex items-center">
+            <div className="flex items-center flex-shrink-0">
               <img 
                 src="/src/components/assets/logo8808.png" 
                 alt="CozyPets by Alice" 
-                className="h-20 w-20 mr-4"
+                className="h-16 w-16 mr-3"
               />
               <div>
-                <h1 className="text-4xl font-bold text-gray-800">CozyPets</h1>
-                <p className="text-xl text-green-600">by Alice</p>
+                <h1 className="text-3xl font-bold text-gray-800">CozyPets</h1>
+                <p className="text-lg text-green-600">by Alice</p>
               </div>
             </div>
 
             {/* НАВИГАЦИЯ */}
-            <nav className="flex space-x-8">
+            <nav className="flex space-x-6 flex-1 justify-center">
               {navLinks.map((link) => (
                 <a
                   key={link.name}
                   href={link.href.startsWith('#') ? `/${link.href}` : link.href}
-                  className="text-lg font-medium text-gray-700 hover:text-green-600 transition-colors"
+                  className="text-base font-medium text-gray-700 hover:text-green-600 transition-colors"
                 >
                   {link.name}
                 </a>
@@ -67,62 +67,67 @@ const Header: React.FC = () => {
             </nav>
 
             {/* БУТОНИ */}
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center space-x-3 flex-shrink-0">
+              
+              {/* Резервирай сега */}
+              <button 
+                onClick={() => window.location.href = '/#booking'}
+                className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors"
+              >
+                Резервирай сега
+              </button>
               
               {/* Търси гледач */}
               <a
                 href="/search"
-                className="px-6 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors"
+                className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors"
               >
                 Търси гледач
               </a>
 
-              {/* Известия */}
-              <NotificationSystem />
-
               {/* Потребител или Вход/Регистрация */}
               {user ? (
-                <div className="flex items-center space-x-3">
-                  <div className="flex items-center gap-3 px-4 py-2 bg-gray-100 rounded-lg">
+                <div className="flex items-center space-x-2">
+                  {/* Известия */}
+                  <NotificationSystem />
+                  
+                  <button 
+                    onClick={() => window.location.href = '/dashboard'}
+                    className="flex items-center gap-2 px-3 py-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+                  >
                     <div className="w-10 h-10 bg-green-600 rounded-full flex items-center justify-center text-white font-bold">
                       {user.name.charAt(0).toUpperCase()}
                     </div>
-                    <span className="font-medium text-gray-800">{user.name}</span>
-                  </div>
+                    <span className="font-medium text-gray-800 text-sm">{user.name}</span>
+                  </button>
+                  
                   <button 
                     onClick={signOut} 
-                    className="px-4 py-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors"
+                    className="px-3 py-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors text-sm"
                   >
                     Изход
                   </button>
                 </div>
               ) : (
-                <div className="flex items-center space-x-3">
+                <div className="flex items-center space-x-2">
+                  {/* Известия */}
+                  <NotificationSystem />
+                  
                   <button 
                     onClick={() => setIsLoginOpen(true)} 
-                    className="px-4 py-2 font-medium text-gray-700 hover:text-green-600 transition-colors"
+                    className="px-3 py-2 font-medium text-gray-700 hover:text-green-600 transition-colors text-sm"
                   >
                     Вход
                   </button>
                   <button 
                     onClick={() => setIsRegisterOpen(true)}
-                    className="px-6 py-3 bg-blue-600 hover:bg-blue-700 text-white font-medium rounded-lg transition-colors"
+                    className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors text-sm"
                   >
                     Регистрация
                   </button>
                 </div>
               )}
             </div>
-          </div>
-
-          {/* РЕЗЕРВИРАЙ СЕГА - отделен ред */}
-          <div className="hidden lg:block mt-4 text-center">
-            <button 
-              onClick={() => window.location.href = '/#booking'}
-              className="px-10 py-4 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white text-xl font-bold rounded-xl shadow-lg transform hover:scale-105 transition-all"
-            >
-              🐾 Резервирай сега
-            </button>
           </div>
 
           {/* МОБИЛНА ВЕРСИЯ */}
@@ -170,17 +175,17 @@ const Header: React.FC = () => {
                     <div className="border-t pt-3 space-y-3">
                       <a
                         href="/search"
-                        className="block text-lg font-medium text-gray-700 hover:text-green-600 py-2 transition-colors"
+                        className="block w-full px-4 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors text-center"
                         onClick={() => setIsMenuOpen(false)}
                       >
-                        Търси гледачи
+                        Търси гледач
                       </a>
                       
                       <button
-                        onClick={() => { setIsBecomeASitterOpen(true); setIsMenuOpen(false); }}
-                        className="block text-lg font-medium text-gray-700 hover:text-green-600 py-2 w-full text-left transition-colors"
+                        onClick={() => { window.location.href = '/#booking'; setIsMenuOpen(false); }}
+                        className="block w-full px-4 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors text-center"
                       >
-                        Стани гледач
+                        Резервирай сега
                       </button>
                     </div>
 
@@ -210,19 +215,12 @@ const Header: React.FC = () => {
                           </button>
                           <button 
                             onClick={() => { setIsRegisterOpen(true); setIsMenuOpen(false); }}
-                            className="w-full px-4 py-3 bg-blue-600 hover:bg-blue-700 text-white text-lg font-medium rounded-lg transition-colors"
+                            className="w-full px-4 py-3 bg-green-600 hover:bg-green-700 text-white text-lg font-medium rounded-lg transition-colors"
                           >
                             Регистрация
                           </button>
                         </div>
                       )}
-                      
-                      <button 
-                        onClick={() => { window.location.href = '/#booking'; setIsMenuOpen(false); }}
-                        className="w-full px-6 py-4 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white text-xl font-bold rounded-xl shadow-lg transition-all"
-                      >
-                        🐾 Резервирай сега
-                      </button>
                     </div>
                   </div>
                 </div>

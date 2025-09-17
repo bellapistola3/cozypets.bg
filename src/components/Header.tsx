@@ -17,17 +17,10 @@ const Header: React.FC = () => {
 
   useEffect(() => {
     const handleScroll = () => {
-      if (window.scrollY > 10) {
-        setIsScrolled(true);
-      } else {
-        setIsScrolled(false);
-      }
+      setIsScrolled(window.scrollY > 10);
     };
-
     window.addEventListener('scroll', handleScroll);
-    return () => {
-      window.removeEventListener('scroll', handleScroll);
-    };
+    return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const navLinks = [
@@ -41,203 +34,174 @@ const Header: React.FC = () => {
 
   return (
     <>
-      <header 
-        className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-          isScrolled 
-            ? 'bg-white shadow-lg py-3' 
-            : 'bg-white/95 backdrop-blur-sm py-4'
-        }`}
-      >
-        <div className="container mx-auto px-6">
-          <div className="flex items-center justify-between min-h-[60px]">
-            {/* Logo Section */}
-            <div className="flex items-center flex-shrink-0">
-              <a href="/" className="flex items-center group">
-                <div className="bg-gradient-to-br from-green-400 to-green-600 p-3 rounded-xl shadow-md mr-4">
+      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        isScrolled ? 'bg-white shadow-lg' : 'bg-white/95 backdrop-blur-sm'
+      }`}>
+        <div className="container mx-auto px-6 py-4">
+          <div className="flex items-center justify-between">
+            
+            {/* LOGO - МНОГО ГОЛЯМО И ЗАБЕЛЕЖИМО */}
+            <div className="flex items-center">
+              <a href="/" className="flex items-center">
+                <div className="bg-green-500 p-4 rounded-2xl shadow-lg mr-4">
                   <img 
                     src="/src/components/assets/logo8808.png" 
                     alt="CozyPets by Alice" 
-                    className="h-10 w-auto"
+                    className="h-16 w-auto"
                   />
                 </div>
-                <div className="text-gray-800">
-                  <h1 className="text-2xl font-bold">CozyPets</h1>
-                  <p className="text-sm text-green-600 font-medium">by Alice</p>
+                <div>
+                  <h1 className="text-4xl font-bold text-gray-800">CozyPets</h1>
+                  <p className="text-xl text-green-600 font-semibold">by Alice</p>
                 </div>
               </a>
             </div>
 
-            {/* Desktop Navigation */}
-            <nav className="hidden xl:flex items-center space-x-8 flex-1 justify-center">
+            {/* НАВИГАЦИЯ - САМО ЗА DESKTOP */}
+            <nav className="hidden lg:flex items-center space-x-8">
               {navLinks.map((link) => (
                 <a
                   key={link.name}
                   href={link.href.startsWith('#') ? `/${link.href}` : link.href}
-                  className="text-gray-700 hover:text-green-600 font-medium text-lg transition-colors duration-300 relative group"
+                  className="text-xl font-medium text-gray-700 hover:text-green-600 transition-colors"
                 >
                   {link.name}
-                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-green-600 transition-all duration-300 group-hover:w-full"></span>
                 </a>
               ))}
             </nav>
 
-            {/* Action Buttons */}
-            <div className="hidden lg:flex items-center space-x-4 flex-shrink-0">
-              {/* Search Button */}
+            {/* БУТОНИ ВДЯСНО - ЯСНО РАЗДЕЛЕНИ */}
+            <div className="hidden lg:flex items-center space-x-6">
+              
+              {/* ТЪРСИ ГЛЕДАЧ */}
               <a
                 href="/search"
-                className="flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-all duration-300 transform hover:scale-105"
+                className="flex items-center gap-2 px-6 py-3 bg-green-600 hover:bg-green-700 text-white text-lg font-semibold rounded-xl transition-all"
               >
-                <Search className="h-4 w-4" />
-                <span>Търси гледач</span>
+                <Search className="h-5 w-5" />
+                Търси гледач
               </a>
 
-              {/* User Section */}
+              {/* ИЗВЕСТИЯ */}
+              <div className="relative">
+                <NotificationSystem />
+              </div>
+
+              {/* ПОТРЕБИТЕЛ ИЛИ ВХОД/РЕГИСТРАЦИЯ */}
               {user ? (
-                <div className="flex items-center gap-3">
-                  {/* Notifications */}
-                  <div className="relative">
-                    <NotificationSystem />
-                  </div>
-                  
-                  <div className="flex items-center gap-2 px-3 py-2 bg-gray-100 rounded-lg">
-                    <div className="w-8 h-8 bg-green-600 rounded-full flex items-center justify-center text-white font-semibold">
+                <div className="flex items-center space-x-4">
+                  <div className="flex items-center gap-3 px-4 py-2 bg-gray-100 rounded-xl">
+                    <div className="w-10 h-10 bg-green-600 rounded-full flex items-center justify-center text-white font-bold text-lg">
                       {user.name.charAt(0).toUpperCase()}
                     </div>
-                    <span className="font-medium text-gray-800">{user.name}</span>
+                    <span className="text-lg font-semibold text-gray-800">{user.name}</span>
                   </div>
                   <button 
                     onClick={signOut} 
-                    className="px-4 py-2 text-gray-600 hover:text-red-600 font-medium transition-colors duration-300"
+                    className="px-4 py-2 text-lg text-red-600 hover:bg-red-50 rounded-lg transition-all"
                   >
                     Изход
                   </button>
                 </div>
               ) : (
-                <div className="flex items-center gap-3">
-                  {/* Notifications for non-logged users */}
-                  <div className="relative">
-                    <NotificationSystem />
-                  </div>
-                  
+                <div className="flex items-center space-x-4">
                   <button 
                     onClick={() => setIsLoginOpen(true)} 
-                    className="px-4 py-2 text-gray-700 hover:text-green-600 font-medium transition-colors duration-300"
+                    className="px-6 py-3 text-lg font-semibold text-gray-700 hover:text-green-600 transition-colors"
                   >
                     Вход
                   </button>
                   <button 
                     onClick={() => setIsRegisterOpen(true)}
-                    className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-all duration-300"
+                    className="px-6 py-3 bg-green-600 hover:bg-green-700 text-white text-lg font-semibold rounded-xl transition-all"
                   >
                     Регистрация
                   </button>
                 </div>
               )}
 
-              {/* CTA Button */}
+              {/* РЕЗЕРВИРАЙ СЕГА - СПЕЦИАЛЕН БУТОН */}
               <button 
                 onClick={() => window.location.href = '/#booking'}
-                className="px-6 py-3 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold rounded-lg shadow-lg transform hover:scale-105 transition-all duration-300"
+                className="px-8 py-4 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white text-xl font-bold rounded-xl shadow-lg transform hover:scale-105 transition-all"
               >
                 🐾 Резервирай сега
               </button>
             </div>
 
-            {/* Mobile Menu Button */}
+            {/* МОБИЛНО МЕНЮ БУТОН */}
             <div className="lg:hidden">
               <button
                 onClick={() => setIsMenuOpen(!isMenuOpen)}
-                className="p-2 text-gray-700 hover:text-green-600 transition-colors duration-300"
+                className="p-3 text-gray-700 hover:text-green-600 transition-colors"
               >
-                {isMenuOpen ? 
-                  <X className="h-6 w-6" /> : 
-                  <Menu className="h-6 w-6" />
-                }
+                {isMenuOpen ? <X className="h-8 w-8" /> : <Menu className="h-8 w-8" />}
               </button>
             </div>
           </div>
 
-          {/* Mobile Navigation Menu */}
+          {/* МОБИЛНО МЕНЮ */}
           {isMenuOpen && (
-            <div className="lg:hidden mt-4 pb-4">
-              <div className="bg-white rounded-xl shadow-lg border p-6">
-                <div className="flex flex-col space-y-4">
+            <div className="lg:hidden mt-6 pb-6">
+              <div className="bg-white rounded-2xl shadow-xl border p-6">
+                <div className="space-y-4">
                   {navLinks.map((link) => (
                     <a
                       key={link.name}
                       href={link.href.startsWith('#') ? `/${link.href}` : link.href}
-                      className="text-gray-700 hover:text-green-600 font-medium text-lg py-2 transition-colors duration-300"
+                      className="block text-xl font-medium text-gray-700 hover:text-green-600 py-3 transition-colors"
                       onClick={() => setIsMenuOpen(false)}
                     >
                       {link.name}
                     </a>
                   ))}
                   
-                  <div className="border-t pt-4 mt-4 space-y-3">
+                  <div className="border-t pt-4 space-y-4">
                     <a
                       href="/search"
-                      className="flex items-center gap-3 text-gray-700 hover:text-green-600 font-medium text-lg py-2 transition-colors duration-300"
+                      className="flex items-center gap-3 text-xl font-medium text-gray-700 hover:text-green-600 py-3 transition-colors"
                       onClick={() => setIsMenuOpen(false)}
                     >
-                      <Search className="h-5 w-5" />
+                      <Search className="h-6 w-6" />
                       Търси гледачи
                     </a>
                     
                     <button
                       onClick={() => { setIsBecomeASitterOpen(true); setIsMenuOpen(false); }}
-                      className="flex items-center gap-3 text-gray-700 hover:text-green-600 font-medium text-lg py-2 w-full text-left transition-colors duration-300"
+                      className="flex items-center gap-3 text-xl font-medium text-gray-700 hover:text-green-600 py-3 w-full text-left transition-colors"
                     >
-                      <Heart className="h-5 w-5" />
+                      <Heart className="h-6 w-6" />
                       Стани гледач
                     </button>
-                    
-                    <a
-                      href="/become-sitter"
-                      className="flex items-center gap-3 text-gray-700 hover:text-green-600 font-medium text-lg py-2 transition-colors duration-300"
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      <User className="h-5 w-5" />
-                      Профил на гледач
-                    </a>
-                    
-                    <a
-                      href="/dashboard"
-                      className="flex items-center gap-3 text-gray-700 hover:text-green-600 font-medium text-lg py-2 transition-colors duration-300"
-                      onClick={() => setIsMenuOpen(false)}
-                    >
-                      <User className="h-5 w-5" />
-                      Моят профил
-                    </a>
                   </div>
 
-                  <div className="border-t pt-4 mt-4 space-y-3">
+                  <div className="border-t pt-4 space-y-4">
                     {user ? (
-                      <div className="space-y-3">
-                        <div className="flex items-center gap-3 p-3 bg-green-50 rounded-lg">
-                          <div className="w-10 h-10 bg-green-600 rounded-full flex items-center justify-center text-white font-semibold">
+                      <div className="space-y-4">
+                        <div className="flex items-center gap-4 p-4 bg-green-50 rounded-xl">
+                          <div className="w-12 h-12 bg-green-600 rounded-full flex items-center justify-center text-white font-bold text-xl">
                             {user.name.charAt(0).toUpperCase()}
                           </div>
-                          <span className="font-medium text-gray-800">Здравей, {user.name}</span>
+                          <span className="text-xl font-semibold text-gray-800">Здравей, {user.name}</span>
                         </div>
                         <button 
                           onClick={() => { signOut(); setIsMenuOpen(false); }} 
-                          className="w-full px-4 py-3 text-red-600 hover:bg-red-50 font-medium rounded-lg transition-all duration-300"
+                          className="w-full px-6 py-4 text-xl text-red-600 hover:bg-red-50 font-semibold rounded-xl transition-all"
                         >
                           Изход
                         </button>
                       </div>
                     ) : (
-                      <div className="space-y-3">
+                      <div className="space-y-4">
                         <button 
                           onClick={() => { setIsLoginOpen(true); setIsMenuOpen(false); }} 
-                          className="w-full px-4 py-3 text-gray-700 hover:bg-gray-50 font-medium rounded-lg transition-all duration-300"
+                          className="w-full px-6 py-4 text-xl text-gray-700 hover:bg-gray-50 font-semibold rounded-xl transition-all"
                         >
                           Вход
                         </button>
                         <button 
                           onClick={() => { setIsRegisterOpen(true); setIsMenuOpen(false); }}
-                          className="w-full px-4 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-all duration-300"
+                          className="w-full px-6 py-4 bg-green-600 hover:bg-green-700 text-white text-xl font-semibold rounded-xl transition-all"
                         >
                           Регистрация
                         </button>
@@ -246,7 +210,7 @@ const Header: React.FC = () => {
                     
                     <button 
                       onClick={() => { window.location.href = '/#booking'; setIsMenuOpen(false); }}
-                      className="w-full px-6 py-4 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white font-bold rounded-lg shadow-lg transition-all duration-300"
+                      className="w-full px-8 py-5 bg-gradient-to-r from-orange-500 to-red-500 hover:from-orange-600 hover:to-red-600 text-white text-xl font-bold rounded-xl shadow-lg transition-all"
                     >
                       🐾 Резервирай сега
                     </button>

@@ -44,7 +44,7 @@ const Services: React.FC = () => {
   ];
 
   return (
-    <section id="services" className="py-20 bg-gradient-to-br from-green-50 to-green-100">
+    <section id="services" className="py-20 bg-gradient-to-br from-green-50 to-green-100 scroll-mt-16">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading
           title="Нашите услуги за грижа за домашни любимци"

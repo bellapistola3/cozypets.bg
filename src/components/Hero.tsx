@@ -55,7 +55,7 @@ const Hero: React.FC = () => {
   }, [heroImages.length]);
 
   return (
-    <section id="hero" className="relative h-[calc(100vh-80px)] mt-20 min-h-[600px] flex items-center">
+    <section id="hero" className="relative h-[calc(100vh-80px)] mt-16 min-h-[600px] flex items-center">
       {/* Background Image - Beautiful dogs image */}
       <div className="absolute inset-0 overflow-hidden">
         {heroImages.map((image, index) => (

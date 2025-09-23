@@ -67,7 +67,7 @@ const Team: React.FC = () => {
   ];
 
   return (
-    <section id="team" className="py-20 bg-green-50">
+    <section id="team" className="py-20 bg-green-50 scroll-mt-16">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading
           title="Запознайте се с нашия екип"

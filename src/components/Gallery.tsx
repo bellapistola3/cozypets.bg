@@ -69,7 +69,7 @@ const Gallery: React.FC = () => {
     : images.filter(image => image.category === filter);
 
   return (
-    <section id="gallery" className="py-20 bg-white">
+    <section id="gallery" className="py-20 bg-white scroll-mt-16">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading
           title="Галерия с домашни любимци"

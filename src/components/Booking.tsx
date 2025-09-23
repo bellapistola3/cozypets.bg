@@ -69,7 +69,7 @@ const Booking: React.FC = () => {
   };
 
   return (
-    <section id="booking" className="py-20 bg-white">
+    <section id="booking" className="py-20 bg-white scroll-mt-16">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading
           title="Резервирайте нашите услуги"

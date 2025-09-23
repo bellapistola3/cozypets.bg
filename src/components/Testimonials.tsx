@@ -63,7 +63,7 @@ const Testimonials: React.FC = () => {
   };
 
   return (
-    <section id="testimonials" className="py-20 bg-green-50">
+    <section id="testimonials" className="py-20 bg-green-50 scroll-mt-16">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <SectionHeading
           title="Какво казват нашите клиенти"

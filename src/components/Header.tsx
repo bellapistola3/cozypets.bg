@@ -35,10 +35,10 @@ const Header: React.FC = () => {
   return (
     <>
       <header className="fixed top-0 left-0 right-0 z-50 bg-white shadow-lg h-16">
-        <div className="container mx-auto px-6 py-4">
+        <div className="container mx-auto px-6 h-full">
           
           {/* DESKTOP ВЕРСИЯ */}
-          <div className="hidden lg:flex items-center justify-between py-2">
+          <div className="hidden lg:flex items-center justify-between h-full">
             
             {/* ЛОГО */}
             <div className="flex items-center flex-shrink-0">
@@ -132,7 +132,7 @@ const Header: React.FC = () => {
 
           {/* МОБИЛНА ВЕРСИЯ */}
           <div className="lg:hidden">
-            <div className="flex items-center justify-between">
+            <div className="flex items-center justify-between h-16">
               
               {/* Лого */}
               <a href="/" className="flex items-center">

@@ -44,7 +44,29 @@ const DatabaseTest: React.FC = () => {
           platformStats
         );
       } catch (error) {
-        updateTest('Platform Stats', 'error', `Failed to fetch stats: ${error}`);
+        updateTest('Platform Stats', 'error', `Failed to fetch stats: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      }
+
+      // Test 1.5: Test Profile Functions
+      updateTest('Profile Functions', 'pending', 'Testing profile creation and retrieval...');
+      try {
+        // Test creating a profile
+        const testProfile = await dbHelpers.createOrUpdateProfile({
+          id: 'test-user-123',
+          full_name: 'Test User',
+          email: 'test@example.com',
+          role: 'owner'
+        });
+        
+        // Test getting the profile
+        const retrievedProfile = await dbHelpers.getProfile('test-user-123');
+        
+        updateTest('Profile Functions', 'success', 
+          `Profile created and retrieved successfully`, 
+          { created: testProfile, retrieved: retrievedProfile }
+        );
+      } catch (error) {
+        updateTest('Profile Functions', 'error', `Profile functions failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
       }
 
       // Test 2: Get Sitters
@@ -56,9 +78,31 @@ const DatabaseTest: React.FC = () => {
           sitters.slice(0, 3)
         );
       } catch (error) {
-        updateTest('Sitters Query', 'error', `Failed to fetch sitters: ${error}`);
+        updateTest('Sitters Query', 'error', `Failed to fetch sitters: ${error instanceof Error ? error.message : 'Unknown error'}`);
       }
 
+      // Test 2.5: Test Sitter Profile Functions
+      updateTest('Sitter Profile Functions', 'pending', 'Testing sitter profile functions...');
+      try {
+        // Test creating a sitter profile
+        const testSitter = await dbHelpers.createOrUpdateSitter({
+          id: 'test-sitter-123',
+          profile_title: 'Test Sitter',
+          bio: 'This is a test sitter profile',
+          price_24h: 50,
+          pet_types: ['kuche', 'kotka']
+        });
+        
+        // Test getting the sitter profile
+        const retrievedSitter = await dbHelpers.getSitterProfile('test-sitter-123');
+        
+        updateTest('Sitter Profile Functions', 'success', 
+          `Sitter profile created and retrieved successfully`, 
+          { created: testSitter, retrieved: retrievedSitter }
+        );
+      } catch (error) {
+        updateTest('Sitter Profile Functions', 'error', `Sitter profile functions failed: ${error instanceof Error ? error.message : 'Unknown error'}`);
+      }
       // Test 3: Get Sitters with Filters
       updateTest('Filtered Sitters', 'pending', 'Testing sitter filters...');
       try {
@@ -71,7 +115,7 @@ const DatabaseTest: React.FC = () => {
           filteredSitters
         );
       } catch (error) {
-        updateTest('Filtered Sitters', 'error', `Failed to filter sitters: ${error}`);
+        updateTest('Filtered Sitters', 'error', `Failed to filter sitters: ${error instanceof Error ? error.message : 'Unknown error'}`);
       }
 
       // Test 4: Get User Pets

@@ -23,7 +23,21 @@ if (!supabaseUrl || !supabaseAnonKey || supabaseUrl === 'your_supabase_project_u
       insert: () => ({ data: null, error: new Error('Supabase not configured') }),
       update: () => ({ data: null, error: new Error('Supabase not configured') }),
       delete: () => ({ data: null, error: new Error('Supabase not configured') }),
+      upsert: () => ({ data: null, error: new Error('Supabase not configured') }),
+      eq: function() { return this; },
+      single: function() { return this; },
+      maybeSingle: function() { return this; },
+      order: function() { return this; },
+      gte: function() { return this; },
+      lte: function() { return this; },
+      ilike: function() { return this; }
     }),
+    storage: {
+      from: () => ({
+        upload: () => ({ data: null, error: new Error('Supabase not configured') }),
+        getPublicUrl: () => ({ data: { publicUrl: '' } })
+      })
+    }
   };
 } else {
   supabase = createClient(supabaseUrl, supabaseAnonKey);
@@ -35,11 +49,98 @@ export { supabase };
 export const dbHelpers = {
   // Users
   async getUser(userId: string) {
-    const { data, error } = await supabase
-      .from('users')
-      .select('*')
-      .eq('user_id', userId)
-      .single();
+    try {
+      const { data, error } = await supabase
+        .from('users')
+        .select('*')
+        .eq('user_id', userId)
+        .single();
+      
+      if (error) throw error;
+      return data;
+    } catch (error) {
+      console.error('Error getting user:', error);
+      return null;
+    }
+  },
+
+  async getUserByEmail(email: string) {
+    try {
+      const { data, error } = await supabase
+        .from('users')
+        .select('*')
+        .eq('email', email)
+        .single();
+      
+      if (error) throw error;
+      return data;
+    } catch (error) {
+      console.error('Error getting user by email:', error);
+      return null;
+    }
+  },
+
+  async createUser(userData: {
+    name: string;
+    email: string;
+    phone?: string;
+    password_hash: string;
+    role?: 'owner' | 'admin';
+  }) {
+    try {
+      const { data, error } = await supabase
+        .from('users')
+        .insert([userData])
+        .select()
+        .single();
+      
+      if (error) throw error;
+      return data;
+    } catch (error) {
+      console.error('Error creating user:', error);
+      throw error;
+    }
+  },
+
+  // Profile functions
+  async getProfile(userId: string) {
+    try {
+      const { data, error } = await supabase
+        .from('profiles')
+        .select('*')
+        .eq('id', userId)
+        .single();
+      
+      if (error && error.code !== 'PGRST116') throw error; // PGRST116 = no rows
+      return data;
+    } catch (error) {
+      console.error('Error getting profile:', error);
+      return null;
+    }
+  },
+
+  async createOrUpdateProfile(profileData: {
+    id: string;
+    full_name?: string;
+    email?: string;
+    phone?: string;
+    avatar_url?: string;
+    role?: 'owner' | 'sitter';
+  }) {
+    try {
+      const { data, error } = await supabase
+        .from('profiles')
+        .upsert([profileData])
+        .select()
+        .single();
+      
+      if (error) throw error;
+      return data;
+    } catch (error) {
+      console.error('Error upserting profile:', error);
+      throw error;
+    }
+  },
     
     if (error) throw error;
     return data;
@@ -69,29 +170,34 @@ export const dbHelpers = {
     max_rate?: number;
     min_rating?: number;
   }) {
-    let query = supabase
-      .from('sitters')
-      .select(`
-        *,
-        user:users(*)
-      `);
+    try {
+      let query = supabase
+        .from('sitters')
+        .select(`
+          *,
+          user:users(*)
+        `);
 
-    if (filters?.location) {
-      query = query.ilike('location', `%${filters.location}%`);
-    }
-    if (filters?.min_rate) {
-      query = query.gte('hourly_rate', filters.min_rate);
-    }
-    if (filters?.max_rate) {
-      query = query.lte('hourly_rate', filters.max_rate);
-    }
-    if (filters?.min_rating) {
-      query = query.gte('rating', filters.min_rating);
-    }
+      if (filters?.location) {
+        query = query.ilike('location', `%${filters.location}%`);
+      }
+      if (filters?.min_rate) {
+        query = query.gte('hourly_rate', filters.min_rate);
+      }
+      if (filters?.max_rate) {
+        query = query.lte('hourly_rate', filters.max_rate);
+      }
+      if (filters?.min_rating) {
+        query = query.gte('rating', filters.min_rating);
+      }
 
-    const { data, error } = await query;
-    if (error) throw error;
-    return data;
+      const { data, error } = await query;
+      if (error) throw error;
+      return data || [];
+    } catch (error) {
+      console.error('Error getting sitters:', error);
+      return [];
+    }
   },
 
   async createSitter(sitterData: {
@@ -102,14 +208,71 @@ export const dbHelpers = {
     location: string;
     qualifications?: string;
   }) {
-    const { data, error } = await supabase
-      .from('sitters')
-      .insert([sitterData])
-      .select()
-      .single();
-    
-    if (error) throw error;
-    return data;
+    try {
+      const { data, error } = await supabase
+        .from('sitters')
+        .insert([sitterData])
+        .select()
+        .single();
+      
+      if (error) throw error;
+      return data;
+    } catch (error) {
+      console.error('Error creating sitter:', error);
+      throw error;
+    }
+  },
+
+  async getSitterProfile(userId: string) {
+    try {
+      const { data, error } = await supabase
+        .from('sitters')
+        .select('*')
+        .eq('id', userId)
+        .single();
+      
+      if (error && error.code !== 'PGRST116') throw error;
+      return data;
+    } catch (error) {
+      console.error('Error getting sitter profile:', error);
+      return null;
+    }
+  },
+
+  async createOrUpdateSitter(sitterData: {
+    id: string;
+    profile_title?: string;
+    bio?: string;
+    experience?: string;
+    address_line?: string;
+    lat?: number;
+    lng?: number;
+    is_hotel?: boolean;
+    price_24h?: number;
+    price_notes?: string;
+    pet_types?: string[];
+    allow_small_dogs?: boolean;
+    allow_large_dogs?: boolean;
+    accept_in_heat?: boolean;
+    accept_unneutered?: boolean;
+    behavior_trainer?: boolean;
+    has_car?: boolean;
+    medical_training?: string;
+    day_flow_short?: string;
+  }) {
+    try {
+      const { data, error } = await supabase
+        .from('sitters')
+        .upsert([sitterData])
+        .select()
+        .single();
+      
+      if (error) throw error;
+      return data;
+    } catch (error) {
+      console.error('Error upserting sitter:', error);
+      throw error;
+    }
   },
 
   // Pets

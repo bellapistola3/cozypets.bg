@@ -33,13 +33,43 @@ const Register: React.FC<RegisterProps> = ({ onClose, onOpenLogin }) => {
     setError('');
     
     const fullName = `${formData.firstName} ${formData.familyName}`;
+    
+    // Validate form data
+    if (!formData.firstName.trim() || !formData.familyName.trim()) {
+      setError('Моля, въведете име и фамилия');
+      setLoading(false);
+      return;
+    }
+    
+    if (!formData.email.trim() || !formData.password.trim()) {
+      setError('Моля, въведете имейл и парола');
+      setLoading(false);
+      return;
+    }
+    
+    if (formData.password.length < 6) {
+      setError('Паролата трябва да е поне 6 символа');
+      setLoading(false);
+      return;
+    }
+    
     signUp(formData.email, formData.password, fullName, formData.phoneNumber)
       .then(() => {
         onClose();
       })
       .catch((error) => {
         console.error('Registration error:', error);
-        setError(error.message || 'Възникна грешка при регистрация. Моля, опитайте отново.');
+        let errorMessage = 'Възникна грешка при регистрация. Моля, опитайте отново.';
+        
+        if (error.message?.includes('already registered')) {
+          errorMessage = 'Този имейл вече е регистриран. Моля, влезте в акаунта си.';
+        } else if (error.message?.includes('invalid email')) {
+          errorMessage = 'Невалиден имейл адрес.';
+        } else if (error.message?.includes('weak password')) {
+          errorMessage = 'Паролата е твърде слаба. Използвайте поне 6 символа.';
+        }
+        
+        setError(errorMessage);
       })
       .finally(() => {
         setLoading(false);

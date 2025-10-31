@@ -85,8 +85,9 @@ export default function SitterProfileForm(){
   useEffect(() => {
     (async () => {
       if (!session?.user?.id) return;
-      // load profiles
-      const { data: prof } = await supabase.from('profiles').select('*').eq('id', session.user.id).maybeSingle();
+      
+      // Load profiles using helper functions
+      const prof = await dbHelpers.getProfile(session.user.id);
       if (prof) {
         const [fn, ...rest] = (prof.full_name||'').split(' ');
         setFirstName(fn||'');
@@ -94,8 +95,9 @@ export default function SitterProfileForm(){
         setEmail(prof.email || session.user.email || '');
         setPhone(prof.phone||'');
       }
-      // load sitters
-      const { data: s } = await supabase.from('sitters').select('*').eq('id', session.user.id).maybeSingle();
+      
+      // Load sitter profile
+      const s = await dbHelpers.getSitterProfile(session.user.id);
       if (s) {
         setProfileTitle(s.profile_title||'');
         setBio(s.bio||'');
@@ -116,6 +118,7 @@ export default function SitterProfileForm(){
         setMedicalTraining(s.medical_training||'');
         setDayFlow(s.day_flow_short||'');
       }
+      
       // media
       const { data: media } = await supabase.from('sitter_media').select('*').eq('sitter_id', session.user.id).order('id');
       if (media) setExistingMedia(media);
@@ -137,13 +140,12 @@ export default function SitterProfileForm(){
     if (dayFlow.length > 120) return alert('Краткото описание трябва да е до 120 символа.');
 
     // 1) upsert profile
-    const { error: pErr } = await supabase.from('profiles').upsert({
+    await dbHelpers.createOrUpdateProfile({
       id: session.user.id,
       full_name: fullName || undefined,
       phone: phone || undefined,
       email: email || session.user.email
     });
-    if (pErr) return alert(pErr.message);
 
     // 2) upload avatar (optional)
     let avatar_url: string | undefined = undefined;
@@ -153,7 +155,10 @@ export default function SitterProfileForm(){
       if (error) return alert(error.message);
       const { data: pub } = supabase.storage.from('sitter-media').getPublicUrl(data.path);
       avatar_url = pub.publicUrl;
-      await supabase.from('profiles').update({ avatar_url }).eq('id', session.user.id);
+      await dbHelpers.createOrUpdateProfile({
+        id: session.user.id,
+        avatar_url
+      });
     }
 
     // 3) media upload (up to 5 total)
@@ -173,7 +178,7 @@ export default function SitterProfileForm(){
     }
 
     // 4) upsert sitter
-    const { error: sErr } = await supabase.from('sitters').upsert({
+    await dbHelpers.createOrUpdateSitter({
       id: session.user.id,
       profile_title: profileTitle,
       bio, experience,
@@ -192,7 +197,6 @@ export default function SitterProfileForm(){
       medical_training: medicalTraining,
       day_flow_short: dayFlow
     });
-    if (sErr) return alert(sErr.message);
 
     // 5) save availability busy days
     const days = generateNext3Months();

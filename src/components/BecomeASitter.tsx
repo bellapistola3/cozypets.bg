@@ -38,13 +38,23 @@ const BecomeASitter: React.FC<BecomeASitterProps> = ({ onClose }) => {
     setError('');
 
     try {
-      await dbHelpers.createSitter({
-        user_id: parseInt(user.id),
+      // First ensure user has a profile
+      await dbHelpers.createOrUpdateProfile({
+        id: user.id,
+        full_name: user.name,
+        email: user.email,
+        role: 'sitter'
+      });
+
+      // Then create sitter profile
+      await dbHelpers.createOrUpdateSitter({
+        id: user.id,
+        profile_title: `${user.name} - Професионален гледач`,
         bio: formData.bio,
-        photo_url: formData.photoUrl || 'https://images.pexels.com/photos/1851164/pexels-photo-1851164.jpeg',
-        hourly_rate: parseFloat(formData.hourlyRate),
-        location: formData.location,
-        qualifications: formData.qualifications
+        address_line: formData.location,
+        price_24h: parseFloat(formData.hourlyRate),
+        medical_training: formData.qualifications,
+        pet_types: ['kuche', 'kotka'] // Default pet types
       });
 
       setSuccess(true);
@@ -54,7 +64,7 @@ const BecomeASitter: React.FC<BecomeASitterProps> = ({ onClose }) => {
       }, 2000);
     } catch (error) {
       console.error('Error creating sitter profile:', error);
-      setError('Възникна грешка при създаването на профила. Моля, опитайте отново.');
+      setError(`Възникна грешка при създаването на профила: ${error instanceof Error ? error.message : 'Неизвестна грешка'}`);
     } finally {
       setLoading(false);
     }

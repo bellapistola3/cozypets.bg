@@ -1,4 +1,5 @@
 import { supabase } from './supabase';
+import { dbHelpers } from './supabase';
 
 export interface AuthUser {
   id: string;
@@ -25,22 +26,35 @@ export const authHelpers = {
 
       if (authError) throw authError;
 
-      // Then create user profile
+      // Then create user profile in both tables
       if (authData.user) {
-        const { data: userData, error: userError } = await supabase
-          .from('users')
-          .insert([{
+        // Create in users table (legacy)
+        try {
+          await dbHelpers.createUser({
             name,
             email,
             phone,
-            password_hash: 'handled_by_supabase_auth',
+            password_hash: 'supabase_auth',
             role: 'owner'
-          }])
-          .select()
-          .single();
+          });
+        } catch (userError) {
+          console.warn('Could not create user in legacy table:', userError);
+        }
 
-        if (userError) throw userError;
-        return { user: authData.user, profile: userData };
+        // Create in profiles table (new)
+        try {
+          await dbHelpers.createOrUpdateProfile({
+            id: authData.user.id,
+            full_name: name,
+            email,
+            phone,
+            role: 'owner'
+          });
+        } catch (profileError) {
+          console.warn('Could not create profile:', profileError);
+        }
+
+        return { user: authData.user };
       }
     } catch (error) {
       console.error('Sign up error:', error);
@@ -82,19 +96,35 @@ export const authHelpers = {
       
       if (error || !user) return null;
 
-      // Get user profile
-      const { data: profile, error: profileError } = await supabase
-        .from('users')
-        .select('*')
-        .eq('email', user.email)
-        .single();
+      // Try to get profile from new profiles table first
+      let profile = await dbHelpers.getProfile(user.id);
+      
+      // If not found, try legacy users table
+      if (!profile) {
+        profile = await dbHelpers.getUserByEmail(user.email || '');
+      }
 
-      if (profileError) return null;
+      // If still no profile, create one
+      if (!profile && user.email) {
+        try {
+          profile = await dbHelpers.createOrUpdateProfile({
+            id: user.id,
+            full_name: user.user_metadata?.name || user.email.split('@')[0],
+            email: user.email,
+            phone: user.user_metadata?.phone,
+            role: 'owner'
+          });
+        } catch (createError) {
+          console.warn('Could not create profile for user:', createError);
+        }
+      }
+
+      if (!profile) return null;
 
       return {
         id: user.id,
         email: user.email!,
-        name: profile.name,
+        name: profile.full_name || profile.name || user.email!.split('@')[0],
         role: profile.role
       };
     } catch (error) {

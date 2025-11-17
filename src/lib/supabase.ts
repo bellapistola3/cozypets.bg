@@ -142,10 +142,6 @@ export const dbHelpers = {
     }
   },
     
-    if (error) throw error;
-    return data;
-  },
-
   async createUser(userData: {
     name: string;
     email: string;

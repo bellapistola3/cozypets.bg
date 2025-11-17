@@ -1,6 +1,7 @@
-import React from 'react';
-import { Star, Quote, Heart, CheckCircle, TrendingUp } from 'lucide-react';
+import React, { useState } from 'react';
+import { Star, Quote, Heart, CheckCircle, TrendingUp, X, Send } from 'lucide-react';
 import SectionHeading from './common/SectionHeading';
+import { supabase } from '../lib/supabaseClient';
 
 interface Testimonial {
   id: number;
@@ -15,6 +16,19 @@ interface Testimonial {
 }
 
 const Testimonials: React.FC = () => {
+  const [showModal, setShowModal] = useState(false);
+  const [rating, setRating] = useState(0);
+  const [hoverRating, setHoverRating] = useState(0);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [formData, setFormData] = useState({
+    name: '',
+    petName: '',
+    petType: '',
+    location: '',
+    content: '',
+  });
+
   const testimonials: Testimonial[] = [
     {
       id: 1,
@@ -92,6 +106,40 @@ const Testimonials: React.FC = () => {
     { icon: <CheckCircle className="h-6 w-6" />, value: '1000+', label: 'Завършени резервации' },
     { icon: <TrendingUp className="h-6 w-6" />, value: '98%', label: 'Препоръчват ни' },
   ];
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    try {
+      const { error } = await supabase.from('reviews').insert([
+        {
+          owner_name: formData.name,
+          pet_name: formData.petName,
+          pet_type: formData.petType,
+          location: formData.location,
+          content: formData.content,
+          rating: rating,
+          status: 'pending',
+        },
+      ]);
+
+      if (error) throw error;
+
+      setSubmitSuccess(true);
+      setTimeout(() => {
+        setShowModal(false);
+        setSubmitSuccess(false);
+        setFormData({ name: '', petName: '', petType: '', location: '', content: '' });
+        setRating(0);
+      }, 2000);
+    } catch (error) {
+      console.error('Error submitting review:', error);
+      alert('Грешка при изпращане на отзива. Моля опитайте отново.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <section id="testimonials" className="py-20 bg-gradient-to-br from-green-50 via-blue-50 to-purple-50 scroll-mt-16 relative overflow-hidden">
@@ -236,11 +284,163 @@ const Testimonials: React.FC = () => {
           <p className="text-lg mb-6 text-green-50 max-w-2xl mx-auto">
             Вашето мнение е важно за нас! Помогнете на други собственици на домашни любимци да вземат правилното решение.
           </p>
-          <button className="bg-white text-green-600 px-8 py-3 rounded-xl font-semibold hover:bg-green-50 transition-all duration-300 transform hover:scale-105 shadow-lg">
+          <button
+            onClick={() => setShowModal(true)}
+            className="bg-white text-green-600 px-8 py-3 rounded-xl font-semibold hover:bg-green-50 transition-all duration-300 transform hover:scale-105 shadow-lg"
+          >
             Напишете отзив
           </button>
         </div>
       </div>
+
+      {showModal && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto shadow-2xl">
+            <div className="sticky top-0 bg-gradient-to-r from-green-500 to-blue-500 text-white p-6 rounded-t-2xl flex items-center justify-between">
+              <div>
+                <h3 className="text-2xl font-bold mb-1">Напишете отзив</h3>
+                <p className="text-green-50">Споделете вашето мнение с нас</p>
+              </div>
+              <button
+                onClick={() => setShowModal(false)}
+                className="text-white hover:bg-white hover:bg-opacity-20 rounded-full p-2 transition-all"
+              >
+                <X className="h-6 w-6" />
+              </button>
+            </div>
+
+            {submitSuccess ? (
+              <div className="p-8 text-center">
+                <div className="inline-flex items-center justify-center w-20 h-20 bg-green-100 rounded-full mb-4">
+                  <CheckCircle className="h-10 w-10 text-green-600" />
+                </div>
+                <h4 className="text-2xl font-bold text-gray-900 mb-2">Благодарим ви!</h4>
+                <p className="text-gray-600">
+                  Вашият отзив беше изпратен успешно и ще бъде прегледан от нашия екип.
+                </p>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="p-8 space-y-6">
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Вашето име *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={formData.name}
+                    onChange={(e) => setFormData({ ...formData, name: e.target.value })}
+                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-green-500 focus:outline-none transition-colors"
+                    placeholder="Вашето име"
+                  />
+                </div>
+
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      Име на домашния любимец *
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={formData.petName}
+                      onChange={(e) => setFormData({ ...formData, petName: e.target.value })}
+                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-green-500 focus:outline-none transition-colors"
+                      placeholder="Макс"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-semibold text-gray-700 mb-2">
+                      Вид на домашния любимец *
+                    </label>
+                    <input
+                      type="text"
+                      required
+                      value={formData.petType}
+                      onChange={(e) => setFormData({ ...formData, petType: e.target.value })}
+                      className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-green-500 focus:outline-none transition-colors"
+                      placeholder="Голдън ретрийвър"
+                    />
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Локация *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={formData.location}
+                    onChange={(e) => setFormData({ ...formData, location: e.target.value })}
+                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-green-500 focus:outline-none transition-colors"
+                    placeholder="София"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Оценка *
+                  </label>
+                  <div className="flex gap-2">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <button
+                        key={star}
+                        type="button"
+                        onClick={() => setRating(star)}
+                        onMouseEnter={() => setHoverRating(star)}
+                        onMouseLeave={() => setHoverRating(0)}
+                        className="transition-transform hover:scale-110"
+                      >
+                        <Star
+                          className={`h-10 w-10 ${
+                            star <= (hoverRating || rating)
+                              ? 'text-yellow-400 fill-current'
+                              : 'text-gray-300'
+                          }`}
+                        />
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                <div>
+                  <label className="block text-sm font-semibold text-gray-700 mb-2">
+                    Вашият отзив *
+                  </label>
+                  <textarea
+                    required
+                    value={formData.content}
+                    onChange={(e) => setFormData({ ...formData, content: e.target.value })}
+                    rows={5}
+                    className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:border-green-500 focus:outline-none transition-colors resize-none"
+                    placeholder="Споделете вашето мнение за нашите услуги..."
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={isSubmitting || rating === 0}
+                  className="w-full bg-gradient-to-r from-green-600 to-blue-600 text-white px-8 py-4 rounded-xl font-semibold hover:from-green-700 hover:to-blue-700 transition-all duration-300 transform hover:scale-105 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2"
+                >
+                  {isSubmitting ? (
+                    <>
+                      <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white"></div>
+                      Изпращане...
+                    </>
+                  ) : (
+                    <>
+                      <Send className="h-5 w-5" />
+                      Изпрати отзив
+                    </>
+                  )}
+                </button>
+              </form>
+            )}
+          </div>
+        </div>
+      )}
 
       <style>{`
         @keyframes scroll {

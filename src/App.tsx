@@ -45,12 +45,12 @@ function App() {
               <main>
                 <Hero />
                 <Services />
+                <Booking />
                 <VeterinarySection />
                 <PremiumMagazine />
                 <Testimonials />
                 <Gallery />
                 <Team />
-                <Booking />
                 <Faq />
                 <Contact />
 

@@ -31,30 +31,7 @@ const Team: React.FC = () => {
     },
     {
       id: 2,
-      name: 'Мишо Георгиев',
-      role: 'Старши специалист по грижа за домашни любимци',
-      bio: 'С опит като ветеринарен асистент, Мишо се специализира в грижата за домашни любимци с медицински нужди. Известен е със спокойното си поведение и способността да спечели дори най-тревожните домашни любимци.',
-      image: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg',
-      social: {
-        email: 'cozypetsbyalis@gmail.com',
-        phone: '+359 895 888 260',
-        instagram: '@misho_petcare',
-      },
-    },
-    {
-      id: 3,
-      name: 'Борислав Иванов',
-      role: 'Координатор за разходки с кучета',
-      bio: 'Борислав е нашият енергичен специалист по разходки с кучета, който управлява нашия екип от разходчици. Той е страстен планинар и гарантира, че всички наши кучета получават перфектното количество упражнения и обогатяване.',
-      image: 'https://images.pexels.com/photos/2379004/pexels-photo-2379004.jpeg',
-      social: {
-        email: 'cozypetsbyalis@gmail.com',
-        phone: '+359 895 888 260',
-      },
-    },
-    {
-      id: 4,
-      name: 'Христо Димитров',
+      name: 'Христо Димов',
       role: 'Специалист по поведение на котки',
       bio: 'Христо има специален начин с котките и разбира техните уникални нужди. Той е обучен в поведението на котките и може да помогне с всичко - от игрово обогатяване до прилагане на лекарства.',
       image: 'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg',
@@ -75,7 +52,7 @@ const Team: React.FC = () => {
           centered
         />
         
-        <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8 mt-12">
+        <div className="grid md:grid-cols-2 gap-8 mt-12 max-w-4xl mx-auto">
           {team.map((member) => (
             <div key={member.id} className="bg-white rounded-xl shadow-md overflow-hidden transition-transform duration-300 hover:shadow-lg hover:-translate-y-1">
               <div className="h-64 overflow-hidden">

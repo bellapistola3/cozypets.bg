@@ -24,6 +24,7 @@ import ProtectedRoute from './components/ProtectedRoute';
 import SitterProfileForm from './pages/SitterProfileForm';
 import VeterinaryChat from './components/VeterinaryChat';
 import VeterinarySection from './components/VeterinarySection';
+import PremiumMagazine from './components/PremiumMagazine';
 
 // Add database test route
 import DatabaseTest from './components/DatabaseTest';
@@ -45,6 +46,7 @@ function App() {
                 <Hero />
                 <Services />
                 <VeterinarySection />
+                <PremiumMagazine />
                 <Testimonials />
                 <Gallery />
                 <Team />

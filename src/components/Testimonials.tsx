@@ -253,7 +253,7 @@ const Testimonials: React.FC = () => {
         }
 
         .animate-scroll {
-          animation: scroll 40s linear infinite;
+          animation: scroll 20s linear infinite;
         }
 
         .pause-animation:hover {

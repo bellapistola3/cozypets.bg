@@ -23,6 +23,7 @@ import PersonalizedRecommendations from './components/PersonalizedRecommendation
 import ProtectedRoute from './components/ProtectedRoute';
 import SitterProfileForm from './pages/SitterProfileForm';
 import VeterinaryChat from './components/VeterinaryChat';
+import VeterinarySection from './components/VeterinarySection';
 
 // Add database test route
 import DatabaseTest from './components/DatabaseTest';
@@ -43,6 +44,7 @@ function App() {
               <main>
                 <Hero />
                 <Services />
+                <VeterinarySection />
                 <Testimonials />
                 <Gallery />
                 <Team />

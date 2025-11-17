@@ -22,6 +22,7 @@ import AdminDashboard from './components/AdminDashboard';
 import PersonalizedRecommendations from './components/PersonalizedRecommendations';
 import ProtectedRoute from './components/ProtectedRoute';
 import SitterProfileForm from './pages/SitterProfileForm';
+import VeterinaryChat from './components/VeterinaryChat';
 
 // Add database test route
 import DatabaseTest from './components/DatabaseTest';
@@ -141,6 +142,21 @@ function App() {
                 <main>
                   <AdminDashboard />
                 </main>
+              </>
+            </ProtectedRoute>
+          }
+        />
+
+        {/* Ветеринарен чат */}
+        <Route
+          path="/vet-chat"
+          element={
+            <ProtectedRoute>
+              <>
+                <main>
+                  <VeterinaryChat />
+                </main>
+                <Footer />
               </>
             </ProtectedRoute>
           }

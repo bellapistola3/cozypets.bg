@@ -29,6 +29,7 @@ const Header: React.FC = () => {
     { name: 'Отзиви', href: '#testimonials' },
     { name: 'Галерия', href: '#gallery' },
     { name: 'Екип', href: '#team' },
+    { name: 'Ветеринар', href: '/vet-chat' },
     { name: 'Контакти', href: '#contact' },
   ];
 

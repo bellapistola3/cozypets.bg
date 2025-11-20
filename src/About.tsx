@@ -6,9 +6,9 @@ const About = () => {
       {/* Logo at top of About page - Much Bigger */}
       <div className="text-center mb-12">
         <img
-          src="/src/components/assets/logo-new.png"
+          src="/src/components/assets/logo cozy osnovno.png"
           alt="CozyPets by Alice"
-          className="h-32 md:h-40 w-auto mx-auto mb-8 filter drop-shadow-lg"
+          className="h-48 md:h-56 w-auto mx-auto mb-8 filter drop-shadow-lg object-contain"
         />
       </div>
       

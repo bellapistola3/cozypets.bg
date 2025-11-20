@@ -44,9 +44,9 @@ const Header: React.FC = () => {
             {/* ЛОГО */}
             <div className="flex items-center flex-shrink-0">
               <img
-                src="/src/components/assets/logo-new.png"
+                src="/src/components/assets/logo cozy osnovno.png"
                 alt="CozyPets by Alice"
-                className="h-16 w-16 mr-3"
+                className="h-14 w-auto mr-3 object-contain"
               />
               <div>
                 <h1 className="text-3xl font-bold text-gray-800">CozyPets</h1>
@@ -138,9 +138,9 @@ const Header: React.FC = () => {
               {/* Лого */}
               <a href="/" className="flex items-center">
                 <img
-                  src="/src/components/assets/logo-new.png"
+                  src="/src/components/assets/logo cozy osnovno.png"
                   alt="CozyPets by Alice"
-                  className="h-12 w-12 mr-3"
+                  className="h-11 w-auto object-contain"
                 />
                 <div>
                   <h1 className="text-xl font-bold text-gray-800">CozyPets</h1>

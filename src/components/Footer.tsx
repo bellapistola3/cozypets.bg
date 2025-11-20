@@ -10,9 +10,9 @@ const Footer: React.FC = () => {
           <div>
             <div className="flex items-center mb-6">
               <img
-                src="/src/components/assets/logo-new.png"
+                src="/src/components/assets/logo cozy osnovno.png"
                 alt="CozyPets by Alice"
-                className="h-16 w-auto"
+                className="h-20 w-auto object-contain"
               />
             </div>
             <p className="text-gray-400 mb-4">

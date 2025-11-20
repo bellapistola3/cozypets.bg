@@ -55,12 +55,12 @@ const Header: React.FC = () => {
             </div>
 
             {/* НАВИГАЦИЯ */}
-            <nav className="flex space-x-8 flex-1 justify-center items-center">
+            <nav className="flex space-x-10 flex-1 justify-center items-center">
               {navLinks.map((link) => (
                 <a
                   key={link.name}
                   href={link.href.startsWith('#') ? `/${link.href}` : link.href}
-                  className="text-base font-semibold text-gray-700 hover:text-green-600 transition-colors duration-200 whitespace-nowrap"
+                  className="text-lg font-bold text-gray-800 hover:text-green-600 transition-colors duration-200 whitespace-nowrap"
                 >
                   {link.name}
                 </a>

@@ -9,10 +9,10 @@ const Footer: React.FC = () => {
         <div className="grid md:grid-cols-4 gap-8">
           <div>
             <div className="flex items-center mb-6">
-              <img 
-                src="/src/components/assets/logo8808.png" 
-                alt="CozyPets by Alice" 
-                className="h-16 w-auto filter brightness-0 invert"
+              <img
+                src="/src/components/assets/logo-new.png"
+                alt="CozyPets by Alice"
+                className="h-16 w-auto"
               />
             </div>
             <p className="text-gray-400 mb-4">

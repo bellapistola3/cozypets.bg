@@ -5,9 +5,9 @@ const About = () => {
     <section className="px-6 py-12 max-w-3xl mx-auto text-gray-800">
       {/* Logo at top of About page - Much Bigger */}
       <div className="text-center mb-12">
-        <img 
-          src="/src/components/assets/logo8808.png" 
-          alt="CozyPets by Alice" 
+        <img
+          src="/src/components/assets/logo-new.png"
+          alt="CozyPets by Alice"
           className="h-32 md:h-40 w-auto mx-auto mb-8 filter drop-shadow-lg"
         />
       </div>

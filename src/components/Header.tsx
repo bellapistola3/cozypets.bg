@@ -35,8 +35,8 @@ const Header: React.FC = () => {
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-50 bg-white shadow-lg h-16">
-        <div className="container mx-auto px-6 h-full">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-white via-green-50 to-white shadow-lg h-20 border-b-2 border-green-100">
+        <div className="container mx-auto px-6 h-full max-w-7xl">
           
           {/* DESKTOP ВЕРСИЯ */}
           <div className="hidden lg:flex items-center justify-between h-full">
@@ -46,23 +46,24 @@ const Header: React.FC = () => {
               <img
                 src="/src/components/assets/logo cozy osnovno.png"
                 alt="CozyPets by Alice"
-                className="h-14 w-auto mr-3 object-contain"
+                className="h-16 w-auto mr-3 object-contain"
               />
               <div>
-                <h1 className="text-3xl font-bold text-gray-800">CozyPets</h1>
-                <p className="text-lg text-green-600">by Alice</p>
+                <h1 className="text-3xl font-bold bg-gradient-to-r from-gray-800 to-green-700 bg-clip-text text-transparent">CozyPets</h1>
+                <p className="text-lg font-semibold text-green-600">by Alice</p>
               </div>
             </div>
 
             {/* НАВИГАЦИЯ */}
-            <nav className="flex space-x-6 flex-1 justify-center">
+            <nav className="flex space-x-8 flex-1 justify-center">
               {navLinks.map((link) => (
                 <a
                   key={link.name}
                   href={link.href.startsWith('#') ? `/${link.href}` : link.href}
-                  className="text-base font-medium text-gray-700 hover:text-green-600 transition-colors"
+                  className="text-base font-semibold text-gray-700 hover:text-green-600 transition-all duration-300 relative group"
                 >
                   {link.name}
+                  <span className="absolute bottom-0 left-0 w-0 h-0.5 bg-green-600 transition-all duration-300 group-hover:w-full"></span>
                 </a>
               ))}
             </nav>
@@ -71,17 +72,17 @@ const Header: React.FC = () => {
             <div className="flex items-center space-x-3 flex-shrink-0">
               
               {/* Резервирай сега */}
-              <button 
+              <button
                 onClick={() => window.location.href = '/#booking'}
-                className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors"
+                className="px-5 py-2.5 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-semibold rounded-xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5"
               >
                 Резервирай сега
               </button>
-              
+
               {/* Търси гледач */}
               <a
                 href="/search"
-                className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors"
+                className="px-5 py-2.5 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold rounded-xl shadow-md hover:shadow-lg transition-all duration-300 transform hover:-translate-y-0.5"
               >
                 Търси гледач
               </a>
@@ -92,19 +93,19 @@ const Header: React.FC = () => {
                   {/* Известия */}
                   <NotificationSystem />
                   
-                  <button 
+                  <button
                     onClick={() => window.location.href = '/dashboard'}
-                    className="flex items-center gap-2 px-3 py-2 bg-gray-100 rounded-lg hover:bg-gray-200 transition-colors"
+                    className="flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-gray-50 to-gray-100 rounded-xl hover:from-gray-100 hover:to-gray-200 transition-all duration-300 shadow-sm hover:shadow-md"
                   >
-                    <div className="w-10 h-10 bg-green-600 rounded-full flex items-center justify-center text-white font-bold">
+                    <div className="w-10 h-10 bg-gradient-to-br from-green-600 to-green-700 rounded-full flex items-center justify-center text-white font-bold shadow-md">
                       {user.name.charAt(0).toUpperCase()}
                     </div>
-                    <span className="font-medium text-gray-800 text-sm">{user.name}</span>
+                    <span className="font-semibold text-gray-800 text-sm">{user.name}</span>
                   </button>
-                  
-                  <button 
-                    onClick={signOut} 
-                    className="px-3 py-2 text-red-600 hover:bg-red-50 rounded-lg transition-colors text-sm"
+
+                  <button
+                    onClick={signOut}
+                    className="px-4 py-2 text-red-600 hover:bg-red-50 rounded-xl transition-all duration-300 text-sm font-semibold shadow-sm hover:shadow-md"
                   >
                     Изход
                   </button>
@@ -114,15 +115,15 @@ const Header: React.FC = () => {
                   {/* Известия */}
                   <NotificationSystem />
                   
-                  <button 
-                    onClick={() => setIsLoginOpen(true)} 
-                    className="px-3 py-2 font-medium text-gray-700 hover:text-green-600 transition-colors text-sm"
+                  <button
+                    onClick={() => setIsLoginOpen(true)}
+                    className="px-4 py-2 font-semibold text-gray-700 hover:text-green-600 transition-all duration-300 text-sm border-2 border-transparent hover:border-green-600 rounded-xl"
                   >
                     Вход
                   </button>
-                  <button 
+                  <button
                     onClick={() => setIsRegisterOpen(true)}
-                    className="px-4 py-2 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors text-sm"
+                    className="px-5 py-2.5 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-semibold rounded-xl transition-all duration-300 text-sm shadow-md hover:shadow-lg transform hover:-translate-y-0.5"
                   >
                     Регистрация
                   </button>
@@ -133,14 +134,14 @@ const Header: React.FC = () => {
 
           {/* МОБИЛНА ВЕРСИЯ */}
           <div className="lg:hidden">
-            <div className="flex items-center justify-between h-16">
+            <div className="flex items-center justify-between h-20">
               
               {/* Лого */}
               <a href="/" className="flex items-center">
                 <img
                   src="/src/components/assets/logo cozy osnovno.png"
                   alt="CozyPets by Alice"
-                  className="h-11 w-auto object-contain"
+                  className="h-14 w-auto object-contain"
                 />
                 <div>
                   <h1 className="text-xl font-bold text-gray-800">CozyPets</h1>
@@ -176,15 +177,15 @@ const Header: React.FC = () => {
                     <div className="border-t pt-3 space-y-3">
                       <a
                         href="/search"
-                        className="block w-full px-4 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors text-center"
+                        className="block w-full px-4 py-3 bg-gradient-to-r from-blue-600 to-blue-700 hover:from-blue-700 hover:to-blue-800 text-white font-semibold rounded-xl shadow-md hover:shadow-lg transition-all duration-300 text-center"
                         onClick={() => setIsMenuOpen(false)}
                       >
                         Търси гледач
                       </a>
-                      
+
                       <button
                         onClick={() => { window.location.href = '/#booking'; setIsMenuOpen(false); }}
-                        className="block w-full px-4 py-3 bg-green-600 hover:bg-green-700 text-white font-medium rounded-lg transition-colors text-center"
+                        className="block w-full px-4 py-3 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-semibold rounded-xl shadow-md hover:shadow-lg transition-all duration-300 text-center"
                       >
                         Резервирай сега
                       </button>
@@ -208,15 +209,15 @@ const Header: React.FC = () => {
                         </div>
                       ) : (
                         <div className="space-y-3">
-                          <button 
-                            onClick={() => { setIsLoginOpen(true); setIsMenuOpen(false); }} 
-                            className="w-full px-4 py-3 text-lg text-gray-700 hover:bg-gray-50 font-medium rounded-lg transition-colors"
+                          <button
+                            onClick={() => { setIsLoginOpen(true); setIsMenuOpen(false); }}
+                            className="w-full px-4 py-3 text-lg text-gray-700 hover:bg-gray-50 font-semibold rounded-xl transition-all duration-300 border-2 border-gray-200 hover:border-green-600"
                           >
                             Вход
                           </button>
-                          <button 
+                          <button
                             onClick={() => { setIsRegisterOpen(true); setIsMenuOpen(false); }}
-                            className="w-full px-4 py-3 bg-green-600 hover:bg-green-700 text-white text-lg font-medium rounded-lg transition-colors"
+                            className="w-full px-4 py-3 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white text-lg font-semibold rounded-xl shadow-md hover:shadow-lg transition-all duration-300"
                           >
                             Регистрация
                           </button>

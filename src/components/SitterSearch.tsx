@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Search, MapPin, Calendar, Filter, Star, Heart, Shield } from 'lucide-react';
+import { useSearchParams } from 'react-router-dom';
 import { SitterSearchFilters, SitterWithDetails, User } from '../types';
 import Button from './common/Button';
 import SitterCard from './SitterCard';
@@ -9,6 +10,9 @@ import { dbHelpers } from '../lib/supabase';
 import { useAuth } from '../contexts/AuthContext';
 
 const SitterSearch: React.FC = () => {
+  const [searchParams] = useSearchParams();
+  const serviceId = searchParams.get('service');
+
   const [filters, setFilters] = useState<SitterSearchFilters>({});
   const [sitters, setSitters] = useState<SitterWithDetails[]>([]);
   const [loading, setLoading] = useState(false);
@@ -25,9 +29,10 @@ const SitterSearch: React.FC = () => {
         location: filters.location,
         min_rate: filters.min_rate,
         max_rate: filters.max_rate,
-        min_rating: filters.min_rating
+        min_rating: filters.min_rating,
+        service: serviceId || undefined
       };
-      
+
       const sittersData = await dbHelpers.getSitters(searchFilters);
       setSitters(sittersData);
     } catch (error) {
@@ -39,7 +44,7 @@ const SitterSearch: React.FC = () => {
 
   useEffect(() => {
     handleSearch();
-  }, []);
+  }, [serviceId]);
 
   const handleFilterChange = (key: keyof SitterSearchFilters, value: any) => {
     setFilters(prev => ({ ...prev, [key]: value }));

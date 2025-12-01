@@ -25,8 +25,8 @@ import SitterProfileForm from './pages/SitterProfileForm';
 import VeterinaryChat from './components/VeterinaryChat';
 import VeterinarySection from './components/VeterinarySection';
 import PremiumMagazine from './components/PremiumMagazine';
+import ServicesDirectory from './pages/ServicesDirectory';
 
-// Add database test route
 import DatabaseTest from './components/DatabaseTest';
 
 function App() {
@@ -93,6 +93,32 @@ function App() {
                 <Footer />
               </>
             </ProtectedRoute>
+          }
+        />
+
+        {/* Services Directory */}
+        <Route
+          path="/services"
+          element={
+            <>
+              <main>
+                <ServicesDirectory />
+              </main>
+              <Footer />
+            </>
+          }
+        />
+
+        {/* Sitters List with Service Filter */}
+        <Route
+          path="/sitters"
+          element={
+            <>
+              <main>
+                <SitterSearch />
+              </main>
+              <Footer />
+            </>
           }
         />
 

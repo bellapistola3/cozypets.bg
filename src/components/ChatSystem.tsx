@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Send, Paperclip, Phone, Video, MoreVertical, X } from 'lucide-react';
+import { Send, Paperclip, Phone, Video, MoreVertical, X, AlertTriangle } from 'lucide-react';
 import { Message, Conversation } from '../types';
+import { filterChatMessage, getUserChatStatus } from '../lib/chatFilter';
 
 interface ChatSystemProps {
   conversation: Conversation;
@@ -12,6 +13,8 @@ const ChatSystem: React.FC<ChatSystemProps> = ({ conversation, currentUserId, on
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState('');
   const [loading, setLoading] = useState(false);
+  const [chatStatus, setChatStatus] = useState({ canSend: true, isReadOnly: false, isBanned: false });
+  const [filterWarning, setFilterWarning] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
   // Mock messages for demonstration
@@ -56,11 +59,17 @@ const ChatSystem: React.FC<ChatSystemProps> = ({ conversation, currentUserId, on
 
   useEffect(() => {
     setMessages(mockMessages);
+    loadChatStatus();
   }, []);
 
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
+
+  const loadChatStatus = async () => {
+    const status = await getUserChatStatus(currentUserId);
+    setChatStatus(status);
+  };
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -68,6 +77,25 @@ const ChatSystem: React.FC<ChatSystemProps> = ({ conversation, currentUserId, on
 
   const handleSendMessage = async () => {
     if (!newMessage.trim()) return;
+
+    if (chatStatus.isBanned) {
+      setFilterWarning('You are temporarily banned from sending messages.');
+      return;
+    }
+
+    if (chatStatus.isReadOnly) {
+      setFilterWarning('You can only read messages due to previous violations.');
+      return;
+    }
+
+    const filterResult = await filterChatMessage(currentUserId, newMessage);
+
+    if (filterResult.isBlocked) {
+      setFilterWarning(filterResult.reason || 'Message blocked');
+      await loadChatStatus();
+      setTimeout(() => setFilterWarning(null), 5000);
+      return;
+    }
 
     const message: Message = {
       id: Date.now().toString(),
@@ -83,7 +111,6 @@ const ChatSystem: React.FC<ChatSystemProps> = ({ conversation, currentUserId, on
     setNewMessage('');
     setLoading(true);
 
-    // Simulate response
     setTimeout(() => {
       const response: Message = {
         id: (Date.now() + 1).toString(),
@@ -210,28 +237,68 @@ const ChatSystem: React.FC<ChatSystemProps> = ({ conversation, currentUserId, on
         <div ref={messagesEndRef} />
       </div>
 
+      {/* Filter Warning */}
+      {filterWarning && (
+        <div className="bg-red-50 border-t border-red-200 p-4">
+          <div className="flex items-start gap-3">
+            <AlertTriangle className="h-5 w-5 text-red-600 flex-shrink-0 mt-0.5" />
+            <div className="flex-1">
+              <p className="text-sm text-red-800 font-semibold">Message Blocked</p>
+              <p className="text-sm text-red-700">{filterWarning}</p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Ban Notice */}
+      {chatStatus.isBanned && (
+        <div className="bg-red-100 border-t border-red-300 p-4">
+          <div className="flex items-start gap-3">
+            <AlertTriangle className="h-5 w-5 text-red-700 flex-shrink-0 mt-0.5" />
+            <div className="flex-1">
+              <p className="text-sm text-red-900 font-bold">Account Temporarily Banned</p>
+              <p className="text-sm text-red-800">You cannot send messages due to multiple violations. Ban expires in 48 hours.</p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Read Only Notice */}
+      {chatStatus.isReadOnly && !chatStatus.isBanned && (
+        <div className="bg-yellow-50 border-t border-yellow-200 p-4">
+          <div className="flex items-start gap-3">
+            <AlertTriangle className="h-5 w-5 text-yellow-600 flex-shrink-0 mt-0.5" />
+            <div className="flex-1">
+              <p className="text-sm text-yellow-900 font-semibold">Read-Only Mode</p>
+              <p className="text-sm text-yellow-800">You can only read messages due to a previous violation.</p>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* Message Input */}
       <div className="bg-white border-t border-gray-200 p-4">
         <div className="flex items-end space-x-2">
           <button className="p-2 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-full">
             <Paperclip className="h-5 w-5" />
           </button>
-          
+
           <div className="flex-1 relative">
             <textarea
               value={newMessage}
               onChange={(e) => setNewMessage(e.target.value)}
               onKeyPress={handleKeyPress}
-              placeholder="Напишете съобщение..."
-              className="w-full px-4 py-2 border border-gray-300 rounded-2xl focus:ring-green-500 focus:border-green-500 resize-none"
+              placeholder={chatStatus.canSend ? "Напишете съобщение..." : "You cannot send messages"}
+              disabled={!chatStatus.canSend || chatStatus.isBanned}
+              className="w-full px-4 py-2 border border-gray-300 rounded-2xl focus:ring-green-500 focus:border-green-500 resize-none disabled:bg-gray-100 disabled:cursor-not-allowed"
               rows={1}
               style={{ minHeight: '40px', maxHeight: '120px' }}
             />
           </div>
-          
+
           <button
             onClick={handleSendMessage}
-            disabled={!newMessage.trim()}
+            disabled={!newMessage.trim() || !chatStatus.canSend || chatStatus.isBanned}
             className="p-2 bg-green-600 text-white rounded-full hover:bg-green-700 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <Send className="h-5 w-5" />

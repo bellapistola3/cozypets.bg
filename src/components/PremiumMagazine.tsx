@@ -274,9 +274,9 @@ const PremiumMagazine: React.FC = () => {
               <img
                 src="/src/components/assets/cozy pets logo.png"
                 alt="CozyPets Logo"
-                className="absolute inset-0 w-full h-full object-cover opacity-20"
+                className="absolute inset-0 w-full h-full object-cover opacity-30"
               />
-              <div className="relative bg-gradient-to-br from-amber-500/90 to-orange-600/90 backdrop-blur-sm p-8">
+              <div className="relative bg-gradient-to-br from-amber-500/70 to-orange-600/70 p-8">
                 <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
                   <Building className="h-8 w-8 text-white" />
                   Директория на услуги

@@ -162,7 +162,7 @@ const Testimonials: React.FC = () => {
           {stats.map((stat, index) => (
             <div
               key={index}
-              className="bg-white rounded-xl shadow-lg p-6 text-center transform hover:scale-105 transition-all duration-300 hover:shadow-2xl"
+              className="interactive-card neon-glow bg-white rounded-xl shadow-lg p-6 text-center"
             >
               <div className="inline-flex items-center justify-center w-12 h-12 bg-gradient-to-br from-green-100 to-blue-100 rounded-full mb-3 text-green-600">
                 {stat.icon}
@@ -181,7 +181,7 @@ const Testimonials: React.FC = () => {
                   key={`${testimonial.id}-${index}`}
                   className="flex-shrink-0 w-[400px] mx-4"
                 >
-                  <div className="bg-white rounded-2xl shadow-xl p-8 h-full border-2 border-green-100 hover:border-green-300 transition-all duration-300 hover:shadow-2xl transform hover:scale-105">
+                  <div className="interactive-card neon-glow bg-white rounded-2xl shadow-xl p-8 h-full border-2 border-green-100">
                     <div className="absolute top-4 right-4 text-green-100">
                       <Quote className="h-16 w-16 opacity-20" />
                     </div>
@@ -286,7 +286,7 @@ const Testimonials: React.FC = () => {
           </p>
           <button
             onClick={() => setShowModal(true)}
-            className="bg-white text-green-600 px-8 py-3 rounded-xl font-semibold hover:bg-green-50 transition-all duration-300 transform hover:scale-105 shadow-lg"
+            className="interactive-button neon-glow bg-white text-green-600 px-8 py-3 rounded-xl font-semibold hover:bg-green-50 shadow-lg"
           >
             Напишете отзив
           </button>
@@ -422,7 +422,7 @@ const Testimonials: React.FC = () => {
                 <button
                   type="submit"
                   disabled={isSubmitting || rating === 0}
-                  className="w-full bg-gradient-to-r from-green-600 to-blue-600 text-white px-8 py-4 rounded-xl font-semibold hover:from-green-700 hover:to-blue-700 transition-all duration-300 transform hover:scale-105 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed disabled:transform-none flex items-center justify-center gap-2"
+                  className="interactive-button neon-glow w-full bg-gradient-to-r from-green-600 to-blue-600 text-white px-8 py-4 rounded-xl font-semibold hover:from-green-700 hover:to-blue-700 shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center gap-2"
                 >
                   {isSubmitting ? (
                     <>

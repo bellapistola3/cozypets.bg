@@ -59,7 +59,7 @@ const Services: React.FC = () => {
         </div>
 
         <div className="mt-20 grid md:grid-cols-3 gap-8">
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 flex flex-col items-center text-center transition-all duration-300 hover:scale-105 hover:bg-white/90 shadow-lg hover:shadow-xl border border-green-200">
+          <div className="interactive-card neon-glow bg-white/80 backdrop-blur-sm rounded-2xl p-8 flex flex-col items-center text-center border border-green-200">
             <div className="bg-gradient-to-br from-green-100 to-green-200 p-4 rounded-full mb-6 shadow-md">
               <Heart className="h-8 w-8 text-green-600" />
             </div>
@@ -69,7 +69,7 @@ const Services: React.FC = () => {
             </p>
           </div>
           
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 flex flex-col items-center text-center transition-all duration-300 hover:scale-105 hover:bg-white/90 shadow-lg hover:shadow-xl border border-green-200">
+          <div className="interactive-card neon-glow bg-white/80 backdrop-blur-sm rounded-2xl p-8 flex flex-col items-center text-center border border-green-200">
             <div className="bg-gradient-to-br from-green-100 to-green-200 p-4 rounded-full mb-6 shadow-md">
               <Shield className="h-8 w-8 text-green-600" />
             </div>
@@ -79,7 +79,7 @@ const Services: React.FC = () => {
             </p>
           </div>
           
-          <div className="bg-white/80 backdrop-blur-sm rounded-2xl p-8 flex flex-col items-center text-center transition-all duration-300 hover:scale-105 hover:bg-white/90 shadow-lg hover:shadow-xl border border-green-200">
+          <div className="interactive-card neon-glow bg-white/80 backdrop-blur-sm rounded-2xl p-8 flex flex-col items-center text-center border border-green-200">
             <div className="bg-gradient-to-br from-green-100 to-green-200 p-4 rounded-full mb-6 shadow-md">
               <Star className="h-8 w-8 text-green-600" />
             </div>

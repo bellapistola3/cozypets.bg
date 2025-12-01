@@ -9,7 +9,7 @@ interface SitterCardProps {
 
 const SitterCard: React.FC<SitterCardProps> = ({ sitter }) => {
   return (
-    <div className="bg-white rounded-2xl shadow-lg overflow-hidden transition-all duration-300 hover:shadow-xl hover:-translate-y-1">
+    <div className="interactive-card neon-glow bg-white rounded-2xl shadow-lg overflow-hidden">
       {/* Header with photo and basic info */}
       <div className="relative">
         <img

@@ -54,7 +54,7 @@ const Team: React.FC = () => {
         
         <div className="grid md:grid-cols-2 gap-8 mt-12 max-w-4xl mx-auto">
           {team.map((member) => (
-            <div key={member.id} className="bg-white rounded-xl shadow-md overflow-hidden transition-transform duration-300 hover:shadow-lg hover:-translate-y-1">
+            <div key={member.id} className="interactive-card neon-glow bg-white rounded-xl shadow-md overflow-hidden">
               <div className="h-64 overflow-hidden">
                 <img
                   src={member.image}

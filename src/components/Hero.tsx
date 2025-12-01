@@ -98,9 +98,9 @@ const Hero: React.FC = () => {
             Свържете се с доверени гледачи на домашни любимци в района ви, които ще се отнасят към вашите любимци като към семейство, докато сте далеч.
           </p>
           <div className="animate-fadeInUp animation-delay-200">
-            <button 
+            <button
               onClick={() => window.location.href = '/search'}
-              className="inline-flex items-center justify-center gap-3 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold text-xl px-12 py-6 rounded-2xl shadow-2xl hover:shadow-green-500/25 transition-all duration-300 transform hover:scale-105 hover:-translate-y-1 border-2 border-green-400/20"
+              className="interactive-button neon-glow inline-flex items-center justify-center gap-3 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold text-xl px-12 py-6 rounded-2xl shadow-2xl hover:shadow-green-500/25 border-2 border-green-400/20"
             >
               <Search className="h-7 w-7" />
               Намерете гледач на домашни любимци

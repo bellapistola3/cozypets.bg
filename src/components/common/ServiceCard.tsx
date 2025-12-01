@@ -16,11 +16,11 @@ interface ServiceCardProps {
 
 const ServiceCard: React.FC<ServiceCardProps> = ({ service }) => {
   return (
-    <div className={`relative rounded-2xl p-8 ${
-      service.popular 
-        ? 'bg-white border-2 border-green-400 shadow-xl shadow-green-500/20' 
+    <div className={`interactive-card neon-glow relative rounded-2xl p-8 ${
+      service.popular
+        ? 'bg-white border-2 border-green-400 shadow-xl shadow-green-500/20'
         : 'bg-white/90 backdrop-blur-sm border border-green-200 shadow-lg'
-    } transition-all duration-300 hover:scale-105 hover:shadow-2xl ${
+    } ${
       service.popular ? 'hover:shadow-green-500/30' : 'hover:shadow-green-500/20'
     }`}>
       

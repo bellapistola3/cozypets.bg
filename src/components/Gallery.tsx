@@ -81,9 +81,9 @@ const Gallery: React.FC = () => {
           <div className="flex space-x-2 bg-gray-100 p-1 rounded-lg">
             <button
               onClick={() => setFilter('all')}
-              className={`px-6 py-3 rounded-lg font-semibold transition-all duration-300 ${
-                filter === 'all' 
-                  ? 'bg-gradient-to-r from-green-500 to-green-600 text-white shadow-lg' 
+              className={`interactive-button px-6 py-3 rounded-lg font-semibold ${
+                filter === 'all'
+                  ? 'neon-glow bg-gradient-to-r from-green-500 to-green-600 text-white shadow-lg'
                   : 'hover:bg-gray-200 text-gray-700'
               }`}
             >
@@ -91,9 +91,9 @@ const Gallery: React.FC = () => {
             </button>
             <button
               onClick={() => setFilter('dogs')}
-              className={`px-6 py-3 rounded-lg font-semibold transition-all duration-300 ${
-                filter === 'dogs' 
-                  ? 'bg-gradient-to-r from-green-500 to-green-600 text-white shadow-lg' 
+              className={`interactive-button px-6 py-3 rounded-lg font-semibold ${
+                filter === 'dogs'
+                  ? 'neon-glow bg-gradient-to-r from-green-500 to-green-600 text-white shadow-lg'
                   : 'hover:bg-gray-200 text-gray-700'
               }`}
             >
@@ -101,9 +101,9 @@ const Gallery: React.FC = () => {
             </button>
             <button
               onClick={() => setFilter('cats')}
-              className={`px-6 py-3 rounded-lg font-semibold transition-all duration-300 ${
-                filter === 'cats' 
-                  ? 'bg-gradient-to-r from-green-500 to-green-600 text-white shadow-lg' 
+              className={`interactive-button px-6 py-3 rounded-lg font-semibold ${
+                filter === 'cats'
+                  ? 'neon-glow bg-gradient-to-r from-green-500 to-green-600 text-white shadow-lg'
                   : 'hover:bg-gray-200 text-gray-700'
               }`}
             >
@@ -111,9 +111,9 @@ const Gallery: React.FC = () => {
             </button>
             <button
               onClick={() => setFilter('other')}
-              className={`px-6 py-3 rounded-lg font-semibold transition-all duration-300 ${
-                filter === 'other' 
-                  ? 'bg-gradient-to-r from-green-500 to-green-600 text-white shadow-lg' 
+              className={`interactive-button px-6 py-3 rounded-lg font-semibold ${
+                filter === 'other'
+                  ? 'neon-glow bg-gradient-to-r from-green-500 to-green-600 text-white shadow-lg'
                   : 'hover:bg-gray-200 text-gray-700'
               }`}
             >
@@ -126,7 +126,7 @@ const Gallery: React.FC = () => {
           {filteredImages.map((image) => (
             <div
               key={image.id}
-              className="aspect-square overflow-hidden rounded-lg shadow-md cursor-pointer transition-transform duration-300 hover:scale-105"
+              className="interactive-card neon-glow aspect-square overflow-hidden rounded-lg shadow-md cursor-pointer"
               onClick={() => setSelectedImage(image)}
             >
               <img

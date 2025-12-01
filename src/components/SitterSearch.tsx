@@ -71,7 +71,7 @@ const SitterSearch: React.FC = () => {
 
         {/* Search Bar */}
         <div className="bg-white rounded-2xl shadow-lg p-6 mb-8">
-          <div className="grid md:grid-cols-4 gap-4">
+          <div className="grid md:grid-cols-5 gap-4">
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Град
@@ -117,12 +117,11 @@ const SitterSearch: React.FC = () => {
                 />
               </div>
             </div>
-          </div>
 
-          <div className="grid md:grid-cols-4 gap-4 mt-4">
             <div>
               <PetTypeSelect value={petType} onChange={setPetType} />
             </div>
+
             <div className="flex items-end">
               <Button onClick={handleSearch} className="w-full">
                 <Search className="h-5 w-5 mr-2" />

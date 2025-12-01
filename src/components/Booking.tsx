@@ -14,6 +14,8 @@ interface BookingFormData {
   petBreed: string;
   petWeight: string;
   petNeutered: string;
+  petGender: string;
+  petAge: string;
   service: string;
   date: string;
   time: string;
@@ -31,6 +33,8 @@ const Booking: React.FC = () => {
     petBreed: '',
     petWeight: '',
     petNeutered: '',
+    petGender: '',
+    petAge: '',
     service: 'daily-walks',
     date: '',
     time: '',
@@ -84,8 +88,13 @@ const Booking: React.FC = () => {
         }
         return true;
       case 2:
-        if (!formData.petName || !formData.petType || !formData.petBreed || !formData.petWeight || !formData.petNeutered || !formData.service) {
+        if (!formData.petName || !formData.petType || !formData.petBreed || !formData.petWeight || !formData.petNeutered || !formData.petGender || !formData.petAge || !formData.service) {
           setError('Моля, попълнете всички полета за вашия домашен любимец.');
+          return false;
+        }
+        const age = parseInt(formData.petAge);
+        if (isNaN(age) || age < 0 || age > 30) {
+          setError('Моля, въведете валидна възраст (0-30 години).');
           return false;
         }
         return true;
@@ -467,6 +476,69 @@ const Booking: React.FC = () => {
                           />
                           <div className="font-medium text-gray-700">Не</div>
                         </label>
+                      </div>
+                    </div>
+
+                    <div className="grid md:grid-cols-2 gap-6">
+                      <div>
+                        <label className="block text-sm font-semibold text-gray-700 mb-3">
+                          Пол *
+                        </label>
+                        <div className="flex gap-4">
+                          <label
+                            className={`cursor-pointer border-2 rounded-xl p-4 flex-1 text-center transition-all duration-300 hover:shadow-lg ${
+                              formData.petGender === 'male'
+                                ? 'border-green-500 bg-green-50 shadow-md'
+                                : 'border-gray-200 hover:border-green-300'
+                            }`}
+                          >
+                            <input
+                              type="radio"
+                              name="petGender"
+                              value="male"
+                              checked={formData.petGender === 'male'}
+                              onChange={handleChange}
+                              className="sr-only"
+                            />
+                            <div className="font-medium text-gray-700">Мъжко</div>
+                          </label>
+                          <label
+                            className={`cursor-pointer border-2 rounded-xl p-4 flex-1 text-center transition-all duration-300 hover:shadow-lg ${
+                              formData.petGender === 'female'
+                                ? 'border-green-500 bg-green-50 shadow-md'
+                                : 'border-gray-200 hover:border-green-300'
+                            }`}
+                          >
+                            <input
+                              type="radio"
+                              name="petGender"
+                              value="female"
+                              checked={formData.petGender === 'female'}
+                              onChange={handleChange}
+                              className="sr-only"
+                            />
+                            <div className="font-medium text-gray-700">Женско</div>
+                          </label>
+                        </div>
+                      </div>
+
+                      <div className="group">
+                        <label htmlFor="petAge" className="block text-sm font-semibold text-gray-700 mb-3">
+                          Възраст *
+                        </label>
+                        <input
+                          type="number"
+                          id="petAge"
+                          name="petAge"
+                          value={formData.petAge}
+                          onChange={handleChange}
+                          required
+                          min="0"
+                          max="30"
+                          step="1"
+                          className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-green-100 focus:border-green-500 transition-all duration-300"
+                          placeholder="напр. 3"
+                        />
                       </div>
                     </div>
 

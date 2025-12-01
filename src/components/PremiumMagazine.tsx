@@ -16,8 +16,7 @@ import {
   Building,
   TrendingUp,
   ChevronRight,
-  Coins,
-  Trophy,
+  ShieldCheck,
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
@@ -345,25 +344,25 @@ const PremiumMagazine: React.FC = () => {
               </div>
 
               <div className="bg-white p-8">
-                <div className="flex items-center justify-center gap-3 mb-4">
-                  <Coins className="h-8 w-8 text-amber-600" />
-                  <h3 className="text-2xl font-bold text-gray-900">CozyCoins</h3>
+                <div className="flex items-center gap-3 mb-4">
+                  <ShieldCheck className="w-6 h-6 text-orange-500" />
+                  <h3 className="text-2xl font-bold text-gray-900">Сигурен избор за вашия любимец</h3>
                 </div>
-                <p className="text-gray-600 text-center mb-4">
-                  Спечелете CozyCoins с всяка резервация и ги използвайте за отстъпки!
+                <p className="text-gray-600 mb-4">
+                  Всички партньори в директорията преминават проверка за качество и безопасност.
                 </p>
                 <div className="space-y-3">
-                  <div className="flex items-center gap-3 text-gray-700">
-                    <CheckCircle className="h-5 w-5 text-amber-600" />
-                    <span>1 лев = 1 CozyCoins</span>
+                  <div className="flex items-start gap-3 text-gray-700">
+                    <CheckCircle className="h-5 w-5 text-orange-600 mt-0.5 flex-shrink-0" />
+                    <span>Проверени ветеринарни клиники и салони</span>
                   </div>
-                  <div className="flex items-center gap-3 text-gray-700">
-                    <CheckCircle className="h-5 w-5 text-amber-600" />
-                    <span>100 монети = 5 лева отстъпка</span>
+                  <div className="flex items-start gap-3 text-gray-700">
+                    <CheckCircle className="h-5 w-5 text-orange-600 mt-0.5 flex-shrink-0" />
+                    <span>Актуални контакти и работно време</span>
                   </div>
-                  <div className="flex items-center gap-3 text-gray-700">
-                    <CheckCircle className="h-5 w-5 text-amber-600" />
-                    <span>Бонус монети за PRO членове</span>
+                  <div className="flex items-start gap-3 text-gray-700">
+                    <CheckCircle className="h-5 w-5 text-orange-600 mt-0.5 flex-shrink-0" />
+                    <span>Мнения и оценки от други стопани</span>
                   </div>
                 </div>
               </div>

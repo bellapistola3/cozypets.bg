@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { MessageCircle, X, Send, Loader2, Bot } from 'lucide-react';
+import { X, Send, Loader2, Bot } from 'lucide-react';
 import { askSiteAssistant } from '../lib/aiServices';
+import AIIcon from '../assets/icons/ai/ai.svg';
 
 interface Message {
   id: string;
@@ -81,10 +82,11 @@ const AIAssistantChat: React.FC = () => {
     return (
       <button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-6 right-6 z-50 bg-gradient-to-r from-green-500 to-green-600 text-white p-4 rounded-full shadow-2xl hover:from-green-600 hover:to-green-700 transition-all duration-300 transform hover:scale-110 group"
+        className="fixed bottom-20 right-5 md:bottom-20 md:right-5 z-50 bg-gradient-to-r from-green-500 to-green-600 text-white p-4 rounded-full shadow-2xl hover:from-green-600 hover:to-green-700 transition-all duration-300 transform hover:scale-110 group"
+        style={{ bottom: '80px', right: '20px' }}
         aria-label="Open AI Assistant"
       >
-        <MessageCircle className="h-6 w-6" />
+        <img src={AIIcon} className="w-7 h-7" alt="AI Assistant" />
         <span className="absolute -top-1 -right-1 bg-orange-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold animate-pulse">
           AI
         </span>
@@ -93,7 +95,7 @@ const AIAssistantChat: React.FC = () => {
   }
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 w-full max-w-md">
+    <div className="fixed z-50 w-full max-w-md" style={{ bottom: '80px', right: '20px' }}>
       <div className="bg-white rounded-2xl shadow-2xl border-2 border-green-200 flex flex-col h-[600px] max-h-[80vh]">
         <div className="bg-gradient-to-r from-green-500 to-green-600 text-white p-4 rounded-t-2xl flex items-center justify-between">
           <div className="flex items-center gap-3">

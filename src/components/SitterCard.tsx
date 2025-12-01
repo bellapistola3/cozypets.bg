@@ -1,5 +1,5 @@
 import React from 'react';
-import { Star, MapPin, Shield, Heart, MessageCircle } from 'lucide-react';
+import { Star, MapPin, Shield, Heart } from 'lucide-react';
 import { SitterWithDetails } from '../types';
 import Button from './common/Button';
 
@@ -76,9 +76,11 @@ const SitterCard: React.FC<SitterCardProps> = ({ sitter }) => {
 
         {/* Action buttons */}
         <div className="flex gap-2">
-          <Button className="flex-1 text-sm py-2">
-            <MessageCircle className="h-4 w-4 mr-2" />
-            Свържи се
+          <Button
+            className="flex-1 text-sm py-2"
+            onClick={() => window.location.href = `/#booking?sitter=${sitter.id}&location=${sitter.location}`}
+          >
+            Резервирай
           </Button>
           <button className="p-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors">
             <Heart className="h-5 w-5 text-gray-400 hover:text-red-500" />

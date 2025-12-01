@@ -1,10 +1,10 @@
 import React from 'react';
-import { Search, Filter } from 'lucide-react';
+import { Search } from 'lucide-react';
 import ServiceGrid from '../components/services/ServiceGrid';
 
 const ServicesDirectory: React.FC = () => {
   return (
-    <div className="min-h-screen bg-gradient-to-b from-orange-50 to-white">
+    <div className="min-h-screen bg-gradient-to-b from-orange-50 to-white pt-32">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="text-center mb-12">
           <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
@@ -24,10 +24,6 @@ const ServicesDirectory: React.FC = () => {
               className="w-full pl-12 pr-4 py-3 border-2 border-gray-200 rounded-lg focus:border-orange-500 focus:outline-none transition-colors"
             />
           </div>
-          <button className="px-6 py-3 bg-white border-2 border-gray-200 rounded-lg hover:border-orange-500 transition-colors flex items-center gap-2 justify-center">
-            <Filter className="h-5 w-5" />
-            Филтри
-          </button>
         </div>
 
         <ServiceGrid />

@@ -270,18 +270,24 @@ const PremiumMagazine: React.FC = () => {
           )}
 
           <div className="grid lg:grid-cols-2 gap-12 mb-16">
-            <div className="bg-white rounded-2xl shadow-xl p-8 border-2 border-orange-100">
-              <h3 className="text-2xl font-bold text-gray-900 mb-6 flex items-center gap-3">
-                <Building className="h-8 w-8 text-orange-600" />
-                Директория на услуги
-              </h3>
+            <div className="relative rounded-2xl shadow-xl overflow-hidden border-2 border-orange-100">
+              <img
+                src="/src/components/assets/cozy pets logo.png"
+                alt="CozyPets Logo"
+                className="absolute inset-0 w-full h-full object-cover opacity-20"
+              />
+              <div className="relative bg-gradient-to-br from-amber-500/90 to-orange-600/90 backdrop-blur-sm p-8">
+                <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                  <Building className="h-8 w-8 text-white" />
+                  Директория на услуги
+                </h3>
 
-              <div className="space-y-4 mb-6">
-                {clinics.map((clinic) => (
-                  <div
-                    key={clinic.id}
-                    className="bg-gradient-to-br from-gray-50 to-white rounded-xl p-4 border-2 border-gray-100 hover:border-orange-200 transition-all"
-                  >
+                <div className="space-y-4 mb-6">
+                  {clinics.map((clinic) => (
+                    <div
+                      key={clinic.id}
+                      className="interactive-card neon-glow bg-white/95 backdrop-blur-sm rounded-xl p-4 border-2 border-white/50"
+                    >
                     <div className="flex items-start justify-between mb-2">
                       <h4 className="font-bold text-gray-900">{clinic.name}</h4>
                       <div className="flex items-center gap-1 bg-amber-100 px-2 py-1 rounded">
@@ -318,25 +324,26 @@ const PremiumMagazine: React.FC = () => {
                       ))}
                     </div>
                   </div>
-                ))}
-              </div>
+                  ))}
+                </div>
 
-              <div className="space-y-3">
-                <div className="flex items-center gap-3 text-gray-700">
-                  <CheckCircle className="h-5 w-5 text-green-600" />
-                  <span>Ветеринарни клиники в цяла България</span>
-                </div>
-                <div className="flex items-center gap-3 text-gray-700">
-                  <CheckCircle className="h-5 w-5 text-green-600" />
-                  <span>Груминг салони и козметични процедури</span>
-                </div>
-                <div className="flex items-center gap-3 text-gray-700">
-                  <CheckCircle className="h-5 w-5 text-green-600" />
-                  <span>Зоо магазини с доставка</span>
-                </div>
-                <div className="flex items-center gap-3 text-gray-700">
-                  <CheckCircle className="h-5 w-5 text-green-600" />
-                  <span>Специалисти по обучение и дресировка</span>
+                <div className="space-y-3">
+                  <div className="flex items-center gap-3 text-white">
+                    <CheckCircle className="h-5 w-5 text-white" />
+                    <span>Ветеринарни клиники в цяла България</span>
+                  </div>
+                  <div className="flex items-center gap-3 text-white">
+                    <CheckCircle className="h-5 w-5 text-white" />
+                    <span>Груминг салони и козметични процедури</span>
+                  </div>
+                  <div className="flex items-center gap-3 text-white">
+                    <CheckCircle className="h-5 w-5 text-white" />
+                    <span>Зоо магазини с доставка</span>
+                  </div>
+                  <div className="flex items-center gap-3 text-white">
+                    <CheckCircle className="h-5 w-5 text-white" />
+                    <span>Специалисти по обучение и дресировка</span>
+                  </div>
                 </div>
               </div>
             </div>

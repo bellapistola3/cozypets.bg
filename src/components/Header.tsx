@@ -35,7 +35,7 @@ const Header: React.FC = () => {
 
   return (
     <>
-      <header className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-green-50 to-green-100 shadow-lg h-24">
+      <header className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-green-200 to-green-300 shadow-lg h-24">
         <div className="container mx-auto px-8 h-full max-w-[1600px]">
           
           {/* DESKTOP ВЕРСИЯ */}

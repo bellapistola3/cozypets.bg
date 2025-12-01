@@ -6,6 +6,7 @@ import Button from './common/Button';
 import SitterCard from './SitterCard';
 import InteractiveMap from './InteractiveMap';
 import PersonalizedRecommendations from './PersonalizedRecommendations';
+import { PetTypeSelect } from './PetTypeSelect';
 import { dbHelpers } from '../lib/supabase';
 import { useAuth } from '../contexts/AuthContext';
 
@@ -14,6 +15,7 @@ const SitterSearch: React.FC = () => {
   const serviceId = searchParams.get('service');
 
   const [filters, setFilters] = useState<SitterSearchFilters>({});
+  const [petType, setPetType] = useState('');
   const [sitters, setSitters] = useState<SitterWithDetails[]>([]);
   const [loading, setLoading] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
@@ -118,6 +120,9 @@ const SitterSearch: React.FC = () => {
           </div>
 
           <div className="grid md:grid-cols-4 gap-4 mt-4">
+            <div>
+              <PetTypeSelect value={petType} onChange={setPetType} />
+            </div>
             <div className="flex items-end">
               <Button onClick={handleSearch} className="w-full">
                 <Search className="h-5 w-5 mr-2" />

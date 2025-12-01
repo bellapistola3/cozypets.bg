@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar, Clock, CheckCircle, User, Mail, Phone, Heart, MapPin, Star, Sparkles, AlertCircle, PawPrint } from 'lucide-react';
+import { Calendar, Clock, CheckCircle, User, Mail, Phone, Heart, MapPin, Star, Sparkles, AlertCircle, PawPrint, Dog, Cat, Bird, Rabbit, Turtle } from 'lucide-react';
 import SectionHeading from './common/SectionHeading';
 import Button from './common/Button';
 import { useAuth } from '../contexts/AuthContext';
@@ -191,12 +191,12 @@ const Booking: React.FC = () => {
   ];
 
   const petTypes = [
-    { value: 'dog', label: 'Куче', icon: '/src/assets/icons/animals/dog.svg' },
-    { value: 'cat', label: 'Котка', icon: '/src/assets/icons/animals/cat.svg' },
-    { value: 'bird', label: 'Птица', icon: '/src/assets/icons/animals/bird.svg' },
-    { value: 'small-mammal', label: 'Дребен бозайник', icon: '/src/assets/icons/animals/rabbit.svg' },
-    { value: 'reptile', label: 'Влечуго', icon: '/src/assets/icons/animals/reptile.svg' },
-    { value: 'other', label: 'Друг', icon: '/src/assets/icons/animals/other.svg' },
+    { value: 'dog', label: 'Куче', IconComponent: Dog },
+    { value: 'cat', label: 'Котка', IconComponent: Cat },
+    { value: 'bird', label: 'Птица', IconComponent: Bird },
+    { value: 'small-mammal', label: 'Дребен бозайник', IconComponent: Rabbit },
+    { value: 'reptile', label: 'Влечуго', IconComponent: Turtle },
+    { value: 'other', label: 'Друг', IconComponent: PawPrint },
   ];
 
   const getMinDate = () => {
@@ -547,29 +547,32 @@ const Booking: React.FC = () => {
                         Вид домашен любимец *
                       </label>
                       <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                        {petTypes.map((type) => (
-                          <label
-                            key={type.value}
-                            className={`cursor-pointer border-2 rounded-xl p-4 text-center transition-all duration-300 hover:shadow-lg ${
-                              formData.petType === type.value
-                                ? 'border-green-500 bg-green-50 shadow-md'
-                                : 'border-gray-200 hover:border-green-300'
-                            }`}
-                          >
-                            <input
-                              type="radio"
-                              name="petType"
-                              value={type.value}
-                              checked={formData.petType === type.value}
-                              onChange={handleChange}
-                              className="sr-only"
-                            />
-                            <div className="mb-2 flex justify-center">
-                              <img src={type.icon} alt={type.label} className="h-12 w-12 text-green-600" style={{ filter: 'invert(44%) sepia(96%) saturate(451%) hue-rotate(88deg) brightness(94%) contrast(90%)' }} />
-                            </div>
-                            <div className="font-medium text-gray-700">{type.label}</div>
-                          </label>
-                        ))}
+                        {petTypes.map((type) => {
+                          const IconComponent = type.IconComponent;
+                          return (
+                            <label
+                              key={type.value}
+                              className={`cursor-pointer border-2 rounded-xl p-4 text-center transition-all duration-300 hover:shadow-lg ${
+                                formData.petType === type.value
+                                  ? 'border-green-500 bg-green-50 shadow-md'
+                                  : 'border-gray-200 hover:border-green-300'
+                              }`}
+                            >
+                              <input
+                                type="radio"
+                                name="petType"
+                                value={type.value}
+                                checked={formData.petType === type.value}
+                                onChange={handleChange}
+                                className="sr-only"
+                              />
+                              <div className="mb-2 flex justify-center">
+                                <IconComponent className={`w-6 h-6 ${formData.petType === type.value ? 'text-green-600' : 'text-gray-600'}`} />
+                              </div>
+                              <div className="font-medium text-gray-700">{type.label}</div>
+                            </label>
+                          );
+                        })}
                       </div>
                     </div>
 

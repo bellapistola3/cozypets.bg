@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { X, Send, Loader2, Bot } from 'lucide-react';
+import { X, Send, Loader2, Sparkles } from 'lucide-react';
 import { askSiteAssistant } from '../lib/aiServices';
-import AIIcon from '../assets/icons/ai/ai.svg';
 
 interface Message {
   id: string;
@@ -24,7 +23,7 @@ const AIAssistantChat: React.FC = () => {
       setMessages([{
         id: '1',
         role: 'assistant',
-        content: 'Здравейте! Аз съм AI асистентът на Cozy Pets by Alice. Как мога да ви помогна днес?',
+        content: 'Здравейте! Аз съм Alice – вашият AI помощник на Cozy Pets by Alice. Как мога да ви помогна днес?',
         timestamp: new Date()
       }]);
     }
@@ -82,29 +81,26 @@ const AIAssistantChat: React.FC = () => {
     return (
       <button
         onClick={() => setIsOpen(true)}
-        className="fixed bottom-20 right-5 md:bottom-20 md:right-5 z-50 bg-gradient-to-r from-green-500 to-green-600 text-white p-4 rounded-full shadow-2xl hover:from-green-600 hover:to-green-700 transition-all duration-300 transform hover:scale-110 group"
+        className="fixed z-50 bg-gradient-to-r from-green-500 to-green-600 text-white p-4 rounded-full shadow-2xl hover:from-green-600 hover:to-green-700 transition-all duration-300 transform hover:scale-110 group"
         style={{ bottom: '80px', right: '20px' }}
-        aria-label="Open AI Assistant"
+        aria-label="Open Alice"
       >
-        <img src={AIIcon} className="w-7 h-7" alt="AI Assistant" />
-        <span className="absolute -top-1 -right-1 bg-orange-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center font-bold animate-pulse">
-          AI
-        </span>
+        <Sparkles className="w-6 h-6" />
       </button>
     );
   }
 
   return (
-    <div className="fixed z-50 w-full max-w-md" style={{ bottom: '80px', right: '20px' }}>
+    <div className="fixed z-50 w-full max-w-md" style={{ bottom: '90px', right: '20px' }}>
       <div className="bg-white rounded-2xl shadow-2xl border-2 border-green-200 flex flex-col h-[600px] max-h-[80vh]">
         <div className="bg-gradient-to-r from-green-500 to-green-600 text-white p-4 rounded-t-2xl flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="bg-white/20 p-2 rounded-full">
-              <Bot className="h-5 w-5" />
+              <Sparkles className="h-5 w-5" />
             </div>
             <div>
-              <h3 className="font-bold text-lg">Cozy AI</h3>
-              <p className="text-xs text-green-100">Помощник на Cozy Pets</p>
+              <h3 className="font-bold text-lg">Alice</h3>
+              <p className="text-xs text-green-100">вашият Cozy Pets помощник</p>
             </div>
           </div>
           <button

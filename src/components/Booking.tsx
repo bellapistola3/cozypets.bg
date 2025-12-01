@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Calendar, Clock, CheckCircle, User, Mail, Phone, Heart, MapPin, Star, Sparkles, AlertCircle, PawPrint, Dog, Cat, Bird, Rabbit, Turtle } from 'lucide-react';
+import { Calendar, Clock, CheckCircle, User, Mail, Phone, Heart, MapPin, Star, Sparkles, AlertCircle, PawPrint } from 'lucide-react';
 import SectionHeading from './common/SectionHeading';
 import Button from './common/Button';
 import { useAuth } from '../contexts/AuthContext';
@@ -191,12 +191,12 @@ const Booking: React.FC = () => {
   ];
 
   const petTypes = [
-    { value: 'dog', label: 'Куче', IconComponent: Dog },
-    { value: 'cat', label: 'Котка', IconComponent: Cat },
-    { value: 'bird', label: 'Птица', IconComponent: Bird },
-    { value: 'small-mammal', label: 'Дребен бозайник', IconComponent: Rabbit },
-    { value: 'reptile', label: 'Влечуго', IconComponent: Turtle },
-    { value: 'other', label: 'Друг', IconComponent: PawPrint },
+    { value: 'dog', label: 'Куче', iconUrl: 'https://twemoji.maxcdn.com/v/latest/svg/1f415.svg' },
+    { value: 'cat', label: 'Котка', iconUrl: 'https://twemoji.maxcdn.com/v/latest/svg/1f431.svg' },
+    { value: 'bird', label: 'Птица', iconUrl: 'https://twemoji.maxcdn.com/v/latest/svg/1f426.svg' },
+    { value: 'small-mammal', label: 'Дребен бозайник', iconUrl: 'https://twemoji.maxcdn.com/v/latest/svg/1f439.svg' },
+    { value: 'reptile', label: 'Влечуго', iconUrl: 'https://twemoji.maxcdn.com/v/latest/svg/1f98e.svg' },
+    { value: 'other', label: 'Друг', iconUrl: 'https://twemoji.maxcdn.com/v/latest/svg/1f43e.svg' },
   ];
 
   const getMinDate = () => {
@@ -547,32 +547,33 @@ const Booking: React.FC = () => {
                         Вид домашен любимец *
                       </label>
                       <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
-                        {petTypes.map((type) => {
-                          const IconComponent = type.IconComponent;
-                          return (
-                            <label
-                              key={type.value}
-                              className={`cursor-pointer border-2 rounded-xl p-4 text-center transition-all duration-300 hover:shadow-lg ${
-                                formData.petType === type.value
-                                  ? 'border-green-500 bg-green-50 shadow-md'
-                                  : 'border-gray-200 hover:border-green-300'
-                              }`}
-                            >
-                              <input
-                                type="radio"
-                                name="petType"
-                                value={type.value}
-                                checked={formData.petType === type.value}
-                                onChange={handleChange}
-                                className="sr-only"
+                        {petTypes.map((type) => (
+                          <label
+                            key={type.value}
+                            className={`cursor-pointer border-2 rounded-xl p-4 transition-all duration-300 hover:shadow-lg ${
+                              formData.petType === type.value
+                                ? 'border-green-500 bg-green-50 shadow-md'
+                                : 'border-gray-200 hover:border-green-300'
+                            }`}
+                          >
+                            <input
+                              type="radio"
+                              name="petType"
+                              value={type.value}
+                              checked={formData.petType === type.value}
+                              onChange={handleChange}
+                              className="sr-only"
+                            />
+                            <div className="flex flex-col items-center gap-1">
+                              <img
+                                src={type.iconUrl}
+                                alt={type.label}
+                                className="w-9 h-9"
                               />
-                              <div className="mb-2 flex justify-center">
-                                <IconComponent className={`w-6 h-6 ${formData.petType === type.value ? 'text-green-600' : 'text-gray-600'}`} />
-                              </div>
-                              <div className="font-medium text-gray-700">{type.label}</div>
-                            </label>
-                          );
-                        })}
+                              <span className="font-medium text-gray-700">{type.label}</span>
+                            </div>
+                          </label>
+                        ))}
                       </div>
                     </div>
 

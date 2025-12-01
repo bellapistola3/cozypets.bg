@@ -1,6 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { X, Send, Loader2, Sparkles } from 'lucide-react';
 import { askSiteAssistant } from '../lib/aiServices';
+import AIIcon from '../assets/icons/ai/ai.svg';
 
 interface Message {
   id: string;
@@ -81,11 +82,11 @@ const AIAssistantChat: React.FC = () => {
     return (
       <button
         onClick={() => setIsOpen(true)}
-        className="fixed z-50 bg-gradient-to-r from-green-500 to-green-600 text-white p-4 rounded-full shadow-2xl hover:from-green-600 hover:to-green-700 transition-all duration-300 transform hover:scale-110 group"
+        className="fixed z-50 p-1 rounded-full shadow-2xl hover:shadow-3xl transition-all duration-300 transform hover:scale-110"
         style={{ bottom: '80px', right: '20px' }}
-        aria-label="Open Alice"
+        aria-label="Отвори Alice (AI чат)"
       >
-        <Sparkles className="w-6 h-6" />
+        <img src={AIIcon} alt="Alice AI" className="w-16 h-16" />
       </button>
     );
   }

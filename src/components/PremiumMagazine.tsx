@@ -341,14 +341,6 @@ const PremiumMagazine: React.FC = () => {
               </div>
             </div>
 
-            <div className="rounded-2xl shadow-xl overflow-hidden border-2 border-orange-100">
-              <img
-                src="/src/components/assets/cozy pets logo.png"
-                alt="CozyPets Logo"
-                className="w-full h-full object-cover"
-              />
-            </div>
-
             <div className="bg-white rounded-2xl shadow-xl p-8 border-2 border-orange-100">
               <h3 className="text-2xl font-bold text-gray-900 mb-6">
                 Какво включва PRO абонаментът?

@@ -201,7 +201,7 @@ const PremiumMagazine: React.FC = () => {
               <div className="mt-6 inline-flex items-center gap-2 bg-amber-50 border-2 border-amber-200 px-6 py-3 rounded-xl">
                 <Lock className="h-5 w-5 text-amber-600" />
                 <p className="text-amber-800 font-medium">
-                  Надградете до PRO акаунт за само 5€/месец за пълен достъп
+                  Надградете до PRO акаунт за само 9,99€/месец за пълен достъп
                 </p>
               </div>
             )}
@@ -359,7 +359,7 @@ const PremiumMagazine: React.FC = () => {
                 <div className="flex items-center gap-3 mb-3">
                   <Sparkles className="h-8 w-8" />
                   <div>
-                    <div className="text-3xl font-bold">5€ / месец</div>
+                    <div className="text-3xl font-bold">9,99€ / месец</div>
                     <div className="text-amber-100">Пълен достъп до всички материали</div>
                   </div>
                 </div>
@@ -412,7 +412,7 @@ const PremiumMagazine: React.FC = () => {
               Инвестирайте в здравето на любимеца си
             </h3>
             <p className="text-xl text-gray-600 mb-8 max-w-2xl mx-auto">
-              За само 5€ на месец получавате достъп до експертни знания, полезни ресурси
+              За само 9,99€ на месец получавате достъп до експертни знания, полезни ресурси
               и цялостна подкрепа за грижата за вашия домашен любимец.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">

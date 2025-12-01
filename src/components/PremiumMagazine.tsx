@@ -270,13 +270,8 @@ const PremiumMagazine: React.FC = () => {
           )}
 
           <div className="grid lg:grid-cols-2 gap-12 mb-16">
-            <div className="relative rounded-2xl shadow-xl overflow-hidden border-2 border-orange-100">
-              <img
-                src="/src/components/assets/cozy pets logo.png"
-                alt="CozyPets Logo"
-                className="absolute inset-0 w-full h-full object-cover opacity-30"
-              />
-              <div className="relative bg-gradient-to-br from-amber-500/70 to-orange-600/70 p-8">
+            <div className="rounded-2xl shadow-xl overflow-hidden border-2 border-orange-100">
+              <div className="bg-gradient-to-br from-amber-500 to-orange-600 p-8">
                 <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
                   <Building className="h-8 w-8 text-white" />
                   Директория на услуги
@@ -286,7 +281,7 @@ const PremiumMagazine: React.FC = () => {
                   {clinics.map((clinic) => (
                     <div
                       key={clinic.id}
-                      className="interactive-card neon-glow bg-white/95 backdrop-blur-sm rounded-xl p-4 border-2 border-white/50"
+                      className="interactive-card neon-glow bg-white rounded-xl p-4 border-2 border-white/50"
                     >
                     <div className="flex items-start justify-between mb-2">
                       <h4 className="font-bold text-gray-900">{clinic.name}</h4>
@@ -346,6 +341,12 @@ const PremiumMagazine: React.FC = () => {
                   </div>
                 </div>
               </div>
+
+              <img
+                src="/src/components/assets/cozy pets logo.png"
+                alt="CozyPets Logo"
+                className="w-full h-64 object-cover"
+              />
             </div>
 
             <div className="bg-white rounded-2xl shadow-xl p-8 border-2 border-orange-100">

@@ -270,82 +270,82 @@ const PremiumMagazine: React.FC = () => {
           )}
 
           <div className="grid lg:grid-cols-2 gap-12 mb-16">
-            <div className="rounded-2xl shadow-xl overflow-hidden border-2 border-orange-100">
-              <div className="bg-gradient-to-br from-amber-500 to-orange-600 p-8">
-                <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
-                  <Building className="h-8 w-8 text-white" />
-                  Директория на услуги
-                </h3>
+            <div className="bg-gradient-to-br from-amber-500 to-orange-600 rounded-2xl shadow-xl p-8 border-2 border-orange-100">
+              <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                <Building className="h-8 w-8 text-white" />
+                Директория на услуги
+              </h3>
 
-                <div className="space-y-4 mb-6">
-                  {clinics.map((clinic) => (
-                    <div
-                      key={clinic.id}
-                      className="interactive-card neon-glow bg-white rounded-xl p-4 border-2 border-white/50"
-                    >
-                    <div className="flex items-start justify-between mb-2">
-                      <h4 className="font-bold text-gray-900">{clinic.name}</h4>
-                      <div className="flex items-center gap-1 bg-amber-100 px-2 py-1 rounded">
-                        <Star className="h-4 w-4 text-amber-600 fill-amber-600" />
-                        <span className="text-sm font-bold text-amber-700">{clinic.rating}</span>
-                      </div>
-                    </div>
-
-                    <div className="space-y-2 text-sm text-gray-600">
-                      <div className="flex items-center gap-2">
-                        <MapPin className="h-4 w-4 text-gray-400" />
-                        <span>{clinic.city} - {clinic.address}</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Phone className="h-4 w-4 text-gray-400" />
-                        <span>{clinic.phone}</span>
-                      </div>
-                      {clinic.emergency_available && (
-                        <div className="inline-flex items-center gap-1 bg-red-100 text-red-700 px-2 py-1 rounded text-xs font-semibold">
-                          <Clock className="h-3 w-3" />
-                          24/7 Спешна помощ
-                        </div>
-                      )}
-                    </div>
-
-                    <div className="flex flex-wrap gap-2 mt-3">
-                      {clinic.services.slice(0, 3).map((service, idx) => (
-                        <span
-                          key={idx}
-                          className="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs"
-                        >
-                          {service}
-                        </span>
-                      ))}
+              <div className="space-y-4 mb-6">
+                {clinics.map((clinic) => (
+                  <div
+                    key={clinic.id}
+                    className="interactive-card neon-glow bg-white rounded-xl p-4 border-2 border-white/50"
+                  >
+                  <div className="flex items-start justify-between mb-2">
+                    <h4 className="font-bold text-gray-900">{clinic.name}</h4>
+                    <div className="flex items-center gap-1 bg-amber-100 px-2 py-1 rounded">
+                      <Star className="h-4 w-4 text-amber-600 fill-amber-600" />
+                      <span className="text-sm font-bold text-amber-700">{clinic.rating}</span>
                     </div>
                   </div>
-                  ))}
-                </div>
 
-                <div className="space-y-3">
-                  <div className="flex items-center gap-3 text-white">
-                    <CheckCircle className="h-5 w-5 text-white" />
-                    <span>Ветеринарни клиники в цяла България</span>
+                  <div className="space-y-2 text-sm text-gray-600">
+                    <div className="flex items-center gap-2">
+                      <MapPin className="h-4 w-4 text-gray-400" />
+                      <span>{clinic.city} - {clinic.address}</span>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Phone className="h-4 w-4 text-gray-400" />
+                      <span>{clinic.phone}</span>
+                    </div>
+                    {clinic.emergency_available && (
+                      <div className="inline-flex items-center gap-1 bg-red-100 text-red-700 px-2 py-1 rounded text-xs font-semibold">
+                        <Clock className="h-3 w-3" />
+                        24/7 Спешна помощ
+                      </div>
+                    )}
                   </div>
-                  <div className="flex items-center gap-3 text-white">
-                    <CheckCircle className="h-5 w-5 text-white" />
-                    <span>Груминг салони и козметични процедури</span>
-                  </div>
-                  <div className="flex items-center gap-3 text-white">
-                    <CheckCircle className="h-5 w-5 text-white" />
-                    <span>Зоо магазини с доставка</span>
-                  </div>
-                  <div className="flex items-center gap-3 text-white">
-                    <CheckCircle className="h-5 w-5 text-white" />
-                    <span>Специалисти по обучение и дресировка</span>
+
+                  <div className="flex flex-wrap gap-2 mt-3">
+                    {clinic.services.slice(0, 3).map((service, idx) => (
+                      <span
+                        key={idx}
+                        className="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs"
+                      >
+                        {service}
+                      </span>
+                    ))}
                   </div>
                 </div>
+                ))}
               </div>
 
+              <div className="space-y-3">
+                <div className="flex items-center gap-3 text-white">
+                  <CheckCircle className="h-5 w-5 text-white" />
+                  <span>Ветеринарни клиники в цяла България</span>
+                </div>
+                <div className="flex items-center gap-3 text-white">
+                  <CheckCircle className="h-5 w-5 text-white" />
+                  <span>Груминг салони и козметични процедури</span>
+                </div>
+                <div className="flex items-center gap-3 text-white">
+                  <CheckCircle className="h-5 w-5 text-white" />
+                  <span>Зоо магазини с доставка</span>
+                </div>
+                <div className="flex items-center gap-3 text-white">
+                  <CheckCircle className="h-5 w-5 text-white" />
+                  <span>Специалисти по обучение и дресировка</span>
+                </div>
+              </div>
+            </div>
+
+            <div className="rounded-2xl shadow-xl overflow-hidden border-2 border-orange-100">
               <img
                 src="/src/components/assets/cozy pets logo.png"
                 alt="CozyPets Logo"
-                className="w-full h-96 object-contain bg-white"
+                className="w-full h-full object-cover"
               />
             </div>
 

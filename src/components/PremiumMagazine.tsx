@@ -16,6 +16,8 @@ import {
   Building,
   TrendingUp,
   ChevronRight,
+  Coins,
+  Trophy,
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';

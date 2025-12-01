@@ -345,7 +345,7 @@ const PremiumMagazine: React.FC = () => {
               <img
                 src="/src/components/assets/cozy pets logo.png"
                 alt="CozyPets Logo"
-                className="w-full h-64 object-cover"
+                className="w-full h-96 object-contain bg-white"
               />
             </div>
 

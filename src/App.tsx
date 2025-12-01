@@ -26,6 +26,7 @@ import VeterinaryChat from './components/VeterinaryChat';
 import VeterinarySection from './components/VeterinarySection';
 import PremiumMagazine from './components/PremiumMagazine';
 import ServicesDirectory from './pages/ServicesDirectory';
+import AIAssistantChat from './components/AIAssistantChat';
 
 import DatabaseTest from './components/DatabaseTest';
 
@@ -35,6 +36,7 @@ function App() {
       <BrowserRouter>
         <ScrollToTop />
         <Header />
+        <AIAssistantChat />
 
         <Routes>
         {/* Начална страница */}

@@ -11,6 +11,9 @@ interface BookingFormData {
   phone: string;
   petName: string;
   petType: string;
+  petBreed: string;
+  petWeight: string;
+  petNeutered: string;
   service: string;
   date: string;
   time: string;
@@ -25,6 +28,9 @@ const Booking: React.FC = () => {
     phone: '',
     petName: '',
     petType: 'dog',
+    petBreed: '',
+    petWeight: '',
+    petNeutered: '',
     service: 'daily-walks',
     date: '',
     time: '',
@@ -78,7 +84,7 @@ const Booking: React.FC = () => {
         }
         return true;
       case 2:
-        if (!formData.petName || !formData.petType || !formData.service) {
+        if (!formData.petName || !formData.petType || !formData.petBreed || !formData.petWeight || !formData.petNeutered || !formData.service) {
           setError('Моля, попълнете всички полета за вашия домашен любимец.');
           return false;
         }
@@ -176,12 +182,12 @@ const Booking: React.FC = () => {
   ];
 
   const petTypes = [
-    { value: 'dog', label: 'Куче', icon: '🐕' },
-    { value: 'cat', label: 'Котка', icon: '🐈' },
-    { value: 'bird', label: 'Птица', icon: '🦜' },
-    { value: 'small-mammal', label: 'Дребен бозайник', icon: '🐹' },
-    { value: 'reptile', label: 'Влечуго', icon: '🦎' },
-    { value: 'other', label: 'Друг', icon: '🐾' },
+    { value: 'dog', label: 'Куче', icon: '/src/assets/icons/animals/dog.svg' },
+    { value: 'cat', label: 'Котка', icon: '/src/assets/icons/animals/cat.svg' },
+    { value: 'bird', label: 'Птица', icon: '/src/assets/icons/animals/bird.svg' },
+    { value: 'small-mammal', label: 'Дребен бозайник', icon: '/src/assets/icons/animals/rabbit.svg' },
+    { value: 'reptile', label: 'Влечуго', icon: '/src/assets/icons/animals/reptile.svg' },
+    { value: 'other', label: 'Друг', icon: '/src/assets/icons/animals/other.svg' },
   ];
 
   const getMinDate = () => {
@@ -388,6 +394,82 @@ const Booking: React.FC = () => {
                       />
                     </div>
 
+                    <div className="group">
+                      <label htmlFor="petBreed" className="block text-sm font-semibold text-gray-700 mb-2">
+                        Порода *
+                      </label>
+                      <input
+                        type="text"
+                        id="petBreed"
+                        name="petBreed"
+                        value={formData.petBreed}
+                        onChange={handleChange}
+                        required
+                        className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-green-100 focus:border-green-500 transition-all duration-300"
+                        placeholder="Например: Лабрадор, Персийска котка..."
+                      />
+                    </div>
+
+                    <div className="group">
+                      <label htmlFor="petWeight" className="block text-sm font-semibold text-gray-700 mb-2">
+                        Килограми *
+                      </label>
+                      <input
+                        type="number"
+                        id="petWeight"
+                        name="petWeight"
+                        value={formData.petWeight}
+                        onChange={handleChange}
+                        required
+                        min="0"
+                        step="0.1"
+                        className="w-full px-4 py-3 border-2 border-gray-200 rounded-xl focus:ring-4 focus:ring-green-100 focus:border-green-500 transition-all duration-300"
+                        placeholder="Например: 25"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-sm font-semibold text-gray-700 mb-3">
+                        Кастрирано ли е? *
+                      </label>
+                      <div className="flex gap-4">
+                        <label
+                          className={`cursor-pointer border-2 rounded-xl p-4 flex-1 text-center transition-all duration-300 hover:shadow-lg ${
+                            formData.petNeutered === 'yes'
+                              ? 'border-green-500 bg-green-50 shadow-md'
+                              : 'border-gray-200 hover:border-green-300'
+                          }`}
+                        >
+                          <input
+                            type="radio"
+                            name="petNeutered"
+                            value="yes"
+                            checked={formData.petNeutered === 'yes'}
+                            onChange={handleChange}
+                            className="sr-only"
+                          />
+                          <div className="font-medium text-gray-700">Да</div>
+                        </label>
+                        <label
+                          className={`cursor-pointer border-2 rounded-xl p-4 flex-1 text-center transition-all duration-300 hover:shadow-lg ${
+                            formData.petNeutered === 'no'
+                              ? 'border-green-500 bg-green-50 shadow-md'
+                              : 'border-gray-200 hover:border-green-300'
+                          }`}
+                        >
+                          <input
+                            type="radio"
+                            name="petNeutered"
+                            value="no"
+                            checked={formData.petNeutered === 'no'}
+                            onChange={handleChange}
+                            className="sr-only"
+                          />
+                          <div className="font-medium text-gray-700">Не</div>
+                        </label>
+                      </div>
+                    </div>
+
                     <div>
                       <label className="block text-sm font-semibold text-gray-700 mb-3">
                         Вид домашен любимец *
@@ -410,7 +492,9 @@ const Booking: React.FC = () => {
                               onChange={handleChange}
                               className="sr-only"
                             />
-                            <div className="text-4xl mb-2">{type.icon}</div>
+                            <div className="mb-2 flex justify-center">
+                              <img src={type.icon} alt={type.label} className="h-12 w-12 text-green-600" style={{ filter: 'invert(44%) sepia(96%) saturate(451%) hue-rotate(88deg) brightness(94%) contrast(90%)' }} />
+                            </div>
                             <div className="font-medium text-gray-700">{type.label}</div>
                           </label>
                         ))}

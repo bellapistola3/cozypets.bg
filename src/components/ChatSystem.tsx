@@ -7,15 +7,19 @@ interface ChatSystemProps {
   conversation: Conversation;
   currentUserId: string;
   onClose: () => void;
+  bookingStatus?: string;
+  paymentStatus?: string;
 }
 
-const ChatSystem: React.FC<ChatSystemProps> = ({ conversation, currentUserId, onClose }) => {
+const ChatSystem: React.FC<ChatSystemProps> = ({ conversation, currentUserId, onClose, bookingStatus, paymentStatus }) => {
   const [messages, setMessages] = useState<Message[]>([]);
   const [newMessage, setNewMessage] = useState('');
   const [loading, setLoading] = useState(false);
   const [chatStatus, setChatStatus] = useState({ canSend: true, isReadOnly: false, isBanned: false });
   const [filterWarning, setFilterWarning] = useState<string | null>(null);
   const messagesEndRef = useRef<HTMLDivElement>(null);
+
+  const isPaymentComplete = bookingStatus === 'confirmed' && (paymentStatus === 'completed' || paymentStatus === 'paid');
 
   // Mock messages for demonstration
   const mockMessages: Message[] = [
@@ -153,6 +157,32 @@ const ChatSystem: React.FC<ChatSystemProps> = ({ conversation, currentUserId, on
       return date.toLocaleDateString('bg-BG');
     }
   };
+
+  if (!isPaymentComplete) {
+    return (
+      <div className="fixed inset-0 bg-white z-50 flex flex-col items-center justify-center p-6">
+        <div className="max-w-md w-full bg-gradient-to-br from-orange-50 to-yellow-50 rounded-2xl p-8 shadow-2xl border-2 border-orange-200">
+          <div className="flex flex-col items-center text-center">
+            <div className="bg-orange-100 p-4 rounded-full mb-4">
+              <AlertTriangle className="h-12 w-12 text-orange-600" />
+            </div>
+            <h3 className="text-2xl font-bold text-gray-900 mb-3">
+              Чатът не е достъпен
+            </h3>
+            <p className="text-gray-700 mb-6">
+              Чатът ще бъде активиран след успешно заплащане на резервацията.
+            </p>
+            <button
+              onClick={onClose}
+              className="px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-xl font-semibold hover:from-green-600 hover:to-green-700 transition-all duration-300 shadow-lg"
+            >
+              Разбрах
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="fixed inset-0 bg-white z-50 flex flex-col">

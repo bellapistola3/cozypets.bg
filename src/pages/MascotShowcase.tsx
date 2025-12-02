@@ -9,10 +9,10 @@ const MascotShowcase: React.FC = () => {
       <div className="max-w-6xl mx-auto px-6 py-12">
         <div className="text-center mb-16">
           <h1 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
-            Meet Cozy & Luna 🐾
+            Запознайте се с Cozy & Luna 🐾
           </h1>
           <p className="text-xl text-gray-600 max-w-3xl mx-auto">
-            Your AI companions who guide you through the pet care journey with warmth, intelligence, and personality.
+            Вашите AI спътници, които ви водят през грижата за домашните любимци с топлина, интелигентност и личност.
           </p>
         </div>
 
@@ -21,12 +21,12 @@ const MascotShowcase: React.FC = () => {
             <CozyMascot variant="celebrate" size="large" />
             <h2 className="text-3xl font-bold text-gray-900 mt-6 mb-3">Cozy 🐶</h2>
             <p className="text-lg text-gray-700 mb-6">
-              The friendly, energetic guide who celebrates your matches and keeps you motivated
+              Приятелският, енергичен водач, който празнува съвпаденията ви и ви поддържа мотивирани
             </p>
             <div className="flex flex-wrap gap-2 justify-center">
-              <span className="cozy-tag">Helpful</span>
-              <span className="cozy-tag">Excited</span>
-              <span className="cozy-tag">Trustworthy</span>
+              <span className="cozy-tag">Полезен</span>
+              <span className="cozy-tag">Ентусиазиран</span>
+              <span className="cozy-tag">Надежден</span>
             </div>
           </div>
 
@@ -34,26 +34,26 @@ const MascotShowcase: React.FC = () => {
             <LunaMascot variant="insight" size="large" />
             <h2 className="text-3xl font-bold text-gray-900 mt-6 mb-3">Luna 🐱</h2>
             <p className="text-lg text-gray-700 mb-6">
-              The calm, intelligent analyst who provides deep insights and thoughtful recommendations
+              Спокойният, интелигентен анализатор, който предоставя задълбочени прозрения и премислени препоръки
             </p>
             <div className="flex flex-wrap gap-2 justify-center">
-              <span className="cozy-tag">Calm</span>
-              <span className="cozy-tag">Smart</span>
-              <span className="cozy-tag">Insightful</span>
+              <span className="cozy-tag">Спокоен</span>
+              <span className="cozy-tag">Умен</span>
+              <span className="cozy-tag">Проницателен</span>
             </div>
           </div>
         </div>
 
         <div className="mb-20">
           <h2 className="text-4xl font-bold text-gray-900 mb-8 text-center">
-            Emotion States ✨
+            Емоционални Състояния ✨
           </h2>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
             {[
-              { variant: 'idle' as const, label: 'Idle', desc: 'Gentle breathing' },
-              { variant: 'thinking' as const, label: 'Thinking', desc: 'AI processing' },
-              { variant: 'celebrate' as const, label: 'Celebrate', desc: 'Perfect match!' },
-              { variant: 'warning' as const, label: 'Warning', desc: 'Low compatibility' }
+              { variant: 'idle' as const, label: 'Спокоен', desc: 'Нежно дишане' },
+              { variant: 'thinking' as const, label: 'Мисли', desc: 'AI обработка' },
+              { variant: 'celebrate' as const, label: 'Празнува', desc: 'Перфектно!' },
+              { variant: 'warning' as const, label: 'Предупреждение', desc: 'Ниска съвместимост' }
             ].map((state, idx) => (
               <div key={idx} className="cozy-card text-center">
                 <CozyMascot variant={state.variant} size="medium" />
@@ -66,32 +66,32 @@ const MascotShowcase: React.FC = () => {
 
         <div className="mb-20">
           <h2 className="text-4xl font-bold text-gray-900 mb-8 text-center">
-            Viral UX Moments 🎬
+            Вирусни UX Моменти 🎬
           </h2>
           <div className="grid md:grid-cols-2 gap-8">
             {[
               {
-                title: 'Cozy Happy Jump',
-                desc: 'When AI finds a perfect match (90%+), Cozy jumps with joy and hearts float around',
-                trigger: 'Perfect match found',
+                title: 'Cozy Щастлив Скок',
+                desc: 'Когато AI намери перфектно съвпадение (90%+), Cozy скача от радост и сърца летят наоколо',
+                trigger: 'Намерено перфектно съвпадение',
                 icon: Heart
               },
               {
-                title: 'Luna Head Tilt',
-                desc: 'When AI confidence is below 60%, Luna tilts her head with curiosity',
-                trigger: 'Low confidence',
+                title: 'Luna Наклон на Глава',
+                desc: 'Когато AI увереността е под 60%, Luna наклонява глава с любопитство',
+                trigger: 'Ниска увереност',
                 icon: Sparkles
               },
               {
-                title: 'Paw Reveal Animation',
-                desc: 'Soft paw overlay that fades to reveal the Match Center',
-                trigger: 'Page load',
+                title: 'Анимация с Лапа',
+                desc: 'Меко наслоение с лапа, което изчезва и разкрива Центъра',
+                trigger: 'Зареждане на страница',
                 icon: Sparkles
               },
               {
-                title: 'Magic Swipe',
-                desc: 'AutoBookEngine panel slides up with sparkles when best sitter is selected',
-                trigger: 'Auto-booking',
+                title: 'Магическо Плъзгане',
+                desc: 'Панелът за авто-резервация излиза нагоре с блясъци',
+                trigger: 'Авто-резервация',
                 icon: Sparkles
               }
             ].map((moment, idx) => (
@@ -102,7 +102,7 @@ const MascotShowcase: React.FC = () => {
                 <h3 className="text-xl font-bold text-gray-900 mb-2">{moment.title}</h3>
                 <p className="text-gray-700 mb-3">{moment.desc}</p>
                 <div className="text-sm text-purple-600 font-semibold">
-                  Triggers: {moment.trigger}
+                  Активира: {moment.trigger}
                 </div>
               </div>
             ))}
@@ -110,9 +110,9 @@ const MascotShowcase: React.FC = () => {
         </div>
 
         <div className="bg-gradient-to-r from-pink-600 to-purple-600 rounded-3xl p-12 text-center text-white">
-          <h2 className="text-4xl font-bold mb-4">Brand Identity</h2>
+          <h2 className="text-4xl font-bold mb-4">Бранд Идентичност</h2>
           <p className="text-xl mb-8 max-w-3xl mx-auto opacity-90">
-            Cozy & Luna are more than mascots — they're the emotional center of the platform. They build trust, create memorable moments, and make pet care feel personal and magical.
+            Cozy & Luna са повече от маскоти — те са емоционалният център на платформата. Те изграждат доверие, създават запомнящи се моменти и правят грижата за домашните любимци лична и магическа.
           </p>
           <div className="flex justify-center gap-6">
             <CozyMascot variant="idle" size="medium" />

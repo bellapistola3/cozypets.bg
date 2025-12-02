@@ -24,14 +24,14 @@ const Home: React.FC = () => {
         <div className="relative max-w-7xl mx-auto px-6 py-20 grid lg:grid-cols-2 gap-12 items-center">
           <div className="animate-slideUp">
             <h1 className="text-5xl md:text-6xl lg:text-7xl font-bold text-gray-900 mb-6 leading-tight">
-              Find the Perfect Care for Your Pet —{' '}
+              Намерете перфектната грижа за вашия любимец —{' '}
               <span className="bg-gradient-to-r from-pink-600 via-purple-600 to-blue-600 bg-clip-text text-transparent">
-                Powered by AI
+                с AI технология
               </span>
             </h1>
 
             <p className="text-xl md:text-2xl text-gray-700 mb-10 leading-relaxed">
-              Smart matching. Emotional insights. Real sitters who truly care.
+              Интелигентно съвпадение. Емоционални прозрения. Истински грижовни гледачи.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-4">
@@ -39,7 +39,7 @@ const Home: React.FC = () => {
                 onClick={() => navigate('/match')}
                 className="cozy-button-primary text-xl px-10 py-5 flex items-center justify-center gap-2 group"
               >
-                <span>Launch AI Match Center</span>
+                <span>Стартирай AI Център за Съвпадения</span>
                 <Sparkles className="w-6 h-6 group-hover:rotate-12 transition-transform" />
               </button>
 
@@ -47,18 +47,18 @@ const Home: React.FC = () => {
                 onClick={scrollToMascots}
                 className="cozy-button-secondary text-xl px-10 py-5"
               >
-                Meet Cozy & Luna
+                Запознай се с Cozy & Luna
               </button>
             </div>
 
             <div className="mt-8 flex flex-wrap gap-6 text-gray-600">
               <div className="flex items-center gap-2">
                 <CheckCircle className="w-5 h-5 text-green-600" />
-                <span>No credit card required</span>
+                <span>Без кредитна карта</span>
               </div>
               <div className="flex items-center gap-2">
                 <CheckCircle className="w-5 h-5 text-green-600" />
-                <span>Instant AI matching</span>
+                <span>Моментално AI съвпадение</span>
               </div>
             </div>
           </div>
@@ -74,25 +74,25 @@ const Home: React.FC = () => {
 
               <div className="text-center mb-6">
                 <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                  Your AI Companions 🐾
+                  Вашите AI Спътници 🐾
                 </h3>
                 <p className="text-gray-600">
-                  Cozy & Luna will guide you to the perfect sitter match
+                  Cozy & Luna ще ви насочат към перфектния гледач
                 </p>
               </div>
 
               <div className="grid grid-cols-3 gap-4 bg-gradient-to-r from-pink-50 to-purple-50 rounded-2xl p-4">
                 <div className="text-center">
                   <div className="text-3xl font-bold text-pink-600">90%</div>
-                  <div className="text-xs text-gray-600">AI Accuracy</div>
+                  <div className="text-xs text-gray-600">AI Точност</div>
                 </div>
                 <div className="text-center">
                   <div className="text-3xl font-bold text-purple-600">60s</div>
-                  <div className="text-xs text-gray-600">Match Time</div>
+                  <div className="text-xs text-gray-600">Време за съвпадение</div>
                 </div>
                 <div className="text-center">
                   <div className="text-3xl font-bold text-blue-600">5000+</div>
-                  <div className="text-xs text-gray-600">Sitters</div>
+                  <div className="text-xs text-gray-600">Гледачи</div>
                 </div>
               </div>
             </div>
@@ -105,22 +105,22 @@ const Home: React.FC = () => {
           <div className="grid lg:grid-cols-2 gap-12 items-center">
             <div className="animate-fadeIn">
               <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
-                Why Cozy Pets Exists
+                Защо съществува Cozy Pets
               </h2>
               <p className="text-xl text-gray-700 mb-6 leading-relaxed">
-                Pets are family. We built Cozy Pets to help every owner feel confident and supported — with smart matching, behavioral insights, and personalized care recommendations.
+                Домашните любимци са семейство. Създадохме Cozy Pets, за да помогнем на всеки стопанин да се чувства уверен и подкрепен — с интелигентно съвпадение, поведенчески анализ и персонализирани препоръки.
               </p>
               <p className="text-lg text-gray-600 leading-relaxed">
-                Our AI doesn't just match by location. It understands your pet's personality, needs, and emotional requirements to find the perfect caregiver.
+                Нашият AI не просто съвпада по локация. Той разбира личността, нуждите и емоционалните изисквания на вашия любимец, за да намери перфектния гледач.
               </p>
             </div>
 
             <div className="grid grid-cols-2 gap-6">
               {[
-                { icon: Sparkles, title: 'AI Matching', desc: 'Intelligent compatibility scoring', color: 'from-yellow-400 to-orange-400' },
-                { icon: Brain, title: 'Behavioral Insights', desc: 'Deep pet needs analysis', color: 'from-purple-400 to-pink-400' },
-                { icon: Shield, title: 'Trusted Sitters', desc: '100% verified & reviewed', color: 'from-green-400 to-emerald-400' },
-                { icon: Heart, title: 'Stress-free Booking', desc: 'One-click reservations', color: 'from-blue-400 to-cyan-400' }
+                { icon: Sparkles, title: 'AI Съвпадение', desc: 'Интелигентно оценяване на съвместимост', color: 'from-yellow-400 to-orange-400' },
+                { icon: Brain, title: 'Поведенчески Анализ', desc: 'Задълбочен анализ на нуждите', color: 'from-purple-400 to-pink-400' },
+                { icon: Shield, title: 'Проверени Гледачи', desc: '100% проверени и оценени', color: 'from-green-400 to-emerald-400' },
+                { icon: Heart, title: 'Лесна Резервация', desc: 'Резервация с 1 клик', color: 'from-blue-400 to-cyan-400' }
               ].map((item, idx) => (
                 <div key={idx} className="cozy-card hover:scale-105 transition-transform">
                   <div className={`w-14 h-14 bg-gradient-to-br ${item.color} rounded-2xl flex items-center justify-center mb-4`}>
@@ -139,42 +139,42 @@ const Home: React.FC = () => {
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              Premium AI Features 🌟
+              Премиум AI Функции 🌟
             </h2>
             <p className="text-xl text-gray-600">
-              Technology that understands pets and people
+              Технология, която разбира животните и хората
             </p>
           </div>
 
           <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
               {
-                title: 'AI Match %',
-                desc: '90%+ accuracy matching based on 7 compatibility factors',
+                title: 'AI Съвпадение %',
+                desc: '90%+ точност въз основа на 7 фактора за съвместимост',
                 icon: Zap,
                 color: 'from-yellow-100 to-orange-100',
-                points: ['Location fit', 'Experience match', 'Pet type expertise']
+                points: ['Локация', 'Опит', 'Експертност']
               },
               {
-                title: 'Alice Insights',
-                desc: 'Deep reasoning about why each sitter is recommended',
+                title: 'Alice Прозрения',
+                desc: 'Задълбочени обяснения за всеки гледач',
                 icon: Brain,
                 color: 'from-blue-100 to-cyan-100',
-                points: ['AI reasoning', 'Risk assessment', 'Compatibility score']
+                points: ['AI обосновка', 'Оценка на риск', 'Съвместимост']
               },
               {
-                title: 'Pet Needs Intelligence',
-                desc: 'Behavioral & emotional profiling for your pet',
+                title: 'Интелигенция за Нуждите',
+                desc: 'Поведенческо и емоционално профилиране',
                 icon: Heart,
                 color: 'from-pink-100 to-rose-100',
-                points: ['Personality match', 'Care requirements', 'Environment fit']
+                points: ['Личностно съвпадение', 'Грижи', 'Среда']
               },
               {
-                title: 'Auto-Booking',
-                desc: 'AI selects the best sitter and simplifies booking',
+                title: 'Авто-Резервация',
+                desc: 'AI избира най-добрия гледач и опростява резервацията',
                 icon: Sparkles,
                 color: 'from-purple-100 to-pink-100',
-                points: ['Confidence scoring', 'One-click booking', 'Smart recommendations']
+                points: ['Оценка на увереност', 'Резервация с 1 клик', 'Интелигентни препоръки']
               }
             ].map((feature, idx) => (
               <div
@@ -206,16 +206,16 @@ const Home: React.FC = () => {
             <LunaMascot variant="insight" size="medium" />
           </div>
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
-            Pet Needs Intelligence
+            Интелигенция за Нуждите на Любимците
           </h2>
           <p className="text-xl mb-8 opacity-90">
-            Get a deep behavioral & emotional profile for your pet. Luna analyzes personality, care needs, and finds the perfect environment match.
+            Получете задълбочен поведенчески и емоционален профил на вашия любимец. Luna анализира личността, нуждите и намира перфектната среда.
           </p>
           <button
             onClick={() => navigate('/pet-needs')}
             className="bg-white text-purple-600 px-10 py-4 rounded-full font-bold text-lg hover:bg-gray-100 transition-all hover:scale-105"
           >
-            Generate My Pet Profile ✨
+            Създай Профил на Любимец ✨
           </button>
         </div>
       </section>
@@ -229,10 +229,10 @@ const Home: React.FC = () => {
               </div>
             </div>
             <h2 className="text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              Trust & Safety First
+              Доверие и Безопасност на Първо Място
             </h2>
             <p className="text-xl text-gray-600">
-              Your pet's well-being is our top priority
+              Благополучието на вашия любимец е наш първи приоритет
             </p>
           </div>
 
@@ -240,18 +240,18 @@ const Home: React.FC = () => {
             {[
               {
                 icon: Award,
-                title: 'Verified Sitters',
-                desc: 'Every sitter goes through background checks, identity verification, and skill assessment.'
+                title: 'Проверени Гледачи',
+                desc: 'Всеки гледач преминава проверки, верификация на самоличност и оценка на уменията.'
               },
               {
                 icon: Lock,
-                title: 'Safe Payments',
-                desc: 'Secure payment processing with escrow protection until service is complete.'
+                title: 'Безопасни Плащания',
+                desc: 'Сигурно процесиране с escrow защита до завършване на услугата.'
               },
               {
                 icon: Brain,
-                title: 'Behavior-Based AI',
-                desc: 'Our AI considers pet temperament, stress triggers, and emotional needs for perfect matches.'
+                title: 'AI Базиран на Поведение',
+                desc: 'Нашият AI отчита темперамента, стресовите фактори и емоционалните нужди за перфектни съвпадения.'
               }
             ].map((item, idx) => (
               <div key={idx} className="text-center">
@@ -287,22 +287,22 @@ const Home: React.FC = () => {
           </div>
 
           <h2 className="text-5xl md:text-6xl font-bold text-gray-900 mb-6">
-            Ready to find the perfect match for your pet? 🐾
+            Готови ли сте да намерите перфектното съвпадение? 🐾
           </h2>
 
           <p className="text-xl text-gray-700 mb-10">
-            Join thousands of happy pet owners who trust Cozy & Luna
+            Присъединете се към хиляди щастливи стопани на домашни любимци
           </p>
 
           <button
             onClick={() => navigate('/match')}
             className="cozy-button-primary text-2xl px-12 py-6 shadow-2xl"
           >
-            Start Matching Now ✨
+            Започнете Сега ✨
           </button>
 
           <p className="text-sm text-gray-600 mt-6">
-            No signup required to explore • AI matching in 60 seconds
+            Без регистрация • AI съвпадение за 60 секунди
           </p>
         </div>
       </section>

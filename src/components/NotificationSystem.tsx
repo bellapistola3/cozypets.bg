@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Bell, X, Calendar, Star, MessageCircle, Gift, AlertCircle } from 'lucide-react';
+import { useAuth } from '../contexts/AuthContext';
 
 interface Notification {
   id: string;
@@ -12,9 +13,14 @@ interface Notification {
 }
 
 const NotificationSystem: React.FC = () => {
+  const { user } = useAuth();
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const [showNotifications, setShowNotifications] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
+
+  if (!user) {
+    return null;
+  }
 
   // Mock notifications
   const mockNotifications: Notification[] = [
@@ -133,7 +139,12 @@ const NotificationSystem: React.FC = () => {
 
       {/* Notifications Dropdown */}
       {showNotifications && (
-        <div className="absolute right-0 mt-2 w-96 bg-white rounded-xl shadow-lg border border-gray-200 z-50">
+        <>
+          <div
+            className="fixed inset-0 z-40"
+            onClick={() => setShowNotifications(false)}
+          />
+          <div className="absolute right-0 mt-2 w-96 bg-white rounded-xl shadow-2xl border border-gray-200 z-50 max-w-[calc(100vw-2rem)]">
           <div className="p-4 border-b border-gray-200">
             <div className="flex items-center justify-between">
               <h3 className="text-lg font-semibold text-gray-900">Известия</h3>
@@ -227,6 +238,7 @@ const NotificationSystem: React.FC = () => {
             </div>
           )}
         </div>
+        </>
       )}
     </div>
   );

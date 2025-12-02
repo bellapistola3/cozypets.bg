@@ -113,9 +113,6 @@ const Header: React.FC = () => {
                 </div>
               ) : (
                 <div className="flex items-center space-x-4">
-                  {/* Известия */}
-                  <NotificationSystem />
-
                   <button
                     onClick={() => setIsLoginOpen(true)}
                     className="px-5 py-2.5 font-semibold text-gray-700 hover:text-green-600 transition-all duration-300 text-base border-2 border-gray-300 hover:border-green-600 rounded-xl"

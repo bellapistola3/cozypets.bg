@@ -314,8 +314,27 @@ const VeterinaryChat: React.FC = () => {
     }
   };
 
+  if (!user) {
+    return (
+      <div className="min-h-screen bg-gray-50 flex items-center justify-center py-16">
+        <div className="text-center max-w-md mx-auto px-4">
+          <MessageCircle className="h-16 w-16 mx-auto mb-4 text-green-600" />
+          <h2 className="text-2xl font-bold text-gray-900 mb-2">
+            Моля, влезте в профила си
+          </h2>
+          <p className="text-gray-600 mb-6">
+            За да използвате ветеринарния чат, трябва да влезете в профила си.
+          </p>
+          <Button onClick={() => window.location.href = '/'}>
+            Върни се към началната страница
+          </Button>
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="min-h-screen bg-gray-50 py-8">
+    <div className="min-h-screen bg-gray-50 py-8 mt-24">
       <div className="container mx-auto px-4">
         <div className="flex items-center justify-between mb-6">
           <div>

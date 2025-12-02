@@ -76,6 +76,7 @@ function App() {
                 <PremiumMagazine />
                 <Testimonials />
                 <Gallery />
+                <MatchCenter />
                 <Team />
                 <Faq />
                 <Contact />

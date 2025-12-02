@@ -12,6 +12,7 @@ interface GalleryImage {
 const Gallery: React.FC = () => {
   const [selectedImage, setSelectedImage] = useState<GalleryImage | null>(null);
   const [filter, setFilter] = useState('all');
+  const [isPaused, setIsPaused] = useState(false);
 
   const images: GalleryImage[] = [
     {
@@ -112,9 +113,11 @@ const Gallery: React.FC = () => {
     },
   ];
 
-  const filteredImages = filter === 'all' 
-    ? images 
+  const filteredImages = filter === 'all'
+    ? images
     : images.filter(image => image.category === filter);
+
+  const allImages = [...filteredImages, ...filteredImages];
 
   return (
     <section id="gallery" className="py-20 bg-white scroll-mt-16">
@@ -180,22 +183,47 @@ const Gallery: React.FC = () => {
           </div>
         </div>
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4">
-          {filteredImages.map((image) => (
+        <div className="relative">
+          <div className="overflow-hidden">
             <div
-              key={image.id}
-              className="interactive-card neon-glow aspect-square overflow-hidden rounded-lg shadow-md cursor-pointer"
-              onClick={() => setSelectedImage(image)}
+              className={`flex ${!isPaused ? 'animate-scroll-gallery' : ''}`}
+              onMouseEnter={() => setIsPaused(true)}
+              onMouseLeave={() => setIsPaused(false)}
             >
-              <img
-                src={image.src}
-                alt={image.alt}
-                className="w-full h-full object-cover"
-                loading="lazy"
-              />
+              {allImages.map((image, index) => (
+                <div
+                  key={`${image.id}-${index}`}
+                  className="flex-shrink-0 w-[300px] mx-3"
+                  onClick={() => setSelectedImage(image)}
+                >
+                  <div className="interactive-card neon-glow aspect-square overflow-hidden rounded-lg shadow-md cursor-pointer">
+                    <img
+                      src={image.src}
+                      alt={image.alt}
+                      className="w-full h-full object-cover hover:scale-110 transition-transform duration-500"
+                      loading="lazy"
+                    />
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
+          </div>
         </div>
+
+        <style>{`
+        @keyframes scroll-gallery {
+          0% {
+            transform: translateX(0);
+          }
+          100% {
+            transform: translateX(-50%);
+          }
+        }
+
+        .animate-scroll-gallery {
+          animation: scroll-gallery 30s linear infinite;
+        }
+      `}</style>
 
         {selectedImage && (
           <div className="fixed inset-0 bg-black bg-opacity-80 z-50 flex items-center justify-center p-4">

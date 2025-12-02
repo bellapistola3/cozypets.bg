@@ -84,8 +84,8 @@ const VeterinarySection: React.FC = () => {
             )}
           </div>
 
-          <div className="grid lg:grid-cols-2 gap-12 items-center mb-16">
-            <div className="space-y-8">
+          <div className="grid lg:grid-cols-2 gap-12 items-start mb-16">
+            <div>
               <div className="bg-white rounded-2xl shadow-xl p-8 border-2 border-green-100">
                 <div className="flex items-start gap-4 mb-6">
                   <div className="bg-green-100 rounded-full p-3 flex-shrink-0">
@@ -131,20 +131,6 @@ const VeterinarySection: React.FC = () => {
                       <p className="text-gray-600">Ветеринар ще се свърже с вас веднага</p>
                     </div>
                   </div>
-                </div>
-              </div>
-
-              <div className="grid grid-cols-2 gap-4">
-                <div className="bg-gradient-to-br from-green-500 to-green-600 rounded-xl p-6 text-white">
-                  <Phone className="h-8 w-8 mb-3" />
-                  <h4 className="font-bold text-lg mb-1">Чат</h4>
-                  <p className="text-green-100 text-sm">Текстови съобщения в реално време</p>
-                </div>
-
-                <div className="bg-gradient-to-br from-blue-500 to-blue-600 rounded-xl p-6 text-white">
-                  <Video className="h-8 w-8 mb-3" />
-                  <h4 className="font-bold text-lg mb-1">Видео</h4>
-                  <p className="text-blue-100 text-sm">Видео консултации (скоро)</p>
                 </div>
               </div>
             </div>
@@ -198,7 +184,7 @@ const VeterinarySection: React.FC = () => {
             </div>
           </div>
 
-          <div className="grid md:grid-cols-4 gap-6">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-16">
             {features.map((feature, index) => (
               <div
                 key={index}
@@ -213,7 +199,7 @@ const VeterinarySection: React.FC = () => {
             ))}
           </div>
 
-          <div className="mt-16 bg-gradient-to-r from-green-600 to-green-700 rounded-2xl p-8 md:p-12 text-center border-2 border-green-800 shadow-xl">
+          <div className="bg-gradient-to-r from-green-600 to-green-700 rounded-2xl p-8 md:p-12 text-center border-2 border-green-800 shadow-xl">
             <h3 className="text-3xl font-bold text-white mb-4">
               Готови ли сте за безплатна консултация?
             </h3>

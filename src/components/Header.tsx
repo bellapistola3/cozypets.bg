@@ -72,7 +72,14 @@ const Header: React.FC = () => {
               
               {/* Резервирай сега */}
               <button
-                onClick={() => window.location.href = '/#booking'}
+                onClick={() => {
+                  const bookingSection = document.getElementById('booking');
+                  if (bookingSection) {
+                    bookingSection.scrollIntoView({ behavior: 'smooth' });
+                  } else {
+                    window.location.href = '/#booking';
+                  }
+                }}
                 className="px-6 py-3 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-semibold rounded-xl shadow-md hover:shadow-lg transition-all duration-300 text-base whitespace-nowrap"
               >
                 Резервирай сега
@@ -183,7 +190,15 @@ const Header: React.FC = () => {
                       </a>
 
                       <button
-                        onClick={() => { window.location.href = '/#booking'; setIsMenuOpen(false); }}
+                        onClick={() => {
+                          const bookingSection = document.getElementById('booking');
+                          if (bookingSection) {
+                            bookingSection.scrollIntoView({ behavior: 'smooth' });
+                          } else {
+                            window.location.href = '/#booking';
+                          }
+                          setIsMenuOpen(false);
+                        }}
                         className="block w-full px-5 py-4 bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-semibold rounded-xl shadow-md hover:shadow-lg transition-all duration-300 text-center text-lg"
                       >
                         Резервирай сега

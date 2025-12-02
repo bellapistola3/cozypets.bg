@@ -39,9 +39,9 @@ function ScrollToHashElement() {
       setTimeout(() => {
         const element = document.getElementById(id);
         if (element) {
-          element.scrollIntoView({ behavior: 'smooth' });
+          element.scrollIntoView({ behavior: 'auto', block: 'start' });
         }
-      }, 100);
+      }, 0);
     }
   }, [location]);
 

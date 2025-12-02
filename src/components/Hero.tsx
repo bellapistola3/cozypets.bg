@@ -94,13 +94,13 @@ const Hero: React.FC = () => {
             Намерете вашия перфектен <br />
             <span className="text-green-400">гледач на домашни любимци</span>
           </h1>
-          <p className="text-xl text-gray-200 mb-8 animate-fadeInUp animation-delay-100">
+          <p className="text-xl text-gray-200 animate-fadeInUp animation-delay-100">
             Свържете се с доверени гледачи на домашни любимци в района ви, които ще се отнасят към вашите любимци като към семейство, докато сте далеч.
           </p>
-          <div className="animate-fadeInUp animation-delay-200">
+          <div className="animate-fadeInUp animation-delay-200 mt-24 mb-20">
             <button
               onClick={() => window.location.href = '/search'}
-              className="interactive-button neon-glow inline-flex items-center justify-center gap-3 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold text-xl px-12 py-6 rounded-2xl shadow-2xl hover:shadow-green-500/25 border-2 border-green-400/20"
+              className="interactive-button neon-glow mx-auto w-full max-w-[420px] inline-flex items-center justify-center gap-3 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold text-xl px-8 py-4 rounded-2xl shadow-2xl hover:shadow-green-500/25 border-2 border-green-400/20 h-[64px]"
             >
               <Search className="h-7 w-7" />
               Намерете гледач на домашни любимци

@@ -77,7 +77,6 @@ function App() {
                 <Testimonials />
                 <Gallery />
                 <MatchCenter />
-                <Team />
                 <Faq />
                 <Contact />
 

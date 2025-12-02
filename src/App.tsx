@@ -28,6 +28,7 @@ import PremiumMagazine from './components/PremiumMagazine';
 import ServicesDirectory from './pages/ServicesDirectory';
 import AIAssistantChat from './components/AIAssistantChat';
 import AIMatchCenter2 from './components/matching/AIMatchCenter2';
+import BrandExperience from './pages/BrandExperience';
 
 import DatabaseTest from './components/DatabaseTest';
 
@@ -164,6 +165,17 @@ function App() {
           element={
             <>
               <AIMatchCenter2 />
+              <Footer />
+            </>
+          }
+        />
+
+        {/* Brand Experience */}
+        <Route
+          path="/brand"
+          element={
+            <>
+              <BrandExperience />
               <Footer />
             </>
           }

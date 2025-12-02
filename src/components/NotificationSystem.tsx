@@ -18,10 +18,6 @@ const NotificationSystem: React.FC = () => {
   const [showNotifications, setShowNotifications] = useState(false);
   const [unreadCount, setUnreadCount] = useState(0);
 
-  if (!user) {
-    return null;
-  }
-
   // Mock notifications
   const mockNotifications: Notification[] = [
     {
@@ -121,6 +117,10 @@ const NotificationSystem: React.FC = () => {
       setUnreadCount(prev => Math.max(0, prev - 1));
     }
   };
+
+  if (!user) {
+    return null;
+  }
 
   return (
     <div className="relative">

@@ -146,3 +146,168 @@
   box-shadow: 0 0 15px rgba(255, 125, 170, 0.5),
               0 0 30px rgba(255, 125, 170, 0.3);
 }
+
+@keyframes idle {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-3px) scale(1.02); }
+}
+
+@keyframes blink {
+  0%, 90%, 100% { opacity: 1; }
+  95% { opacity: 0; }
+}
+
+@keyframes thinking {
+  0%, 100% { transform: rotate(0deg); }
+  25% { transform: rotate(-3deg); }
+  75% { transform: rotate(3deg); }
+}
+
+@keyframes celebrate {
+  0%, 100% { transform: scale(1) translateY(0); }
+  50% { transform: scale(1.08) translateY(-8px); }
+}
+
+@keyframes warning {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-2px); }
+  75% { transform: translateX(2px); }
+}
+
+@keyframes success {
+  0% { transform: scale(0.8); opacity: 0; }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@keyframes breathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.03); }
+}
+
+@keyframes headTilt {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(-8deg); }
+}
+
+@keyframes earWiggle {
+  0%, 100% { transform: rotate(0deg); }
+  50% { transform: rotate(-5deg); }
+}
+
+@keyframes earTwitch {
+  0%, 90%, 100% { transform: scaleY(1); }
+  95% { transform: scaleY(0.9); }
+}
+
+@keyframes floatHeart {
+  0% { transform: translateY(0) scale(1); opacity: 1; }
+  100% { transform: translateY(-30px) scale(0.5); opacity: 0; }
+}
+
+@keyframes floatParticles {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-10px); }
+}
+
+@keyframes sparkle {
+  0%, 100% { opacity: 0; transform: scale(0.8); }
+  50% { opacity: 1; transform: scale(1.2); }
+}
+
+@keyframes glow {
+  0%, 100% { opacity: 0.6; }
+  50% { opacity: 1; }
+}
+
+@keyframes slideUpBounce {
+  0% { transform: translateY(100px); opacity: 0; }
+  60% { transform: translateY(-10px); opacity: 1; }
+  80% { transform: translateY(5px); }
+  100% { transform: translateY(0); }
+}
+
+@keyframes pulseGentle {
+  0%, 100% { transform: scale(1); opacity: 1; }
+  50% { transform: scale(1.05); opacity: 0.9; }
+}
+
+.animate-idle {
+  animation: idle 3s ease-in-out infinite;
+}
+
+.animate-blink {
+  animation: blink 4s ease-in-out infinite;
+}
+
+.animate-thinking {
+  animation: thinking 1.5s ease-in-out infinite;
+}
+
+.animate-celebrate {
+  animation: celebrate 0.9s ease-out;
+}
+
+.animate-warning {
+  animation: warning 0.3s ease-in-out 3;
+}
+
+.animate-success {
+  animation: success 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.animate-breathe {
+  animation: breathe 4s ease-in-out infinite;
+}
+
+.animate-head-tilt {
+  animation: headTilt 2s ease-in-out infinite;
+}
+
+.animate-ear-wiggle {
+  animation: earWiggle 2s ease-in-out infinite;
+}
+
+.animate-ear-wiggle-delay {
+  animation: earWiggle 2s ease-in-out infinite 0.3s;
+}
+
+.animate-ear-twitch {
+  animation: earTwitch 3s ease-in-out infinite;
+}
+
+.animate-ear-twitch-delay {
+  animation: earTwitch 3s ease-in-out infinite 0.2s;
+}
+
+.animate-float-heart {
+  animation: floatHeart 2s ease-out forwards;
+}
+
+.animate-float-particles {
+  animation: floatParticles 2s ease-in-out infinite;
+}
+
+.animate-sparkle {
+  animation: sparkle 1.2s ease-in-out infinite;
+}
+
+.animate-sparkle-delay {
+  animation: sparkle 1.2s ease-in-out infinite 0.4s;
+}
+
+.animate-glow {
+  animation: glow 2s ease-in-out infinite;
+}
+
+.animate-slideUpBounce {
+  animation: slideUpBounce 0.8s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+.animate-pulse-gentle {
+  animation: pulseGentle 3s ease-in-out infinite;
+}
+
+.animate-float-slow {
+  animation: floatParticles 4s ease-in-out infinite;
+}

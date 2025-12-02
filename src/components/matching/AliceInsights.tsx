@@ -1,6 +1,7 @@
 import React from 'react';
 import { SitterWithMatch } from '../../types/matching';
 import { Sparkles, AlertTriangle, Heart, Lightbulb, CheckCircle } from 'lucide-react';
+import LunaMascot from '../mascots/LunaMascot';
 
 interface AliceInsightsProps {
   selectedMatch: SitterWithMatch | null;
@@ -54,7 +55,7 @@ const AliceInsights: React.FC<AliceInsightsProps> = ({ selectedMatch }) => {
   return (
     <div className="bg-white rounded-2xl shadow-lg p-6 sticky top-6 animate-fadeIn">
       <div className="flex items-center gap-2 mb-6">
-        <div className="text-2xl">🤖</div>
+        <LunaMascot variant="insight" size="small" />
         <h2 className="text-xl font-bold text-gray-900">Alice Insights</h2>
       </div>
 

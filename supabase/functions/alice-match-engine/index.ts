@@ -57,111 +57,197 @@ Deno.serve(async (req: Request) => {
       let reasoningPoints: string[] = [];
       let riskPoints: string[] = [];
 
+      // 1) Distance evaluation (±15 points)
       if (sitter.distanceKm <= filters.maxDistanceKm) {
-        const distanceBonus = Math.max(0, 20 - sitter.distanceKm * 2);
-        score += distanceBonus;
-        if (sitter.distanceKm < 3) {
-          reasoningPoints.push(`Много близко до вас (${sitter.distanceKm} км)`);
+        if (sitter.distanceKm <= 2) {
+          score += 15;
+          reasoningPoints.push(`Много близо до вас (${sitter.distanceKm} км)`);
+        } else if (sitter.distanceKm <= 5) {
+          score += 12;
+          reasoningPoints.push(`На удобно разстояние (${sitter.distanceKm} км)`);
+        } else if (sitter.distanceKm <= 10) {
+          score += 8;
+        } else {
+          score += 5;
         }
+      } else if (sitter.distanceKm <= filters.maxDistanceKm + 5) {
+        score += 5;
+        riskPoints.push(`Малко извън желаното разстояние (${sitter.distanceKm} км)`);
       } else {
-        score -= 30;
-        riskPoints.push(`Извън желаното разстояние (${sitter.distanceKm} км)`);
+        score -= 15;
+        riskPoints.push(`Значително извън желаното разстояние (${sitter.distanceKm} км)`);
       }
 
+      // 2) Animal compatibility (±20 points)
       if (filters.animalType !== 'any') {
         if (sitter.preferredAnimals.includes(filters.animalType)) {
-          score += 15;
+          score += 20;
           reasoningPoints.push(`Специализиран в грижа за ${getAnimalLabel(filters.animalType)}`);
+        } else if (sitter.preferredAnimals.includes('other') || sitter.preferredAnimals.length > 2) {
+          score += 5;
+          reasoningPoints.push('Работи с различни видове животни');
         } else {
           score -= 20;
-          riskPoints.push(`Няма опит с ${getAnimalLabel(filters.animalType)}`);
+          riskPoints.push(`Няма посочен опит с ${getAnimalLabel(filters.animalType)}`);
         }
       }
 
+      // 3) Experience level (±10 points)
+      if (sitter.experienceYears >= 5) {
+        score += 10;
+        reasoningPoints.push(`Богат опит (${sitter.experienceYears}+ години)`);
+      } else if (sitter.experienceYears >= 3) {
+        score += 8;
+        reasoningPoints.push(`Добър опит (${sitter.experienceYears} години)`);
+      } else if (sitter.experienceYears >= 1) {
+        score += 5;
+      } else {
+        score -= 5;
+        riskPoints.push('Ограничен професионален опит');
+      }
+
+      if (filters.minExperienceYears !== null && sitter.experienceYears < filters.minExperienceYears) {
+        score -= 10;
+        riskPoints.push(`По-малко опит от желаните ${filters.minExperienceYears} години`);
+      }
+
+      // 4) Price fit (±10 points)
       if (filters.minPrice !== null || filters.maxPrice !== null) {
         const minP = filters.minPrice || 0;
         const maxP = filters.maxPrice || Infinity;
+
         if (sitter.pricePerHour >= minP && sitter.pricePerHour <= maxP) {
-          score += 10;
-          if (sitter.pricePerHour < 15) {
-            reasoningPoints.push('Отлична цена');
+          score += 8;
+          if (sitter.pricePerHour <= 12) {
+            reasoningPoints.push('Отлична цена за качеството');
+          } else if (sitter.pricePerHour <= 15) {
+            reasoningPoints.push('Справедлива цена');
           }
-        } else {
-          score -= 15;
-          if (sitter.pricePerHour > maxP) {
-            riskPoints.push(`Цената (${sitter.pricePerHour} лв/час) е над вашия бюджет`);
+        } else if (sitter.pricePerHour > maxP) {
+          const diff = sitter.pricePerHour - maxP;
+          if (diff <= 3) {
+            score += 3;
+            riskPoints.push(`Малко над бюджета (${sitter.pricePerHour} лв/час)`);
+          } else {
+            score -= 8;
+            riskPoints.push(`Цената (${sitter.pricePerHour} лв/час) значително надвишава бюджета`);
           }
+        } else if (sitter.pricePerHour < minP && sitter.pricePerHour < 8) {
+          score -= 5;
+          riskPoints.push('Необичайно ниска цена - проверете качеството');
         }
       }
 
-      if (filters.minExperienceYears !== null && sitter.experienceYears >= filters.minExperienceYears) {
-        score += 10;
-        if (sitter.experienceYears >= 5) {
-          reasoningPoints.push(`Богат опит (${sitter.experienceYears}+ години)`);
-        }
-      } else if (filters.minExperienceYears !== null) {
-        score -= 10;
-      }
-
-      if (filters.onlyCertified) {
-        if (sitter.certifications.length > 0) {
-          score += 15;
-          reasoningPoints.push(`Има ${sitter.certifications.length} сертификат(а)`);
-        } else {
-          score -= 25;
-          riskPoints.push('Няма сертификати');
-        }
-      } else if (sitter.certifications.length > 0) {
-        score += 8;
-      }
-
+      // 5) Availability match (±15 points)
       if (filters.availability.length > 0) {
-        const matchingAvailability = filters.availability.filter(a => 
+        const matchingAvailability = filters.availability.filter(a =>
           sitter.availabilityTags.includes(a)
         );
-        if (matchingAvailability.length === filters.availability.length) {
-          score += 12;
-          reasoningPoints.push('Напълно налична за вашите нужди');
-        } else if (matchingAvailability.length > 0) {
-          score += 5;
+        const matchRatio = matchingAvailability.length / filters.availability.length;
+
+        if (matchRatio === 1) {
+          score += 15;
+          reasoningPoints.push('Напълно съвпада с вашата необходима наличност');
+        } else if (matchRatio >= 0.5) {
+          score += 8;
+        } else if (matchRatio > 0) {
+          score += 3;
+          riskPoints.push('Частично съвпада с желаната наличност');
         } else {
           score -= 15;
-          riskPoints.push('Ограничена наличност за вашите предпочитания');
+          riskPoints.push('Не съвпада с необходимата ви наличност');
         }
       }
 
-      const ratingBonus = (sitter.rating - 3) * 5;
-      score += ratingBonus;
-      if (sitter.rating >= 4.8) {
+      // 6) Reviews & rating (±15 points)
+      if (sitter.rating >= 4.9) {
+        score += 15;
+        reasoningPoints.push(`Перфектен рейтинг (${sitter.rating}⭐)`);
+      } else if (sitter.rating >= 4.7) {
+        score += 12;
         reasoningPoints.push(`Отличен рейтинг (${sitter.rating}⭐)`);
+      } else if (sitter.rating >= 4.5) {
+        score += 8;
+      } else if (sitter.rating >= 4.0) {
+        score += 3;
+      } else {
+        score -= 10;
+        riskPoints.push(`Нисък рейтинг (${sitter.rating}⭐)`);
       }
 
-      const reviewBonus = Math.min(10, sitter.reviewsCount / 5);
-      score += reviewBonus;
-      if (sitter.reviewsCount > 30) {
+      if (sitter.reviewsCount >= 40) {
+        score += 5;
         reasoningPoints.push(`Много положителни отзиви (${sitter.reviewsCount})`);
+      } else if (sitter.reviewsCount >= 20) {
+        score += 3;
       } else if (sitter.reviewsCount < 10) {
-        riskPoints.push('Малко отзиви от клиенти');
+        score -= 3;
+        riskPoints.push('Малко отзиви от клиенти - нов на платформата');
       }
 
+      // 7) Certifications (±10 points)
+      if (filters.onlyCertified) {
+        if (sitter.certifications.length >= 2) {
+          score += 10;
+          reasoningPoints.push(`Множество сертификати (${sitter.certifications.join(', ')})`);
+        } else if (sitter.certifications.length === 1) {
+          score += 7;
+          reasoningPoints.push(`Сертифициран: ${sitter.certifications[0]}`);
+        } else {
+          score -= 10;
+          riskPoints.push('Няма официални сертификати');
+        }
+      } else {
+        if (sitter.certifications.length >= 2) {
+          score += 8;
+          reasoningPoints.push(`Допълнителни квалификации: ${sitter.certifications.slice(0, 2).join(', ')}`);
+        } else if (sitter.certifications.length === 1) {
+          score += 5;
+        }
+      }
+
+      // Clamp score to 0-100
       score = Math.max(0, Math.min(100, Math.round(score)));
 
+      // Generate reasoning text
       let reasoning = '';
-      if (reasoningPoints.length > 0) {
-        reasoning = `${sitter.name} е отличен избор, защото: ${reasoningPoints.slice(0, 3).join(', ')}. `;
+      if (score >= 80) {
+        reasoning = `${sitter.name} е изключителен избор за вашия любимец. `;
+      } else if (score >= 65) {
+        reasoning = `${sitter.name} е много добър избор, който ще отговори на вашите нужди. `;
+      } else if (score >= 50) {
+        reasoning = `${sitter.name} е приемлив избор с някои компромиси. `;
       } else {
-        reasoning = `${sitter.name} е приемлив избор за вашите нужди. `;
+        reasoning = `${sitter.name} може да не е най-подходящият за вашите критерии. `;
       }
-      reasoning += `С рейтинг ${sitter.rating} и ${sitter.reviewsCount} отзива, ${sitter.name.split(' ')[0]} показва професионализъм и отдаденост.`;
 
+      if (reasoningPoints.length > 0) {
+        reasoning += reasoningPoints.slice(0, 3).join('. ') + '.';
+      } else {
+        reasoning += `Живее в ${sitter.city} и има ${sitter.experienceYears} години опит.`;
+      }
+
+      // Generate risks text
       let risks = '';
       if (riskPoints.length > 0) {
         risks = `Обърнете внимание: ${riskPoints.join('; ')}.`;
       } else {
-        risks = 'Няма значителни рискове. Отличен избор за вашия любимец.';
+        risks = 'Няма значителни рискове или опасения. Отличен избор за вашия любимец!';
       }
 
-      const compatibilityScore = score >= 80 ? 5 : score >= 65 ? 4 : score >= 50 ? 3 : score >= 35 ? 2 : 1;
+      // Calculate compatibility score (1-5)
+      let compatibilityScore: number;
+      if (score >= 85) {
+        compatibilityScore = 5;
+      } else if (score >= 70) {
+        compatibilityScore = 4;
+      } else if (score >= 55) {
+        compatibilityScore = 3;
+      } else if (score >= 35) {
+        compatibilityScore = 2;
+      } else {
+        compatibilityScore = 1;
+      }
 
       return {
         sitterId: sitter.id,
@@ -172,6 +258,7 @@ Deno.serve(async (req: Request) => {
       };
     });
 
+    // Sort by matchPct descending
     matches.sort((a, b) => b.matchPct - a.matchPct);
 
     return new Response(
@@ -204,6 +291,7 @@ function getAnimalLabel(type: string): string {
     cat: 'котки',
     rabbit: 'зайци',
     bird: 'птици',
+    small_pet: 'малки домашни любимци',
     other: 'други животни'
   };
   return labels[type] || type;

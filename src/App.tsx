@@ -27,6 +27,7 @@ import VeterinarySection from './components/VeterinarySection';
 import PremiumMagazine from './components/PremiumMagazine';
 import ServicesDirectory from './pages/ServicesDirectory';
 import AIAssistantChat from './components/AIAssistantChat';
+import AIMatchCenter2 from './components/matching/AIMatchCenter2';
 
 import DatabaseTest from './components/DatabaseTest';
 
@@ -152,6 +153,17 @@ function App() {
               <main>
                 <SitterSearch />
               </main>
+              <Footer />
+            </>
+          }
+        />
+
+        {/* AI Match Center 2.0 */}
+        <Route
+          path="/ai-match"
+          element={
+            <>
+              <AIMatchCenter2 />
               <Footer />
             </>
           }

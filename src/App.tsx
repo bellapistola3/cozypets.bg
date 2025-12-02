@@ -30,6 +30,10 @@ import AIAssistantChat from './components/AIAssistantChat';
 import AIMatchCenter2 from './components/matching/AIMatchCenter2';
 import BrandExperience from './pages/BrandExperience';
 import ConversionLanding from './pages/ConversionLanding';
+import Home from './pages/Home';
+import MatchCenter from './pages/MatchCenter';
+import PetNeeds from './pages/PetNeeds';
+import MascotShowcase from './pages/MascotShowcase';
 
 import DatabaseTest from './components/DatabaseTest';
 
@@ -62,9 +66,20 @@ function App() {
         <AIAssistantChat />
 
         <Routes>
-        {/* Начална страница */}
+        {/* New Home Page */}
         <Route
           path="/"
+          element={
+            <>
+              <Home />
+              <Footer />
+            </>
+          }
+        />
+
+        {/* Original Home Page (now /old-home) */}
+        <Route
+          path="/old-home"
           element={
             <>
               <main>
@@ -78,16 +93,6 @@ function App() {
                 <Team />
                 <Faq />
                 <Contact />
-
-                {/* Бутон за политика за поверителност */}
-                <div className="text-center mt-12">
-                  <a
-                    href="/privacy"
-                    className="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 hover:-translate-y-1"
-                  >
-                    Политика за поверителност
-                  </a>
-                </div>
               </main>
               <Footer />
             </>
@@ -188,6 +193,39 @@ function App() {
           element={
             <>
               <ConversionLanding />
+              <Footer />
+            </>
+          }
+        />
+
+        {/* Match Center */}
+        <Route
+          path="/match"
+          element={
+            <>
+              <MatchCenter />
+              <Footer />
+            </>
+          }
+        />
+
+        {/* Pet Needs Intelligence */}
+        <Route
+          path="/pet-needs"
+          element={
+            <>
+              <PetNeeds />
+              <Footer />
+            </>
+          }
+        />
+
+        {/* Mascot Showcase */}
+        <Route
+          path="/mascots"
+          element={
+            <>
+              <MascotShowcase />
               <Footer />
             </>
           }

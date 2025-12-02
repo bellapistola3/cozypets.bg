@@ -29,6 +29,7 @@ import ServicesDirectory from './pages/ServicesDirectory';
 import AIAssistantChat from './components/AIAssistantChat';
 import AIMatchCenter2 from './components/matching/AIMatchCenter2';
 import BrandExperience from './pages/BrandExperience';
+import ConversionLanding from './pages/ConversionLanding';
 
 import DatabaseTest from './components/DatabaseTest';
 
@@ -176,6 +177,17 @@ function App() {
           element={
             <>
               <BrandExperience />
+              <Footer />
+            </>
+          }
+        />
+
+        {/* Conversion Landing */}
+        <Route
+          path="/start"
+          element={
+            <>
+              <ConversionLanding />
               <Footer />
             </>
           }

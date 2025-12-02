@@ -2,11 +2,32 @@
 @tailwind components;
 @tailwind utilities;
 
+@layer base {
+  :root {
+    --cozy-pink: #FF7DAA;
+    --cozy-blue: #8EC9FF;
+    --cozy-lavender: #C8A8FF;
+    --cozy-mint: #A8F0D2;
+    --dark-gray: #374151;
+    --medium-gray: #6B7280;
+    --light-gray: #E5E7EB;
+    --ultra-light: #F9FAFB;
+  }
+
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+      'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+      sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
 @layer utilities {
   .interactive-card {
     @apply transition-all duration-300 cursor-pointer;
-    @apply hover:-translate-y-2 hover:shadow-2xl;
-    @apply relative overflow-hidden;
+    @apply hover:-translate-y-1 hover:shadow-xl;
+    @apply relative overflow-hidden rounded-2xl;
   }
 
   .interactive-card::before {
@@ -16,7 +37,7 @@
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.3), transparent);
+    background: linear-gradient(90deg, transparent, rgba(255, 125, 170, 0.15), transparent);
     transition: left 0.5s;
   }
 
@@ -24,34 +45,104 @@
     left: 100%;
   }
 
+  .interactive-card:active {
+    transform: scale(0.98);
+  }
+
   .interactive-button {
-    @apply transition-all duration-300 cursor-pointer;
-    @apply hover:-translate-y-1 hover:shadow-lg;
-    @apply relative overflow-hidden;
+    @apply transition-all duration-200 cursor-pointer;
+    @apply hover:-translate-y-0.5 hover:shadow-md;
+    @apply rounded-full;
   }
 
-  .interactive-button::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.4), transparent);
-    transition: left 0.4s;
+  .interactive-button:active {
+    transform: scale(0.97);
   }
 
-  .interactive-button:hover::before {
-    left: 100%;
+  .cozy-card {
+    @apply bg-white rounded-2xl shadow-md p-6;
+    @apply hover:shadow-lg transition-all duration-300;
   }
 
-  .neon-glow {
-    @apply transition-all duration-300;
+  .cozy-button-primary {
+    @apply bg-gradient-to-r from-pink-400 to-pink-500;
+    @apply hover:from-pink-500 hover:to-pink-600;
+    @apply text-white font-semibold rounded-full px-6 py-3;
+    @apply transition-all duration-200 shadow-md hover:shadow-lg;
+    @apply hover:-translate-y-0.5;
   }
 
-  .neon-glow:hover {
-    box-shadow: 0 0 20px rgba(59, 130, 246, 0.6),
-                0 0 40px rgba(59, 130, 246, 0.4),
-                0 0 60px rgba(59, 130, 246, 0.2);
+  .cozy-button-primary:active {
+    transform: scale(0.97);
   }
+
+  .cozy-button-secondary {
+    @apply bg-white border-2 border-gray-200;
+    @apply hover:border-pink-300 hover:bg-pink-50;
+    @apply text-gray-700 font-semibold rounded-full px-6 py-3;
+    @apply transition-all duration-200;
+  }
+
+  .cozy-input {
+    @apply bg-white border border-gray-300 rounded-xl px-4 py-3;
+    @apply focus:border-pink-400 focus:ring-2 focus:ring-pink-200;
+    @apply transition-all duration-200;
+  }
+
+  .cozy-tag {
+    @apply inline-flex items-center px-3 py-1 rounded-full;
+    @apply bg-gray-100 text-gray-700 text-sm font-medium;
+  }
+
+  .animate-fadeIn {
+    animation: fadeIn 0.3s ease-in-out;
+  }
+
+  .animate-slideUp {
+    animation: slideUp 0.3s ease-out;
+  }
+
+  .animate-scaleIn {
+    animation: scaleIn 0.2s ease-out;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.neon-glow {
+  @apply transition-all duration-300;
+}
+
+.neon-glow:hover {
+  box-shadow: 0 0 15px rgba(255, 125, 170, 0.5),
+              0 0 30px rgba(255, 125, 170, 0.3);
 }

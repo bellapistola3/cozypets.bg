@@ -31,6 +31,8 @@ export interface MatchResult {
   reasoning: string;
   risks: string;
   compatibilityScore: number;
+  petNeedsFit: string;
+  aiSuggestion: string;
 }
 
 export interface SitterWithMatch extends MatchResult {

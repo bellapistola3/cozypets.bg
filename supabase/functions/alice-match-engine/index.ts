@@ -39,6 +39,8 @@ interface MatchResult {
   reasoning: string;
   risks: string;
   compatibilityScore: number;
+  petNeedsFit: string;
+  aiSuggestion: string;
 }
 
 Deno.serve(async (req: Request) => {
@@ -57,7 +59,6 @@ Deno.serve(async (req: Request) => {
       let reasoningPoints: string[] = [];
       let riskPoints: string[] = [];
 
-      // 1) Distance evaluation (±15 points)
       if (sitter.distanceKm <= filters.maxDistanceKm) {
         if (sitter.distanceKm <= 2) {
           score += 15;
@@ -78,7 +79,6 @@ Deno.serve(async (req: Request) => {
         riskPoints.push(`Значително извън желаното разстояние (${sitter.distanceKm} км)`);
       }
 
-      // 2) Animal compatibility (±20 points)
       if (filters.animalType !== 'any') {
         if (sitter.preferredAnimals.includes(filters.animalType)) {
           score += 20;
@@ -92,7 +92,6 @@ Deno.serve(async (req: Request) => {
         }
       }
 
-      // 3) Experience level (±10 points)
       if (sitter.experienceYears >= 5) {
         score += 10;
         reasoningPoints.push(`Богат опит (${sitter.experienceYears}+ години)`);
@@ -111,7 +110,6 @@ Deno.serve(async (req: Request) => {
         riskPoints.push(`По-малко опит от желаните ${filters.minExperienceYears} години`);
       }
 
-      // 4) Price fit (±10 points)
       if (filters.minPrice !== null || filters.maxPrice !== null) {
         const minP = filters.minPrice || 0;
         const maxP = filters.maxPrice || Infinity;
@@ -138,7 +136,6 @@ Deno.serve(async (req: Request) => {
         }
       }
 
-      // 5) Availability match (±15 points)
       if (filters.availability.length > 0) {
         const matchingAvailability = filters.availability.filter(a =>
           sitter.availabilityTags.includes(a)
@@ -159,7 +156,6 @@ Deno.serve(async (req: Request) => {
         }
       }
 
-      // 6) Reviews & rating (±15 points)
       if (sitter.rating >= 4.9) {
         score += 15;
         reasoningPoints.push(`Перфектен рейтинг (${sitter.rating}⭐)`);
@@ -185,7 +181,6 @@ Deno.serve(async (req: Request) => {
         riskPoints.push('Малко отзиви от клиенти - нов на платформата');
       }
 
-      // 7) Certifications (±10 points)
       if (filters.onlyCertified) {
         if (sitter.certifications.length >= 2) {
           score += 10;
@@ -206,10 +201,8 @@ Deno.serve(async (req: Request) => {
         }
       }
 
-      // Clamp score to 0-100
       score = Math.max(0, Math.min(100, Math.round(score)));
 
-      // Generate reasoning text
       let reasoning = '';
       if (score >= 80) {
         reasoning = `${sitter.name} е изключителен избор за вашия любимец. `;
@@ -227,7 +220,6 @@ Deno.serve(async (req: Request) => {
         reasoning += `Живее в ${sitter.city} и има ${sitter.experienceYears} години опит.`;
       }
 
-      // Generate risks text
       let risks = '';
       if (riskPoints.length > 0) {
         risks = `Обърнете внимание: ${riskPoints.join('; ')}.`;
@@ -235,7 +227,6 @@ Deno.serve(async (req: Request) => {
         risks = 'Няма значителни рискове или опасения. Отличен избор за вашия любимец!';
       }
 
-      // Calculate compatibility score (1-5)
       let compatibilityScore: number;
       if (score >= 85) {
         compatibilityScore = 5;
@@ -249,16 +240,63 @@ Deno.serve(async (req: Request) => {
         compatibilityScore = 1;
       }
 
+      let petNeedsFit = '';
+      const animalTypeLabel = filters.animalType !== 'any' ? getAnimalLabel(filters.animalType) : 'вашето животно';
+
+      if (compatibilityScore >= 4) {
+        petNeedsFit = `${sitter.name} показва отлична емоционална съвместимост с ${animalTypeLabel}. `;
+        if (sitter.experienceYears >= 4) {
+          petNeedsFit += 'Богатият опит гарантира спокойно и професионално отношение. ';
+        }
+        if (sitter.certifications.length > 0) {
+          petNeedsFit += 'Сертификатите потвърждават способността да се справя с различни поведенчески нужди и здравни ситуации.';
+        } else {
+          petNeedsFit += 'Внимателният подход създава безопасна среда за вашия любимец.';
+        }
+      } else if (compatibilityScore === 3) {
+        petNeedsFit = `${sitter.name} може да се грижи адекватно за ${animalTypeLabel}, но има някои ограничения. `;
+        if (sitter.experienceYears < 3) {
+          petNeedsFit += 'Относително новият опит означава, че може да се справи по-добре с по-спокойни животни. ';
+        }
+        petNeedsFit += 'Препоръчително е предварителна среща, за да оцените съвместимостта.';
+      } else {
+        petNeedsFit = `${sitter.name} може да има предизвикателства при грижата за ${animalTypeLabel}. `;
+        if (!sitter.preferredAnimals.includes(filters.animalType) && filters.animalType !== 'any') {
+          petNeedsFit += 'Липсата на специализиран опит с този вид животно може да доведе до стрес. ';
+        }
+        petNeedsFit += 'Обмислете друг вариант, който по-добре отговаря на нуждите на вашия любимец.';
+      }
+
+      let aiSuggestion = '';
+      if (score >= 85) {
+        aiSuggestion = 'Силно препоръчан – отговаря на всички изисквания и надхвърля очакванията! 🌟';
+      } else if (score >= 70) {
+        aiSuggestion = 'Препоръчан – отличен избор с минимални компромиси.';
+      } else if (score >= 55) {
+        if (sitter.distanceKm > filters.maxDistanceKm) {
+          aiSuggestion = 'Умерено препоръчан – обмислете разстоянието преди резервация.';
+        } else if (riskPoints.some(r => r.includes('наличност'))) {
+          aiSuggestion = 'Добър вариант, но проверете наличността предварително.';
+        } else {
+          aiSuggestion = 'Приемлив избор – оценете внимателно рисковете.';
+        }
+      } else if (score >= 35) {
+        aiSuggestion = 'Препоръчан с резерви – значителни компромиси са необходими.';
+      } else {
+        aiSuggestion = 'Не е препоръчан – потърсете по-подходящ вариант за вашия любимец.';
+      }
+
       return {
         sitterId: sitter.id,
         matchPct: score,
         reasoning,
         risks,
-        compatibilityScore
+        compatibilityScore,
+        petNeedsFit,
+        aiSuggestion
       };
     });
 
-    // Sort by matchPct descending
     matches.sort((a, b) => b.matchPct - a.matchPct);
 
     return new Response(

@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useLayoutEffect } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
 import Header from './components/Header';
@@ -33,15 +33,16 @@ import DatabaseTest from './components/DatabaseTest';
 function ScrollToHashElement() {
   const location = useLocation();
 
-  useEffect(() => {
+  useLayoutEffect(() => {
     if (location.hash) {
       const id = location.hash.replace('#', '');
-      setTimeout(() => {
+      requestAnimationFrame(() => {
         const element = document.getElementById(id);
         if (element) {
-          element.scrollIntoView({ behavior: 'auto', block: 'start' });
+          const offset = element.offsetTop - 100;
+          window.scrollTo(0, offset);
         }
-      }, 0);
+      });
     }
   }, [location]);
 

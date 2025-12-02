@@ -113,10 +113,10 @@ const MatchCenter: React.FC = () => {
             <CozyMascot variant="thinking" size="medium" />
           </div>
           <h1 className="text-4xl font-bold text-gray-900 mb-2">
-            AI Match Center 🐾
+            AI Център за Съвпадения 🐾
           </h1>
           <p className="text-gray-600">
-            Alice is analyzing the best sitters for your pet
+            Алис анализира най-добрите гледачи за вашето животинче
           </p>
         </div>
 

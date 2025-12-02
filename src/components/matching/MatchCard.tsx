@@ -78,7 +78,7 @@ const MatchCard: React.FC<MatchCardProps> = ({
 
             <div className="flex flex-wrap gap-2 mb-4">
               <span className="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-green-100 text-green-800">
-                {sitter.pricePerHour} лв/час
+                {sitter.pricePerHour} лв/24 часа
               </span>
               {sitter.preferredAnimals.map(animal => (
                 <span

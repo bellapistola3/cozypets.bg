@@ -42,13 +42,13 @@ const Gallery: React.FC = () => {
       id: 5,
       src: 'https://images.pexels.com/photos/326012/pexels-photo-326012.jpeg',
       alt: 'Красив заек в градината',
-      category: 'other',
+      category: 'rabbits',
     },
     {
       id: 6,
       src: 'https://images.pexels.com/photos/1661179/pexels-photo-1661179.jpeg',
       alt: 'Цветен папагал на клонка',
-      category: 'other',
+      category: 'birds',
     },
     {
       id: 7,
@@ -61,6 +61,54 @@ const Gallery: React.FC = () => {
       src: 'https://images.pexels.com/photos/617278/pexels-photo-617278.jpeg',
       alt: 'Котка гледа през прозореца',
       category: 'cats',
+    },
+    {
+      id: 9,
+      src: 'https://images.pexels.com/photos/4588065/pexels-photo-4588065.jpeg',
+      alt: 'Сладко зайче в тревата',
+      category: 'rabbits',
+    },
+    {
+      id: 10,
+      src: 'https://images.pexels.com/photos/104827/cat-pet-animal-domestic-104827.jpeg',
+      alt: 'Котенце с красиви очи',
+      category: 'cats',
+    },
+    {
+      id: 11,
+      src: 'https://images.pexels.com/photos/1805164/pexels-photo-1805164.jpeg',
+      alt: 'Щастливо кученце на трева',
+      category: 'dogs',
+    },
+    {
+      id: 12,
+      src: 'https://images.pexels.com/photos/2317904/pexels-photo-2317904.jpeg',
+      alt: 'Красив папагал със сини пера',
+      category: 'birds',
+    },
+    {
+      id: 13,
+      src: 'https://images.pexels.com/photos/1851164/pexels-photo-1851164.jpeg',
+      alt: 'Малко котенце се разхожда',
+      category: 'cats',
+    },
+    {
+      id: 14,
+      src: 'https://images.pexels.com/photos/1619690/pexels-photo-1619690.jpeg',
+      alt: 'Енергично кученце се играе',
+      category: 'dogs',
+    },
+    {
+      id: 15,
+      src: 'https://images.pexels.com/photos/3629227/pexels-photo-3629227.jpeg',
+      alt: 'Пушено зайче в кошница',
+      category: 'rabbits',
+    },
+    {
+      id: 16,
+      src: 'https://images.pexels.com/photos/1599452/pexels-photo-1599452.jpeg',
+      alt: 'Цветен папагал Ара',
+      category: 'birds',
     },
   ];
 
@@ -78,7 +126,7 @@ const Gallery: React.FC = () => {
         />
         
         <div className="flex justify-center mt-8 mb-10">
-          <div className="flex space-x-2 bg-gray-100 p-1 rounded-lg">
+          <div className="flex flex-wrap justify-center gap-2 bg-gray-100 p-1 rounded-lg">
             <button
               onClick={() => setFilter('all')}
               className={`interactive-button px-6 py-3 rounded-lg font-semibold ${
@@ -87,7 +135,7 @@ const Gallery: React.FC = () => {
                   : 'hover:bg-gray-200 text-gray-700'
               }`}
             >
-              Всички домашни любимци
+              Всички
             </button>
             <button
               onClick={() => setFilter('dogs')}
@@ -110,14 +158,24 @@ const Gallery: React.FC = () => {
               Котки
             </button>
             <button
-              onClick={() => setFilter('other')}
+              onClick={() => setFilter('rabbits')}
               className={`interactive-button px-6 py-3 rounded-lg font-semibold ${
-                filter === 'other'
+                filter === 'rabbits'
                   ? 'neon-glow bg-gradient-to-r from-green-500 to-green-600 text-white shadow-lg'
                   : 'hover:bg-gray-200 text-gray-700'
               }`}
             >
-              Други домашни любимци
+              Зайци
+            </button>
+            <button
+              onClick={() => setFilter('birds')}
+              className={`interactive-button px-6 py-3 rounded-lg font-semibold ${
+                filter === 'birds'
+                  ? 'neon-glow bg-gradient-to-r from-green-500 to-green-600 text-white shadow-lg'
+                  : 'hover:bg-gray-200 text-gray-700'
+              }`}
+            >
+              Птици
             </button>
           </div>
         </div>

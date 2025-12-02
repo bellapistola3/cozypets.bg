@@ -100,7 +100,7 @@ const Hero: React.FC = () => {
           <div className="animate-fadeInUp animation-delay-200 mt-24 mb-20">
             <button
               onClick={() => window.location.href = '/search'}
-              className="interactive-button neon-glow mx-auto w-full max-w-[420px] inline-flex items-center justify-center gap-3 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold text-xl px-8 py-4 rounded-2xl shadow-2xl hover:shadow-green-500/25 border-2 border-green-400/20 h-[64px]"
+              className="interactive-button neon-glow mx-auto w-full sm:w-[500px] md:w-[600px] lg:w-[700px] inline-flex items-center justify-center gap-3 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold text-xl px-10 py-5 rounded-2xl shadow-2xl hover:shadow-green-500/25 border-2 border-green-400/20 h-[70px]"
             >
               <Search className="h-7 w-7" />
               Намерете гледач на домашни любимци

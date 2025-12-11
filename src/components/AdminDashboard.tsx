@@ -1,70 +1,101 @@
-import React, { useState } from 'react';
-import { 
-  BarChart3, 
-  Users, 
-  Calendar, 
-  DollarSign, 
-  TrendingUp, 
+import React, { useState, useEffect } from 'react';
+import {
+  BarChart3,
+  Users,
+  Calendar,
+  DollarSign,
+  TrendingUp,
   Download,
   Filter,
   Search,
   Eye,
   Edit,
-  Trash2
+  Trash2,
+  Ban,
+  CheckCircle,
+  XCircle,
+  AlertCircle
 } from 'lucide-react';
 import Button from './common/Button';
+import ChatApprovalAdmin from './ChatApprovalAdmin';
+import { adminService, AdminStats, UserManagement, ReservationManagement, PaymentManagement } from '../lib/adminService';
 
 const AdminDashboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState('overview');
   const [dateRange, setDateRange] = useState('30');
+  const [stats, setStats] = useState<AdminStats | null>(null);
+  const [users, setUsers] = useState<UserManagement[]>([]);
+  const [reservations, setReservations] = useState<ReservationManagement[]>([]);
+  const [payments, setPayments] = useState<PaymentManagement[]>([]);
+  const [loading, setLoading] = useState(true);
 
-  // Mock data for statistics
-  const stats = {
-    totalUsers: 1247,
-    totalSitters: 89,
-    totalBookings: 456,
-    totalRevenue: 12450,
-    monthlyGrowth: 15.3,
-    averageBookingValue: 85,
+  useEffect(() => {
+    loadDashboardData();
+  }, [activeTab]);
+
+  const loadDashboardData = async () => {
+    try {
+      setLoading(true);
+
+      const statsData = await adminService.getStatistics();
+      setStats(statsData);
+
+      if (activeTab === 'users') {
+        const usersData = await adminService.getAllUsers();
+        setUsers(usersData);
+      } else if (activeTab === 'bookings') {
+        const reservationsData = await adminService.getAllReservations();
+        setReservations(reservationsData);
+      } else if (activeTab === 'payments') {
+        const paymentsData = await adminService.getAllPayments();
+        setPayments(paymentsData);
+      }
+    } catch (error) {
+      console.error('Failed to load dashboard data:', error);
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const recentBookings = [
-    {
-      id: '1',
-      customerName: 'Елена Димитрова',
-      sitterName: 'Мария Петкова',
-      service: 'Ежедневни разходки',
-      amount: 150,
-      status: 'confirmed',
-      date: '2024-01-20',
-    },
-    {
-      id: '2',
-      customerName: 'Иван Петров',
-      sitterName: 'Георги Стоянов',
-      service: 'Домашно гледане',
-      amount: 280,
-      status: 'completed',
-      date: '2024-01-19',
-    },
-  ];
+  const handleBanUser = async (userId: string) => {
+    try {
+      await adminService.banUser(userId);
+      await loadDashboardData();
+      alert('User banned successfully');
+    } catch (error) {
+      alert('Failed to ban user');
+    }
+  };
 
-  const topSitters = [
-    {
-      id: '1',
-      name: 'Мария Петкова',
-      bookings: 23,
-      revenue: 2340,
-      rating: 4.9,
-    },
-    {
-      id: '2',
-      name: 'Георги Стоянов',
-      bookings: 18,
-      revenue: 1890,
-      rating: 5.0,
-    },
-  ];
+  const handleUnbanUser = async (userId: string) => {
+    try {
+      await adminService.unbanUser(userId);
+      await loadDashboardData();
+      alert('User unbanned successfully');
+    } catch (error) {
+      alert('Failed to unban user');
+    }
+  };
+
+  const handleUpdateReservationStatus = async (reservationId: string, status: string) => {
+    try {
+      await adminService.updateReservationStatus(reservationId, status);
+      await loadDashboardData();
+      alert('Reservation status updated');
+    } catch (error) {
+      alert('Failed to update reservation status');
+    }
+  };
+
+  const handleReleasePayment = async (paymentId: string) => {
+    try {
+      await adminService.releasePayment(paymentId);
+      await loadDashboardData();
+      alert('Payment released successfully');
+    } catch (error) {
+      alert('Failed to release payment');
+    }
+  };
 
   const getStatusColor = (status: string) => {
     switch (status) {
@@ -168,12 +199,38 @@ const AdminDashboard: React.FC = () => {
               >
                 Отчети
               </button>
+              <button
+                onClick={() => setActiveTab('chat-approvals')}
+                className={`py-4 px-2 border-b-2 font-medium text-sm ${
+                  activeTab === 'chat-approvals'
+                    ? 'border-green-500 text-green-600'
+                    : 'border-transparent text-gray-500 hover:text-gray-700'
+                }`}
+              >
+                Chat Одобрения
+              </button>
+              <button
+                onClick={() => setActiveTab('payments')}
+                className={`py-4 px-2 border-b-2 font-medium text-sm ${
+                  activeTab === 'payments'
+                    ? 'border-green-500 text-green-600'
+                    : 'border-transparent text-gray-500 hover:text-gray-700'
+                }`}
+              >
+                Плащания
+              </button>
             </nav>
           </div>
         </div>
 
+        {loading && (
+          <div className="flex justify-center items-center py-12">
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600"></div>
+          </div>
+        )}
+
         {/* Overview Tab */}
-        {activeTab === 'overview' && (
+        {activeTab === 'overview' && stats && !loading && (
           <div className="space-y-8">
             {/* Stats Cards */}
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -187,10 +244,6 @@ const AdminDashboard: React.FC = () => {
                     <Users className="h-6 w-6 text-blue-600" />
                   </div>
                 </div>
-                <div className="mt-4 flex items-center">
-                  <TrendingUp className="h-4 w-4 text-green-500 mr-1" />
-                  <span className="text-sm text-green-600">+12% от миналия месец</span>
-                </div>
               </div>
 
               <div className="bg-white rounded-xl shadow-sm p-6">
@@ -203,25 +256,17 @@ const AdminDashboard: React.FC = () => {
                     <Users className="h-6 w-6 text-green-600" />
                   </div>
                 </div>
-                <div className="mt-4 flex items-center">
-                  <TrendingUp className="h-4 w-4 text-green-500 mr-1" />
-                  <span className="text-sm text-green-600">+8% от миналия месец</span>
-                </div>
               </div>
 
               <div className="bg-white rounded-xl shadow-sm p-6">
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium text-gray-600">Общо резервации</p>
-                    <p className="text-3xl font-bold text-gray-900">{stats.totalBookings}</p>
+                    <p className="text-3xl font-bold text-gray-900">{stats.totalReservations}</p>
                   </div>
                   <div className="bg-purple-100 p-3 rounded-full">
                     <Calendar className="h-6 w-6 text-purple-600" />
                   </div>
-                </div>
-                <div className="mt-4 flex items-center">
-                  <TrendingUp className="h-4 w-4 text-green-500 mr-1" />
-                  <span className="text-sm text-green-600">+{stats.monthlyGrowth}% от миналия месец</span>
                 </div>
               </div>
 
@@ -229,119 +274,249 @@ const AdminDashboard: React.FC = () => {
                 <div className="flex items-center justify-between">
                   <div>
                     <p className="text-sm font-medium text-gray-600">Общи приходи</p>
-                    <p className="text-3xl font-bold text-gray-900">{stats.totalRevenue} лв.</p>
+                    <p className="text-3xl font-bold text-gray-900">{stats.totalRevenue.toFixed(2)} лв.</p>
                   </div>
                   <div className="bg-yellow-100 p-3 rounded-full">
                     <DollarSign className="h-6 w-6 text-yellow-600" />
                   </div>
                 </div>
-                <div className="mt-4 flex items-center">
-                  <TrendingUp className="h-4 w-4 text-green-500 mr-1" />
-                  <span className="text-sm text-green-600">+18% от миналия месец</span>
-                </div>
               </div>
-            </div>
 
-            {/* Charts and Recent Activity */}
-            <div className="grid lg:grid-cols-2 gap-8">
-              {/* Revenue Chart */}
               <div className="bg-white rounded-xl shadow-sm p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Приходи по месеци</h3>
-                <div className="h-64 bg-gradient-to-t from-green-100 to-transparent rounded-lg flex items-end justify-center">
-                  <div className="text-gray-500">Графика ще бъде тук</div>
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-gray-600">Platform печалби</p>
+                    <p className="text-3xl font-bold text-gray-900">{stats.platformEarnings.toFixed(2)} лв.</p>
+                  </div>
+                  <div className="bg-green-100 p-3 rounded-full">
+                    <DollarSign className="h-6 w-6 text-green-600" />
+                  </div>
                 </div>
               </div>
 
-              {/* Top Sitters */}
               <div className="bg-white rounded-xl shadow-sm p-6">
-                <h3 className="text-lg font-semibold text-gray-900 mb-4">Топ гледачи</h3>
-                <div className="space-y-4">
-                  {topSitters.map((sitter, index) => (
-                    <div key={sitter.id} className="flex items-center justify-between">
-                      <div className="flex items-center gap-3">
-                        <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center text-green-600 font-semibold">
-                          {index + 1}
-                        </div>
-                        <div>
-                          <p className="font-medium text-gray-900">{sitter.name}</p>
-                          <p className="text-sm text-gray-600">{sitter.bookings} резервации</p>
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <p className="font-semibold text-gray-900">{sitter.revenue} лв.</p>
-                        <p className="text-sm text-gray-600">★ {sitter.rating}</p>
-                      </div>
-                    </div>
-                  ))}
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-gray-600">Изчакващи изплащания</p>
+                    <p className="text-3xl font-bold text-gray-900">{stats.pendingPayouts.toFixed(2)} лв.</p>
+                  </div>
+                  <div className="bg-orange-100 p-3 rounded-full">
+                    <DollarSign className="h-6 w-6 text-orange-600" />
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white rounded-xl shadow-sm p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-gray-600">Активни абонаменти</p>
+                    <p className="text-3xl font-bold text-gray-900">{stats.activeSubscriptions}</p>
+                  </div>
+                  <div className="bg-indigo-100 p-3 rounded-full">
+                    <TrendingUp className="h-6 w-6 text-indigo-600" />
+                  </div>
+                </div>
+              </div>
+
+              <div className="bg-white rounded-xl shadow-sm p-6">
+                <div className="flex items-center justify-between">
+                  <div>
+                    <p className="text-sm font-medium text-gray-600">Завършени резервации</p>
+                    <p className="text-3xl font-bold text-gray-900">{stats.completedReservations}</p>
+                  </div>
+                  <div className="bg-teal-100 p-3 rounded-full">
+                    <CheckCircle className="h-6 w-6 text-teal-600" />
+                  </div>
                 </div>
               </div>
             </div>
 
-            {/* Recent Bookings */}
-            <div className="bg-white rounded-xl shadow-sm p-6">
-              <h3 className="text-lg font-semibold text-gray-900 mb-4">Последни резервации</h3>
-              <div className="overflow-x-auto">
-                <table className="w-full">
-                  <thead>
-                    <tr className="border-b border-gray-200">
-                      <th className="text-left py-3 px-4 font-medium text-gray-600">Клиент</th>
-                      <th className="text-left py-3 px-4 font-medium text-gray-600">Гледач</th>
-                      <th className="text-left py-3 px-4 font-medium text-gray-600">Услуга</th>
-                      <th className="text-left py-3 px-4 font-medium text-gray-600">Сума</th>
-                      <th className="text-left py-3 px-4 font-medium text-gray-600">Статус</th>
-                      <th className="text-left py-3 px-4 font-medium text-gray-600">Дата</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {recentBookings.map((booking) => (
-                      <tr key={booking.id} className="border-b border-gray-100">
-                        <td className="py-3 px-4">{booking.customerName}</td>
-                        <td className="py-3 px-4">{booking.sitterName}</td>
-                        <td className="py-3 px-4">{booking.service}</td>
-                        <td className="py-3 px-4 font-semibold">{booking.amount} лв.</td>
-                        <td className="py-3 px-4">
-                          <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(booking.status)}`}>
-                            {getStatusLabel(booking.status)}
-                          </span>
-                        </td>
-                        <td className="py-3 px-4">{booking.date}</td>
-                      </tr>
-                    ))}
-                  </tbody>
-                </table>
-              </div>
-            </div>
           </div>
         )}
 
-        {/* Other tabs would be implemented similarly */}
-        {activeTab === 'bookings' && (
+        {activeTab === 'bookings' && !loading && (
           <div className="bg-white rounded-xl shadow-sm p-6">
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-2xl font-bold text-gray-900">Управление на резервации</h2>
-              <div className="flex items-center gap-4">
-                <div className="relative">
-                  <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
-                  <input
-                    type="text"
-                    placeholder="Търси резервации..."
-                    className="pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500"
-                  />
-                </div>
-                <Button variant="outline">
-                  <Filter className="h-5 w-5 mr-2" />
-                  Филтри
-                </Button>
-              </div>
+              <Button onClick={loadDashboardData}>
+                <Download className="h-5 w-5 mr-2" />
+                Обнови
+              </Button>
             </div>
-            <p className="text-gray-600">Детайлно управление на резервации ще бъде тук.</p>
+
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="border-b border-gray-200">
+                    <th className="text-left py-3 px-4 font-medium text-gray-600">ID</th>
+                    <th className="text-left py-3 px-4 font-medium text-gray-600">Собственик</th>
+                    <th className="text-left py-3 px-4 font-medium text-gray-600">Гледач</th>
+                    <th className="text-left py-3 px-4 font-medium text-gray-600">Услуга</th>
+                    <th className="text-left py-3 px-4 font-medium text-gray-600">Период</th>
+                    <th className="text-left py-3 px-4 font-medium text-gray-600">Сума</th>
+                    <th className="text-left py-3 px-4 font-medium text-gray-600">Статус</th>
+                    <th className="text-left py-3 px-4 font-medium text-gray-600">Chat</th>
+                    <th className="text-left py-3 px-4 font-medium text-gray-600">Действия</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {reservations.map((reservation) => (
+                    <tr key={reservation.id} className="border-b border-gray-100">
+                      <td className="py-3 px-4 text-sm font-mono">{reservation.id.slice(0, 8)}...</td>
+                      <td className="py-3 px-4">{reservation.owner_name}</td>
+                      <td className="py-3 px-4">{reservation.sitter_name}</td>
+                      <td className="py-3 px-4">{reservation.service_type}</td>
+                      <td className="py-3 px-4 text-sm">
+                        {new Date(reservation.start_date).toLocaleDateString()} - {new Date(reservation.end_date).toLocaleDateString()}
+                      </td>
+                      <td className="py-3 px-4 font-semibold">{reservation.total_price.toFixed(2)} лв.</td>
+                      <td className="py-3 px-4">
+                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusColor(reservation.status)}`}>
+                          {getStatusLabel(reservation.status)}
+                        </span>
+                      </td>
+                      <td className="py-3 px-4">
+                        {reservation.chat_approved ? (
+                          <CheckCircle className="h-5 w-5 text-green-600" />
+                        ) : (
+                          <XCircle className="h-5 w-5 text-red-600" />
+                        )}
+                      </td>
+                      <td className="py-3 px-4">
+                        <div className="flex gap-2">
+                          {reservation.status === 'pending' && (
+                            <>
+                              <button
+                                onClick={() => handleUpdateReservationStatus(reservation.id, 'confirmed')}
+                                className="text-green-600 hover:text-green-700"
+                                title="Потвърди"
+                              >
+                                <CheckCircle className="h-5 w-5" />
+                              </button>
+                              <button
+                                onClick={() => handleUpdateReservationStatus(reservation.id, 'cancelled')}
+                                className="text-red-600 hover:text-red-700"
+                                title="Откажи"
+                              >
+                                <XCircle className="h-5 w-5" />
+                              </button>
+                            </>
+                          )}
+                          {reservation.status === 'confirmed' && (
+                            <button
+                              onClick={() => handleUpdateReservationStatus(reservation.id, 'completed')}
+                              className="text-blue-600 hover:text-blue-700"
+                              title="Завърши"
+                            >
+                              <CheckCircle className="h-5 w-5" />
+                            </button>
+                          )}
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {reservations.length === 0 && (
+              <div className="text-center py-12">
+                <p className="text-gray-500">Няма намерени резервации</p>
+              </div>
+            )}
           </div>
         )}
 
-        {activeTab === 'users' && (
+        {activeTab === 'users' && !loading && (
           <div className="bg-white rounded-xl shadow-sm p-6">
-            <h2 className="text-2xl font-bold text-gray-900 mb-6">Управление на потребители</h2>
-            <p className="text-gray-600">Управление на потребителски профили ще бъде тук.</p>
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-bold text-gray-900">Управление на потребители</h2>
+              <Button onClick={loadDashboardData}>
+                <Download className="h-5 w-5 mr-2" />
+                Обнови
+              </Button>
+            </div>
+
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="border-b border-gray-200">
+                    <th className="text-left py-3 px-4 font-medium text-gray-600">ID</th>
+                    <th className="text-left py-3 px-4 font-medium text-gray-600">Име</th>
+                    <th className="text-left py-3 px-4 font-medium text-gray-600">Роля</th>
+                    <th className="text-left py-3 px-4 font-medium text-gray-600">Създаден</th>
+                    <th className="text-left py-3 px-4 font-medium text-gray-600">Нарушения</th>
+                    <th className="text-left py-3 px-4 font-medium text-gray-600">Статус</th>
+                    <th className="text-left py-3 px-4 font-medium text-gray-600">Действия</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {users.map((user) => (
+                    <tr key={user.id} className="border-b border-gray-100">
+                      <td className="py-3 px-4 text-sm font-mono">{user.id.slice(0, 8)}...</td>
+                      <td className="py-3 px-4">{user.full_name}</td>
+                      <td className="py-3 px-4">
+                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                          user.role === 'admin' ? 'bg-red-100 text-red-700' :
+                          user.role === 'sitter' ? 'bg-blue-100 text-blue-700' :
+                          'bg-gray-100 text-gray-700'
+                        }`}>
+                          {user.role}
+                        </span>
+                      </td>
+                      <td className="py-3 px-4 text-sm">{new Date(user.created_at).toLocaleDateString()}</td>
+                      <td className="py-3 px-4">
+                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                          user.violation_count && user.violation_count > 0
+                            ? 'bg-orange-100 text-orange-700'
+                            : 'bg-green-100 text-green-700'
+                        }`}>
+                          {user.violation_count || 0}
+                        </span>
+                      </td>
+                      <td className="py-3 px-4">
+                        {user.is_banned ? (
+                          <span className="px-2 py-1 rounded-full text-xs font-medium bg-red-100 text-red-700 flex items-center gap-1 w-fit">
+                            <Ban className="h-3 w-3" />
+                            Банован
+                          </span>
+                        ) : (
+                          <span className="px-2 py-1 rounded-full text-xs font-medium bg-green-100 text-green-700 flex items-center gap-1 w-fit">
+                            <CheckCircle className="h-3 w-3" />
+                            Активен
+                          </span>
+                        )}
+                      </td>
+                      <td className="py-3 px-4">
+                        <div className="flex gap-2">
+                          {user.is_banned ? (
+                            <button
+                              onClick={() => handleUnbanUser(user.id)}
+                              className="text-green-600 hover:text-green-700 text-sm font-medium"
+                            >
+                              Разбанирай
+                            </button>
+                          ) : (
+                            <button
+                              onClick={() => handleBanUser(user.id)}
+                              className="text-red-600 hover:text-red-700 text-sm font-medium"
+                            >
+                              Банирай
+                            </button>
+                          )}
+                        </div>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {users.length === 0 && (
+              <div className="text-center py-12">
+                <p className="text-gray-500">Няма намерени потребители</p>
+              </div>
+            )}
           </div>
         )}
 
@@ -381,6 +556,93 @@ const AdminDashboard: React.FC = () => {
                 </Button>
               </div>
             </div>
+          </div>
+        )}
+
+        {activeTab === 'payments' && !loading && (
+          <div className="bg-white rounded-xl shadow-sm p-6">
+            <div className="flex items-center justify-between mb-6">
+              <h2 className="text-2xl font-bold text-gray-900">Управление на плащания</h2>
+              <Button onClick={loadDashboardData}>
+                <Download className="h-5 w-5 mr-2" />
+                Обнови
+              </Button>
+            </div>
+
+            <div className="overflow-x-auto">
+              <table className="w-full">
+                <thead>
+                  <tr className="border-b border-gray-200">
+                    <th className="text-left py-3 px-4 font-medium text-gray-600">ID</th>
+                    <th className="text-left py-3 px-4 font-medium text-gray-600">Резервация</th>
+                    <th className="text-left py-3 px-4 font-medium text-gray-600">Сума</th>
+                    <th className="text-left py-3 px-4 font-medium text-gray-600">Platform такса</th>
+                    <th className="text-left py-3 px-4 font-medium text-gray-600">Sitter сума</th>
+                    <th className="text-left py-3 px-4 font-medium text-gray-600">Статус плащане</th>
+                    <th className="text-left py-3 px-4 font-medium text-gray-600">Escrow</th>
+                    <th className="text-left py-3 px-4 font-medium text-gray-600">Действия</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {payments.map((payment) => (
+                    <tr key={payment.id} className="border-b border-gray-100">
+                      <td className="py-3 px-4 text-sm font-mono">{payment.id.slice(0, 8)}...</td>
+                      <td className="py-3 px-4 text-sm font-mono">{payment.reservation_id.slice(0, 8)}...</td>
+                      <td className="py-3 px-4 font-semibold">{payment.amount.toFixed(2)} лв.</td>
+                      <td className="py-3 px-4 text-green-600">{payment.platform_fee.toFixed(2)} лв.</td>
+                      <td className="py-3 px-4 text-blue-600">{payment.sitter_amount.toFixed(2)} лв.</td>
+                      <td className="py-3 px-4">
+                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                          payment.payment_status === 'completed' ? 'bg-green-100 text-green-700' :
+                          payment.payment_status === 'pending' ? 'bg-yellow-100 text-yellow-700' :
+                          payment.payment_status === 'failed' ? 'bg-red-100 text-red-700' :
+                          'bg-gray-100 text-gray-700'
+                        }`}>
+                          {payment.payment_status}
+                        </span>
+                      </td>
+                      <td className="py-3 px-4">
+                        <span className={`px-2 py-1 rounded-full text-xs font-medium ${
+                          payment.escrow_status === 'released' ? 'bg-green-100 text-green-700' :
+                          payment.escrow_status === 'held' ? 'bg-orange-100 text-orange-700' :
+                          'bg-gray-100 text-gray-700'
+                        }`}>
+                          {payment.escrow_status}
+                        </span>
+                      </td>
+                      <td className="py-3 px-4">
+                        {payment.escrow_status === 'held' && payment.payment_status === 'completed' && (
+                          <button
+                            onClick={() => handleReleasePayment(payment.id)}
+                            className="text-green-600 hover:text-green-700 text-sm font-medium"
+                          >
+                            Освободи
+                          </button>
+                        )}
+                        {payment.released_at && (
+                          <span className="text-xs text-gray-500">
+                            {new Date(payment.released_at).toLocaleDateString()}
+                          </span>
+                        )}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+
+            {payments.length === 0 && (
+              <div className="text-center py-12">
+                <p className="text-gray-500">Няма намерени плащания</p>
+              </div>
+            )}
+          </div>
+        )}
+
+        {activeTab === 'chat-approvals' && (
+          <div className="bg-white rounded-xl shadow-sm p-6">
+            <h2 className="text-2xl font-bold text-gray-900 mb-6">Chat одобрения</h2>
+            <ChatApprovalAdmin />
           </div>
         )}
       </div>

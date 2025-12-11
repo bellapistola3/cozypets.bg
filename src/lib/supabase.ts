@@ -125,7 +125,7 @@ export const dbHelpers = {
     email?: string;
     phone?: string;
     avatar_url?: string;
-    role?: 'owner' | 'sitter';
+    role?: 'owner' | 'admin';
   }) {
     try {
       const { data, error } = await supabase

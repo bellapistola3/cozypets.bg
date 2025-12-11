@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { 
-  Star, 
-  MapPin, 
-  Shield, 
-  Calendar, 
-  MessageCircle, 
-  Phone, 
+import {
+  Star,
+  MapPin,
+  Shield,
+  Calendar,
+  MessageCircle,
+  Phone,
   Mail,
   Award,
   Clock,
@@ -13,8 +13,9 @@ import {
   ChevronLeft,
   ChevronRight
 } from 'lucide-react';
-import { Sitter, Review } from '../types';
+import { Sitter } from '../types';
 import Button from './common/Button';
+import ReviewsList from './ReviewsList';
 
 interface SitterProfileProps {
   sitter: Sitter;
@@ -55,34 +56,6 @@ const SitterProfile: React.FC<SitterProfileProps> = ({ sitter, onClose }) => {
   const prevPhoto = () => {
     setCurrentPhotoIndex((prev) => (prev - 1 + sitter.photos.length) % sitter.photos.length);
   };
-
-  // Mock reviews for demonstration
-  const mockReviews: Review[] = [
-    {
-      id: '1',
-      userId: 'user1',
-      userName: 'Елена Димитрова',
-      userAvatar: 'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg',
-      rating: 5,
-      comment: 'Мария беше невероятна с нашето куче Макс! Той се върна щастлив и уморен след разходката. Определено ще резервираме отново.',
-      createdAt: new Date('2024-01-15'),
-      petName: 'Макс',
-      petType: 'dog',
-      serviceType: 'daily-walks',
-    },
-    {
-      id: '2',
-      userId: 'user2',
-      userName: 'Иван Петров',
-      userAvatar: 'https://images.pexels.com/photos/220453/pexels-photo-220453.jpeg',
-      rating: 5,
-      comment: 'Професионална и грижовна. Котката ни Луна беше в отлични ръце. Получавахме редовни актуализации със снимки.',
-      createdAt: new Date('2024-01-10'),
-      petName: 'Луна',
-      petType: 'cat',
-      serviceType: 'home-visits',
-    },
-  ];
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 z-50 overflow-y-auto">
@@ -245,44 +218,8 @@ const SitterProfile: React.FC<SitterProfileProps> = ({ sitter, onClose }) => {
 
             {/* Reviews */}
             <div className="mb-8">
-              <h2 className="text-xl font-semibold mb-4">Отзиви ({mockReviews.length})</h2>
-              <div className="space-y-6">
-                {mockReviews.map(review => (
-                  <div key={review.id} className="bg-gray-50 rounded-lg p-6">
-                    <div className="flex items-start gap-4">
-                      <img
-                        src={review.userAvatar}
-                        alt={review.userName}
-                        className="w-12 h-12 rounded-full object-cover"
-                      />
-                      <div className="flex-1">
-                        <div className="flex items-center justify-between mb-2">
-                          <div>
-                            <h4 className="font-semibold text-gray-900">{review.userName}</h4>
-                            <p className="text-sm text-gray-600">
-                              {review.petName} ({getPetTypeLabel(review.petType)}) • {getServiceLabel(review.serviceType)}
-                            </p>
-                          </div>
-                          <div className="flex items-center">
-                            {[...Array(5)].map((_, i) => (
-                              <Star
-                                key={i}
-                                className={`h-4 w-4 ${
-                                  i < review.rating ? 'text-yellow-400 fill-current' : 'text-gray-300'
-                                }`}
-                              />
-                            ))}
-                          </div>
-                        </div>
-                        <p className="text-gray-700">{review.comment}</p>
-                        <p className="text-sm text-gray-500 mt-2">
-                          {review.createdAt.toLocaleDateString('bg-BG')}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                ))}
-              </div>
+              <h2 className="text-xl font-semibold mb-4">Отзиви</h2>
+              <ReviewsList sitterId={sitter.id} showRatingSummary={true} />
             </div>
 
             {/* Contact */}

@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import { 
-  Calendar, 
-  MessageCircle, 
-  Heart, 
-  Settings, 
+import {
+  Calendar,
+  MessageCircle,
+  Heart,
+  Settings,
   CreditCard,
   Bell,
   User,
@@ -11,16 +11,19 @@ import {
   Star,
   Clock,
   MapPin,
-  Briefcase
+  Briefcase,
+  X
 } from 'lucide-react';
 import { Booking, Pet, Message } from '../types';
 import Button from './common/Button';
 import BecomeASitter from './BecomeASitter';
+import ReviewForm from './ReviewForm';
 import { useAuth } from '../contexts/AuthContext';
 
 const UserDashboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState('bookings');
   const [showBecomeASitter, setShowBecomeASitter] = useState(false);
+  const [reviewBooking, setReviewBooking] = useState<Booking | null>(null);
   const { user } = useAuth();
 
   // Mock data
@@ -43,6 +46,26 @@ const UserDashboard: React.FC = () => {
         phone: '+359888123456',
       },
       createdAt: new Date('2024-01-15'),
+      updatedAt: new Date('2024-01-15'),
+    },
+    {
+      id: '2',
+      userId: 'user1',
+      sitterId: 'sitter1',
+      petId: 'pet1',
+      serviceType: 'home-visits',
+      startDate: new Date('2024-01-10'),
+      endDate: new Date('2024-01-15'),
+      totalAmount: 200,
+      platformFee: 50,
+      reservationFee: 20,
+      status: 'completed',
+      specialInstructions: 'Котката обича риба',
+      emergencyContact: {
+        name: 'Мария Иванова',
+        phone: '+359888654321',
+      },
+      createdAt: new Date('2024-01-05'),
       updatedAt: new Date('2024-01-15'),
     },
   ];
@@ -265,6 +288,15 @@ const UserDashboard: React.FC = () => {
                             <MessageCircle className="h-4 w-4 mr-2" />
                             Съобщение
                           </Button>
+                          {booking.status === 'completed' && (
+                            <Button
+                              onClick={() => setReviewBooking(booking)}
+                              className="text-sm py-2 px-4 bg-yellow-500 hover:bg-yellow-600"
+                            >
+                              <Star className="h-4 w-4 mr-2" />
+                              Остави отзив
+                            </Button>
+                          )}
                           <Button className="text-sm py-2 px-4">
                             Детайли
                           </Button>
@@ -382,6 +414,31 @@ const UserDashboard: React.FC = () => {
       
       {showBecomeASitter && (
         <BecomeASitter onClose={() => setShowBecomeASitter(false)} />
+      )}
+
+      {reviewBooking && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 z-50 overflow-y-auto">
+          <div className="min-h-screen py-8 px-4 flex items-center justify-center">
+            <div className="max-w-2xl w-full relative">
+              <button
+                onClick={() => setReviewBooking(null)}
+                className="absolute -top-4 -right-4 bg-white rounded-full p-2 shadow-lg hover:bg-gray-100 transition-colors z-10"
+              >
+                <X className="h-6 w-6" />
+              </button>
+              <ReviewForm
+                reservationId={reviewBooking.id}
+                sitterId={reviewBooking.sitterId}
+                sitterName="Мария Петкова"
+                onSuccess={() => {
+                  setReviewBooking(null);
+                  alert('Review submitted successfully!');
+                }}
+                onCancel={() => setReviewBooking(null)}
+              />
+            </div>
+          </div>
+        </div>
       )}
     </div>
   );

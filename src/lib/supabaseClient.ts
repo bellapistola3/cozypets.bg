@@ -1,7 +1,8 @@
 import { createClient } from '@supabase/supabase-js';
+import { supabaseConfig } from '../config/supabase.config';
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY;
+const supabaseUrl = supabaseConfig.url;
+const supabaseAnonKey = supabaseConfig.anonKey;
 
 if (!supabaseUrl || !supabaseAnonKey) {
   console.error('Supabase URL:', supabaseUrl);

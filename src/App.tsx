@@ -33,6 +33,7 @@ import ConversionLanding from './pages/ConversionLanding';
 import MatchCenter from './pages/MatchCenter';
 
 import DatabaseTest from './components/DatabaseTest';
+import ErrorBoundary from './components/ErrorBoundary';
 
 function ScrollToHashElement() {
   const location = useLocation();
@@ -55,14 +56,15 @@ function ScrollToHashElement() {
 
 function App() {
   return (
-    <AuthProvider>
-      <BrowserRouter>
-        <ScrollToTop />
-        <ScrollToHashElement />
-        <Header />
-        <AIAssistantChat />
+    <ErrorBoundary>
+      <AuthProvider>
+        <BrowserRouter>
+          <ScrollToTop />
+          <ScrollToHashElement />
+          <Header />
+          <AIAssistantChat />
 
-        <Routes>
+          <Routes>
         {/* Начална страница */}
         <Route
           path="/"
@@ -290,6 +292,7 @@ function App() {
         </Routes>
       </BrowserRouter>
     </AuthProvider>
+    </ErrorBoundary>
   );
 }
 

@@ -55,7 +55,7 @@ const Booking: React.FC = () => {
           .from('profiles')
           .select('full_name, email, phone')
           .eq('id', user.id)
-          .single();
+          .maybeSingle();
 
         if (profile) {
           setFormData((prev) => ({

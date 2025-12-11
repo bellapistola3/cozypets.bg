@@ -71,7 +71,7 @@ const PremiumMagazine: React.FC = () => {
         .from('sitters')
         .select('is_premium, featured_until')
         .eq('profile_id', user.id)
-        .single();
+        .maybeSingle();
 
       if (sitterData && sitterData.is_premium && new Date(sitterData.featured_until) > new Date()) {
         setIsPremium(true);
@@ -84,7 +84,7 @@ const PremiumMagazine: React.FC = () => {
       .eq('is_published', true)
       .order('publication_date', { ascending: false })
       .limit(1)
-      .single();
+      .maybeSingle();
 
     if (issueData) {
       setCurrentIssue(issueData);

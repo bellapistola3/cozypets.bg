@@ -141,23 +141,6 @@ export const dbHelpers = {
       throw error;
     }
   },
-    
-  async createUser(userData: {
-    name: string;
-    email: string;
-    phone?: string;
-    password_hash: string;
-    role?: 'owner' | 'admin';
-  }) {
-    const { data, error } = await supabase
-      .from('users')
-      .insert([userData])
-      .select()
-      .single();
-    
-    if (error) throw error;
-    return data;
-  },
 
   // Sitters
   async getSitters(filters?: {

@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { X, Calendar, Clock, CreditCard, Shield, Info } from 'lucide-react';
 import { Sitter, ServiceType, Pet } from '../types';
 import Button from './common/Button';
+import { bookingService } from '../lib/bookingService';
+import { useAuth } from '../contexts/AuthContext';
+import { supabase } from '../lib/supabase';
 
 interface BookingModalProps {
   sitter: Sitter;
@@ -24,7 +27,10 @@ interface BookingForm {
 }
 
 const BookingModal: React.FC<BookingModalProps> = ({ sitter, onClose, onBookingComplete }) => {
+  const { user } = useAuth();
   const [step, setStep] = useState(1);
+  const [pets, setPets] = useState<Pet[]>([]);
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState<BookingForm>({
     serviceType: sitter.services[0],
     startDate: '',
@@ -39,27 +45,24 @@ const BookingModal: React.FC<BookingModalProps> = ({ sitter, onClose, onBookingC
     },
   });
 
-  // Mock pets data
-  const mockPets: Pet[] = [
-    {
-      id: '1',
-      name: 'Макс',
-      type: 'dog',
-      breed: 'Голдън ретрийвър',
-      age: 3,
-      weight: 30,
-      photos: ['https://images.pexels.com/photos/2253275/pexels-photo-2253275.jpeg'],
-      vaccinated: true,
-      spayedNeutered: true,
-      microchipped: true,
-      temperament: ['Дружелюбен', 'Енергичен'],
-      emergencyVet: {
-        name: 'Ветеринарна клиника София',
-        phone: '+359888123456',
-        address: 'ул. Витоша 1, София',
-      },
-    },
-  ];
+  useEffect(() => {
+    if (user) {
+      loadUserPets();
+    }
+  }, [user]);
+
+  const loadUserPets = async () => {
+    if (!user) return;
+
+    const { data, error } = await supabase
+      .from('pets')
+      .select('*')
+      .eq('owner_id', user.id);
+
+    if (data && !error) {
+      setPets(data);
+    }
+  };
 
   const getServiceLabel = (service: ServiceType) => {
     const labels: { [key in ServiceType]: string } = {
@@ -96,11 +99,45 @@ const BookingModal: React.FC<BookingModalProps> = ({ sitter, onClose, onBookingC
   };
 
   const handleSubmit = async () => {
-    // Simulate booking creation
-    const bookingId = 'booking_' + Date.now();
-    setTimeout(() => {
-      onBookingComplete(bookingId);
-    }, 2000);
+    if (!user) {
+      alert('Моля, влезте в системата, за да направите резервация.');
+      return;
+    }
+
+    setLoading(true);
+
+    try {
+      const pricing = await bookingService.calculatePrice(
+        formData.serviceType,
+        formData.startDate,
+        formData.endDate,
+        sitter.id
+      );
+
+      const bookingResult = await bookingService.createReservation({
+        owner_id: user.id,
+        sitter_id: sitter.id,
+        pet_id: formData.petId,
+        service_type: formData.serviceType,
+        start_date: formData.startDate,
+        end_date: formData.endDate || formData.startDate,
+        start_time: formData.startTime,
+        end_time: formData.endTime,
+        special_instructions: formData.specialInstructions,
+        total_price: pricing.total,
+      });
+
+      if (bookingResult.success && bookingResult.reservation) {
+        onBookingComplete(bookingResult.reservation.id);
+      } else {
+        alert(bookingResult.error || 'Грешка при създаване на резервацията.');
+      }
+    } catch (error) {
+      console.error('Booking error:', error);
+      alert('Възникна грешка. Моля, опитайте отново.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const pricing = calculateTotal();
@@ -246,12 +283,17 @@ const BookingModal: React.FC<BookingModalProps> = ({ sitter, onClose, onBookingC
                     required
                   >
                     <option value="">Изберете домашен любимец</option>
-                    {mockPets.map(pet => (
+                    {pets.map(pet => (
                       <option key={pet.id} value={pet.id}>
-                        {pet.name} ({pet.breed})
+                        {pet.name} ({pet.breed || pet.type})
                       </option>
                     ))}
                   </select>
+                  {pets.length === 0 && (
+                    <p className="text-sm text-gray-600 mt-2">
+                      Нямате добавени домашни любимци. Моля, добавете домашен любимец от вашия профил.
+                    </p>
+                  )}
                 </div>
 
                 <div>
@@ -335,7 +377,7 @@ const BookingModal: React.FC<BookingModalProps> = ({ sitter, onClose, onBookingC
                     </div>
                     <div className="flex justify-between">
                       <span>Домашен любимец:</span>
-                      <span>{mockPets.find(p => p.id === formData.petId)?.name}</span>
+                      <span>{pets.find(p => p.id === formData.petId)?.name}</span>
                     </div>
                   </div>
                 </div>
@@ -397,12 +439,21 @@ const BookingModal: React.FC<BookingModalProps> = ({ sitter, onClose, onBookingC
                 </div>
 
                 <div className="flex justify-between">
-                  <Button variant="outline" onClick={() => setStep(2)}>
+                  <Button variant="outline" onClick={() => setStep(2)} disabled={loading}>
                     Назад
                   </Button>
-                  <Button onClick={handleSubmit}>
-                    <CreditCard className="h-5 w-5 mr-2" />
-                    Потвърди и плати {(pricing.subtotal + pricing.reservationFee + pricing.serviceFee).toFixed(2)} лв.
+                  <Button onClick={handleSubmit} disabled={loading}>
+                    {loading ? (
+                      <span className="flex items-center gap-2">
+                        <div className="w-5 h-5 border-3 border-white border-t-transparent rounded-full animate-spin"></div>
+                        Обработване...
+                      </span>
+                    ) : (
+                      <>
+                        <CreditCard className="h-5 w-5 mr-2" />
+                        Потвърди и плати {(pricing.subtotal + pricing.reservationFee + pricing.serviceFee).toFixed(2)} лв.
+                      </>
+                    )}
                   </Button>
                 </div>
               </div>

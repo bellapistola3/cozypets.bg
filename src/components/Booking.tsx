@@ -4,6 +4,7 @@ import SectionHeading from './common/SectionHeading';
 import Button from './common/Button';
 import { useAuth } from '../contexts/AuthContext';
 import { supabase } from '../lib/supabase';
+import { bookingService } from '../lib/bookingService';
 
 interface BookingFormData {
   name: string;
@@ -144,35 +145,49 @@ const Booking: React.FC = () => {
     setError('');
 
     try {
-      const { data: bookingData, error: bookingError } = await supabase
-        .from('bookings')
-        .insert({
-          owner_id: user.id,
-          pet_name: formData.petName,
-          pet_type: formData.petType,
-          service_type: formData.service,
-          start_date: formData.date,
-          start_time: formData.time,
-          notes: formData.notes,
-          status: 'pending',
-        })
-        .select()
-        .single();
+      const petResult = await bookingService.createOrGetPet({
+        owner_id: user.id,
+        name: formData.petName,
+        type: formData.petType,
+        breed: formData.petBreed,
+        age: parseInt(formData.petAge),
+        weight: parseFloat(formData.petWeight),
+        spayed_neutered: formData.petNeutered === 'yes',
+        gender: formData.petGender as 'male' | 'female',
+      });
 
-      if (bookingError) {
-        console.error('Booking error:', bookingError);
-        setError('Възникна грешка при създаването на резервацията. Моля, опитайте отново.');
+      if (petResult.error || !petResult.data) {
+        console.error('Pet creation error:', petResult.error);
+        setError('Грешка при създаване на профил за домашния любимец.');
         setLoading(false);
         return;
       }
 
-      await supabase.from('notifications').insert({
-        user_id: user.id,
-        type: 'booking',
-        title: 'Резервация изпратена',
-        message: `Вашата резервация за ${formData.petName} е получена успешно!`,
-        action_url: '/dashboard',
+      const pet = petResult.data;
+
+      const pricing = await bookingService.calculatePrice(
+        formData.service,
+        formData.date,
+        formData.date
+      );
+
+      const bookingResult = await bookingService.createReservation({
+        owner_id: user.id,
+        pet_id: pet.id,
+        service_type: formData.service,
+        start_date: formData.date,
+        end_date: formData.date,
+        start_time: formData.time,
+        end_time: formData.time,
+        special_instructions: formData.notes,
+        total_price: pricing.total,
       });
+
+      if (!bookingResult.success) {
+        setError(bookingResult.error || 'Възникна грешка при създаването на резервацията.');
+        setLoading(false);
+        return;
+      }
 
       setIsSubmitted(true);
       setLoading(false);

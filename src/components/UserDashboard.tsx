@@ -5,26 +5,41 @@ import {
   Heart,
   Settings,
   CreditCard,
-  Bell,
-  User,
   PlusCircle,
   Star,
-  Clock,
-  MapPin,
   Briefcase,
   X
 } from 'lucide-react';
-import { Booking, Pet, Message } from '../types';
+import { Pet } from '../types';
 import Button from './common/Button';
 import BecomeASitter from './BecomeASitter';
 import ReviewForm from './ReviewForm';
-import { useAuth } from '../contexts/AuthContext';
+
+interface Booking {
+  id: string;
+  userId: string;
+  sitterId: string;
+  petId: string;
+  serviceType: string;
+  startDate: Date;
+  endDate: Date;
+  totalAmount: number;
+  platformFee: number;
+  reservationFee: number;
+  status: 'pending' | 'confirmed' | 'completed' | 'in-progress' | 'cancelled';
+  specialInstructions?: string;
+  emergencyContact?: {
+    name: string;
+    phone: string;
+  };
+  createdAt: Date;
+  updatedAt: Date;
+}
 
 const UserDashboard: React.FC = () => {
   const [activeTab, setActiveTab] = useState('bookings');
   const [showBecomeASitter, setShowBecomeASitter] = useState(false);
   const [reviewBooking, setReviewBooking] = useState<Booking | null>(null);
-  const { user } = useAuth();
 
   // Mock data
   const mockBookings: Booking[] = [
@@ -72,22 +87,15 @@ const UserDashboard: React.FC = () => {
 
   const mockPets: Pet[] = [
     {
-      id: '1',
+      pet_id: 1,
+      user_id: 1,
       name: 'Макс',
-      type: 'dog',
       breed: 'Голдън ретрийвър',
       age: 3,
-      weight: 30,
-      photos: ['https://images.pexels.com/photos/2253275/pexels-photo-2253275.jpeg'],
-      vaccinated: true,
-      spayedNeutered: true,
-      microchipped: true,
-      temperament: ['Дружелюбен', 'Енергичен'],
-      emergencyVet: {
-        name: 'Ветеринарна клиника София',
-        phone: '+359888123456',
-        address: 'ул. Витоша 1, София',
-      },
+      health_status: 'Здрав, всички ваксини актуални',
+      photo_url: 'https://images.pexels.com/photos/2253275/pexels-photo-2253275.jpeg',
+      created_at: new Date(),
+      updated_at: new Date(),
     },
   ];
 
@@ -149,76 +157,70 @@ const UserDashboard: React.FC = () => {
               <nav className="space-y-2">
                 <button
                   onClick={() => setActiveTab('bookings')}
-                  className={`w-full flex items-center px-4 py-2 text-left rounded-lg transition-colors ${
-                    activeTab === 'bookings' 
-                      ? 'bg-green-100 text-green-700' 
-                      : 'text-gray-700 hover:bg-gray-100'
-                  }`}
+                  className={`w-full flex items-center px-4 py-2 text-left rounded-lg transition-colors ${activeTab === 'bookings'
+                    ? 'bg-green-100 text-green-700'
+                    : 'text-gray-700 hover:bg-gray-100'
+                    }`}
                 >
                   <Calendar className="h-5 w-5 mr-3" />
                   Резервации
                 </button>
-                
+
                 <button
                   onClick={() => setActiveTab('pets')}
-                  className={`w-full flex items-center px-4 py-2 text-left rounded-lg transition-colors ${
-                    activeTab === 'pets' 
-                      ? 'bg-green-100 text-green-700' 
-                      : 'text-gray-700 hover:bg-gray-100'
-                  }`}
+                  className={`w-full flex items-center px-4 py-2 text-left rounded-lg transition-colors ${activeTab === 'pets'
+                    ? 'bg-green-100 text-green-700'
+                    : 'text-gray-700 hover:bg-gray-100'
+                    }`}
                 >
                   <Heart className="h-5 w-5 mr-3" />
                   Моите любимци
                 </button>
-                
+
                 <button
                   onClick={() => setActiveTab('messages')}
-                  className={`w-full flex items-center px-4 py-2 text-left rounded-lg transition-colors ${
-                    activeTab === 'messages' 
-                      ? 'bg-green-100 text-green-700' 
-                      : 'text-gray-700 hover:bg-gray-100'
-                  }`}
+                  className={`w-full flex items-center px-4 py-2 text-left rounded-lg transition-colors ${activeTab === 'messages'
+                    ? 'bg-green-100 text-green-700'
+                    : 'text-gray-700 hover:bg-gray-100'
+                    }`}
                 >
                   <MessageCircle className="h-5 w-5 mr-3" />
                   Съобщения
                 </button>
-                
+
                 <button
                   onClick={() => setActiveTab('favorites')}
-                  className={`w-full flex items-center px-4 py-2 text-left rounded-lg transition-colors ${
-                    activeTab === 'favorites' 
-                      ? 'bg-green-100 text-green-700' 
-                      : 'text-gray-700 hover:bg-gray-100'
-                  }`}
+                  className={`w-full flex items-center px-4 py-2 text-left rounded-lg transition-colors ${activeTab === 'favorites'
+                    ? 'bg-green-100 text-green-700'
+                    : 'text-gray-700 hover:bg-gray-100'
+                    }`}
                 >
                   <Heart className="h-5 w-5 mr-3" />
                   Любими гледачи
                 </button>
-                
+
                 <button
                   onClick={() => setActiveTab('payments')}
-                  className={`w-full flex items-center px-4 py-2 text-left rounded-lg transition-colors ${
-                    activeTab === 'payments' 
-                      ? 'bg-green-100 text-green-700' 
-                      : 'text-gray-700 hover:bg-gray-100'
-                  }`}
+                  className={`w-full flex items-center px-4 py-2 text-left rounded-lg transition-colors ${activeTab === 'payments'
+                    ? 'bg-green-100 text-green-700'
+                    : 'text-gray-700 hover:bg-gray-100'
+                    }`}
                 >
                   <CreditCard className="h-5 w-5 mr-3" />
                   Плащания
                 </button>
-                
+
                 <button
                   onClick={() => setActiveTab('settings')}
-                  className={`w-full flex items-center px-4 py-2 text-left rounded-lg transition-colors ${
-                    activeTab === 'settings' 
-                      ? 'bg-green-100 text-green-700' 
-                      : 'text-gray-700 hover:bg-gray-100'
-                  }`}
+                  className={`w-full flex items-center px-4 py-2 text-left rounded-lg transition-colors ${activeTab === 'settings'
+                    ? 'bg-green-100 text-green-700'
+                    : 'text-gray-700 hover:bg-gray-100'
+                    }`}
                 >
                   <Settings className="h-5 w-5 mr-3" />
                   Настройки
                 </button>
-                
+
                 <button
                   onClick={() => setShowBecomeASitter(true)}
                   className="w-full flex items-center px-4 py-2 text-left rounded-lg transition-colors text-gray-700 hover:bg-gray-100"
@@ -321,26 +323,27 @@ const UserDashboard: React.FC = () => {
 
                 <div className="grid md:grid-cols-2 gap-6">
                   {mockPets.map(pet => (
-                    <div key={pet.id} className="border border-gray-200 rounded-lg p-6">
+                    <div key={pet.pet_id} className="border border-gray-200 rounded-lg p-6">
                       <div className="flex items-start gap-4">
-                        <img
-                          src={pet.photos[0]}
-                          alt={pet.name}
-                          className="w-16 h-16 rounded-full object-cover"
-                        />
+                        {pet.photo_url && (
+                          <img
+                            src={pet.photo_url}
+                            alt={pet.name}
+                            className="w-16 h-16 rounded-full object-cover"
+                          />
+                        )}
                         <div className="flex-1">
                           <h3 className="font-semibold text-gray-900 mb-1">{pet.name}</h3>
                           <p className="text-gray-600 text-sm mb-2">{pet.breed}</p>
                           <div className="flex flex-wrap gap-2 mb-3">
-                            <span className="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs">
-                              {pet.age} години
-                            </span>
-                            <span className="bg-blue-100 text-blue-700 px-2 py-1 rounded-full text-xs">
-                              {pet.weight} кг
-                            </span>
-                            {pet.vaccinated && (
+                            {pet.age && (
+                              <span className="bg-green-100 text-green-700 px-2 py-1 rounded-full text-xs">
+                                {pet.age} години
+                              </span>
+                            )}
+                            {pet.health_status && (
                               <span className="bg-purple-100 text-purple-700 px-2 py-1 rounded-full text-xs">
-                                Ваксиниран
+                                Здрав
                               </span>
                             )}
                           </div>
@@ -364,7 +367,7 @@ const UserDashboard: React.FC = () => {
             {activeTab === 'messages' && (
               <div className="bg-white rounded-xl shadow-md p-6">
                 <h2 className="text-2xl font-bold text-gray-900 mb-6">Съобщения</h2>
-                
+
                 <div className="space-y-4">
                   <div className="border border-gray-200 rounded-lg p-4 hover:bg-gray-50 cursor-pointer">
                     <div className="flex items-center gap-4">
@@ -411,7 +414,7 @@ const UserDashboard: React.FC = () => {
           </div>
         </div>
       </div>
-      
+
       {showBecomeASitter && (
         <BecomeASitter onClose={() => setShowBecomeASitter(false)} />
       )}

@@ -38,7 +38,7 @@ const SitterCard: React.FC<SitterCardProps> = ({ sitter }) => {
         {/* Name and location */}
         <div className="mb-4">
           <h3 className="text-xl font-bold text-gray-900 mb-1">
-            {sitter.user?.name || 'Гледач'}
+            {sitter.user?.name?.split(' ')[0] || 'Гледач'}
           </h3>
           <div className="flex items-center text-gray-600">
             <MapPin className="h-4 w-4 mr-1" />

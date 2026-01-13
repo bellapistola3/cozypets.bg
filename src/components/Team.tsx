@@ -24,8 +24,8 @@ const Team: React.FC = () => {
       bio: 'Алис има над 10 години опит в грижата за животни и е сертифицирана в първа помощ и КПР за домашни любимци. Тя основа CozyPets, за да предостави любяща, професионална грижа за домашните любимци в собствените им домове.',
       image: 'https://images.pexels.com/photos/774909/pexels-photo-774909.jpeg',
       social: {
-        email: 'cozypetsbyalis@gmail.com',
-        phone: '+359 895 888 260',
+        email: 'cozypetsbyalice@gmail.com',
+        phone: '+359 895 363 601',
         instagram: '@alice_cozypets',
       },
     },
@@ -36,8 +36,8 @@ const Team: React.FC = () => {
       bio: 'Христо има специален начин с котките и разбира техните уникални нужди. Той е обучен в поведението на котките и може да помогне с всичко - от игрово обогатяване до прилагане на лекарства.',
       image: 'https://images.pexels.com/photos/1222271/pexels-photo-1222271.jpeg',
       social: {
-        email: 'cozypetsbyalis@gmail.com',
-        phone: '+359 895 888 260',
+        email: 'cozypetsbyalice@gmail.com',
+        phone: '+359 895 363 601',
         instagram: '@hristo_catwhisperer',
       },
     },
@@ -51,7 +51,7 @@ const Team: React.FC = () => {
           subtitle="Професионални любители на домашни любимци на ваше разположение"
           centered
         />
-        
+
         <div className="grid md:grid-cols-2 gap-8 mt-12 max-w-4xl mx-auto">
           {team.map((member) => (
             <div key={member.id} className="interactive-card neon-glow bg-white rounded-xl shadow-md overflow-hidden">

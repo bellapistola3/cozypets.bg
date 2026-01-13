@@ -1,17 +1,15 @@
-import React from "react";
-
 const PrivacyPolicy = () => {
   return (
     <section className="px-6 py-12 max-w-3xl mx-auto text-gray-800">
       {/* Logo at top of Privacy Policy page - Bigger */}
       <div className="text-center mb-12">
-        <img 
-          src="/src/components/assets/logo8808.png" 
-          alt="CozyPets by Alice" 
+        <img
+          src="/src/components/assets/logo8808.png"
+          alt="CozyPets by Alice"
           className="h-32 md:h-40 w-auto mx-auto mb-8 filter drop-shadow-lg"
         />
       </div>
-      
+
       <h1 className="text-4xl font-bold mb-6 text-center">Политика за поверителност</h1>
       <p className="mb-4 italic text-sm text-center">Последна актуализация: [дата]</p>
 
@@ -70,7 +68,7 @@ const PrivacyPolicy = () => {
         За въпроси относно тази политика или личните ви данни, можете да се свържете с нас на:
       </p>
       <ul className="list-inside text-lg space-y-2">
-        <li>📧 Имейл: <span className="italic">cozypetsbyalis@gmail.com</span></li>
+        <li>📧 Имейл: <span className="italic">cozypetsbyalice@gmail.com</span></li>
         <li>🌐 Адрес: <span className="italic">Стара Загора, България</span></li>
       </ul>
 

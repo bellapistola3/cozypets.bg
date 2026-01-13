@@ -10,7 +10,7 @@ const Footer: React.FC = () => {
           <div>
             <div className="flex items-center mb-6">
               <img
-                src="/src/components/assets/logo cozy osnovno.png"
+                src="/logo.jpg"
                 alt="CozyPets by Alice"
                 className="h-20 w-auto object-contain"
               />
@@ -30,7 +30,7 @@ const Footer: React.FC = () => {
               </a>
             </div>
           </div>
-          
+
           <div>
             <h3 className="text-lg font-semibold mb-4">Бързи връзки</h3>
             <ul className="space-y-2">
@@ -44,7 +44,7 @@ const Footer: React.FC = () => {
               <li><a href="/#booking" className="text-gray-400 hover:text-white transition-colors">Резервирай сега</a></li>
             </ul>
           </div>
-          
+
           <div>
             <h3 className="text-lg font-semibold mb-4">Услуги</h3>
             <ul className="space-y-2">
@@ -54,20 +54,20 @@ const Footer: React.FC = () => {
               <li><a href="/#services" className="text-gray-400 hover:text-white transition-colors">Такси за домашни любимци</a></li>
             </ul>
           </div>
-          
+
           <div>
             <h3 className="text-lg font-semibold mb-4">Свържете се с нас</h3>
             <div className="space-y-3">
               <div className="flex items-center">
                 <Mail className="h-5 w-5 mr-2 text-gray-400" />
-                <a href="mailto:cozypetsbyalis@gmail.com" className="text-gray-400 hover:text-white transition-colors">
-                  cozypetsbyalis@gmail.com
+                <a href="mailto:cozypetsbyalice@gmail.com" className="text-gray-400 hover:text-white transition-colors">
+                  cozypetsbyalice@gmail.com
                 </a>
               </div>
               <div className="flex items-center">
                 <Phone className="h-5 w-5 mr-2 text-gray-400" />
-                <a href="tel:+359895888260" className="text-gray-400 hover:text-white transition-colors">
-                  +359 895 888 260
+                <a href="tel:+359895363601" className="text-gray-400 hover:text-white transition-colors">
+                  +359 895 363 601
                 </a>
               </div>
               <div className="flex items-center">
@@ -79,7 +79,7 @@ const Footer: React.FC = () => {
             </div>
           </div>
         </div>
-        
+
         <div className="mt-12 pt-8 border-t border-gray-800 text-center text-gray-400">
           <p>&copy; {new Date().getFullYear()} CozyPets by Alice. Всички права запазени.</p>
         </div>

@@ -1,6 +1,6 @@
 import { supabase } from './supabase';
 
-const PLATFORM_COMMISSION_RATE = 0.20;
+const PLATFORM_COMMISSION_RATE = 0.25;
 
 export interface PaymentBreakdown {
   totalAmount: number;
@@ -159,9 +159,9 @@ export const completeReservationAndRelease = async (
       return { success: false, error: updateError.message };
     }
 
-    const releaseResult = await releaseEscrowPayment(reservationId);
-
-    return releaseResult;
+    // NOTE: Payment release is now MANUAL via admin dashboard
+    // Funds remain in escrow until explicitly released
+    return { success: true };
   } catch (error: any) {
     return { success: false, error: error.message };
   }

@@ -1,60 +1,46 @@
-import { supabase } from './supabase';
-import { dbHelpers } from './supabase';
+import { auth, dbHelpers } from './firebase';
+import {
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
+  signInWithPopup,
+  GoogleAuthProvider,
+  FacebookAuthProvider,
+  signOut as firebaseSignOut,
+  onAuthStateChanged,
+  type User
+} from 'firebase/auth';
 
 export interface AuthUser {
   id: string;
   email: string;
   name: string;
-  role: 'owner' | 'admin';
+  role: 'owner' | 'admin' | 'sitter';
 }
 
 export const authHelpers = {
   // Sign up new user
   async signUp(email: string, password: string, name: string, phone?: string) {
     try {
-      // First create auth user
-      const { data: authData, error: authError } = await supabase.auth.signUp({
-        email,
-        password,
-        options: {
-          data: {
-            name,
-            phone
-          }
-        }
-      });
+      // Create Firebase auth user
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+      const user = userCredential.user;
 
-      if (authError) throw authError;
-
-      // Then create user profile in both tables
-      if (authData.user) {
-        // Create in users table (legacy)
+      // Create user profile in Firestore
+      if (user) {
         try {
-          await dbHelpers.createUser({
+          await dbHelpers.createUserProfile({
+            auth_user_id: user.uid,
             name,
-            email,
+            email: user.email!,
             phone,
-            password_hash: 'supabase_auth',
-            role: 'owner'
+            role: email === 'methodman9090@gmail.com' ? 'admin' : 'owner'
           });
         } catch (userError) {
-          console.warn('Could not create user in legacy table:', userError);
+          console.error('Error creating user profile:', userError);
+          console.warn('User authenticated but profile creation failed');
         }
 
-        // Create in profiles table (new)
-        try {
-          await dbHelpers.createOrUpdateProfile({
-            id: authData.user.id,
-            full_name: name,
-            email,
-            phone,
-            role: 'owner'
-          });
-        } catch (profileError) {
-          console.warn('Could not create profile:', profileError);
-        }
-
-        return { user: authData.user };
+        return { user };
       }
     } catch (error) {
       console.error('Sign up error:', error);
@@ -65,15 +51,70 @@ export const authHelpers = {
   // Sign in user
   async signIn(email: string, password: string) {
     try {
-      const { data, error } = await supabase.auth.signInWithPassword({
-        email,
-        password
-      });
-
-      if (error) throw error;
-      return data;
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+      return { user: userCredential.user };
     } catch (error) {
       console.error('Sign in error:', error);
+      throw error;
+    }
+  },
+
+  // Sign in with Google
+  async signInWithGoogle() {
+    try {
+      const provider = new GoogleAuthProvider();
+      provider.setCustomParameters({
+        prompt: 'select_account'
+      });
+
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+
+      // Create profile if doesn't exist
+      if (user) {
+        const existingProfile = await dbHelpers.getUserByAuthId(user.uid);
+
+        if (!existingProfile) {
+          await dbHelpers.createUserProfile({
+            auth_user_id: user.uid,
+            name: user.displayName || user.email!.split('@')[0],
+            email: user.email!,
+            role: 'owner'
+          });
+        }
+      }
+
+      return { user };
+    } catch (error) {
+      console.error('Google sign in error:', error);
+      throw error;
+    }
+  },
+
+  // Sign in with Facebook
+  async signInWithFacebook() {
+    try {
+      const provider = new FacebookAuthProvider();
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+
+      // Create profile if doesn't exist
+      if (user) {
+        const existingProfile = await dbHelpers.getUserByAuthId(user.uid);
+
+        if (!existingProfile) {
+          await dbHelpers.createUserProfile({
+            auth_user_id: user.uid,
+            name: user.displayName || user.email!.split('@')[0],
+            email: user.email!,
+            role: 'owner'
+          });
+        }
+      }
+
+      return { user };
+    } catch (error) {
+      console.error('Facebook sign in error:', error);
       throw error;
     }
   },
@@ -81,8 +122,7 @@ export const authHelpers = {
   // Sign out user
   async signOut() {
     try {
-      const { error } = await supabase.auth.signOut();
-      if (error) throw error;
+      await firebaseSignOut(auth);
     } catch (error) {
       console.error('Sign out error:', error);
       throw error;
@@ -92,39 +132,34 @@ export const authHelpers = {
   // Get current user
   async getCurrentUser(): Promise<AuthUser | null> {
     try {
-      const { data: { user }, error } = await supabase.auth.getUser();
-      
-      if (error || !user) return null;
+      const user = auth.currentUser;
 
-      // Try to get profile from new profiles table first
-      let profile = await dbHelpers.getProfile(user.id);
-      
-      // If not found, try legacy users table
-      if (!profile) {
-        profile = await dbHelpers.getUserByEmail(user.email || '');
-      }
+      if (!user) return null;
 
-      // If still no profile, create one
+      // Get user profile from Firestore
+      let profile = await dbHelpers.getUserByAuthId(user.uid);
+
+      // If no profile exists, create one (handles OAuth users)
       if (!profile && user.email) {
         try {
-          profile = await dbHelpers.createOrUpdateProfile({
-            id: user.id,
-            full_name: user.user_metadata?.name || user.email.split('@')[0],
+          profile = await dbHelpers.createUserProfile({
+            auth_user_id: user.uid,
+            name: user.displayName || user.email.split('@')[0],
             email: user.email,
-            phone: user.user_metadata?.phone,
             role: 'owner'
           });
         } catch (createError) {
-          console.warn('Could not create profile for user:', createError);
+          console.error('Could not create user profile:', createError);
+          return null;
         }
       }
 
       if (!profile) return null;
 
       return {
-        id: user.id,
+        id: user.uid,
         email: user.email!,
-        name: profile.full_name || profile.name || user.email!.split('@')[0],
+        name: profile.name || user.email!.split('@')[0],
         role: profile.role
       };
     } catch (error) {
@@ -136,17 +171,32 @@ export const authHelpers = {
   // Listen to auth changes
   onAuthStateChange(callback: (user: AuthUser | null) => void) {
     try {
-      return supabase.auth.onAuthStateChange(async (event, session) => {
-        if (session?.user) {
+      const unsubscribe = onAuthStateChanged(auth, async (firebaseUser: User | null) => {
+        if (firebaseUser) {
           const user = await this.getCurrentUser();
           callback(user);
         } else {
           callback(null);
         }
       });
+
+      // Return in Supabase-compatible format for AuthContext
+      return {
+        data: {
+          subscription: {
+            unsubscribe
+          }
+        }
+      };
     } catch (error) {
       console.error('Auth state change error:', error);
-      return { data: { subscription: { unsubscribe: () => {} } } };
+      return {
+        data: {
+          subscription: {
+            unsubscribe: () => { }
+          }
+        }
+      };
     }
   }
 };

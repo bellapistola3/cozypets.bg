@@ -20,7 +20,7 @@ const Register: React.FC<RegisterProps> = ({ onClose, onOpenLogin }) => {
   const [showEmailForm, setShowEmailForm] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const { signUp } = useAuth();
+  const { signUp, signInWithGoogle, signInWithFacebook } = useAuth();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -31,28 +31,27 @@ const Register: React.FC<RegisterProps> = ({ onClose, onOpenLogin }) => {
     e.preventDefault();
     setLoading(true);
     setError('');
-    
+
     const fullName = `${formData.firstName} ${formData.familyName}`;
-    
-    // Validate form data
+
     if (!formData.firstName.trim() || !formData.familyName.trim()) {
       setError('Моля, въведете име и фамилия');
       setLoading(false);
       return;
     }
-    
+
     if (!formData.email.trim() || !formData.password.trim()) {
       setError('Моля, въведете имейл и парола');
       setLoading(false);
       return;
     }
-    
+
     if (formData.password.length < 6) {
       setError('Паролата трябва да е поне 6 символа');
       setLoading(false);
       return;
     }
-    
+
     signUp(formData.email, formData.password, fullName, formData.phoneNumber)
       .then(() => {
         onClose();
@@ -60,7 +59,7 @@ const Register: React.FC<RegisterProps> = ({ onClose, onOpenLogin }) => {
       .catch((error) => {
         console.error('Registration error:', error);
         let errorMessage = 'Възникна грешка при регистрация. Моля, опитайте отново.';
-        
+
         if (error.message?.includes('already registered')) {
           errorMessage = 'Този имейл вече е регистриран. Моля, влезте в акаунта си.';
         } else if (error.message?.includes('invalid email')) {
@@ -68,7 +67,7 @@ const Register: React.FC<RegisterProps> = ({ onClose, onOpenLogin }) => {
         } else if (error.message?.includes('weak password')) {
           errorMessage = 'Паролата е твърде слаба. Използвайте поне 6 символа.';
         }
-        
+
         setError(errorMessage);
       })
       .finally(() => {
@@ -76,33 +75,58 @@ const Register: React.FC<RegisterProps> = ({ onClose, onOpenLogin }) => {
       });
   };
 
-  const handleSocialLogin = (provider: string) => {
-    console.log(`Register with ${provider}`);
-    // Handle social registration logic
+  const handleGoogleLogin = async () => {
+    try {
+      setLoading(true);
+      await signInWithGoogle();
+      // OAuth redirect will happen automatically
+    } catch (error) {
+      console.error('Google login error:', error);
+      setError('Грешка при влизане с Google');
+      setLoading(false);
+    }
+  };
+
+  const handleFacebookLogin = async () => {
+    try {
+      setLoading(true);
+      await signInWithFacebook();
+      // OAuth redirect will happen automatically
+    } catch (error) {
+      console.error('Facebook login error:', error);
+      setError('Грешка при влизане с Facebook');
+      setLoading(false);
+    }
   };
 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4 z-50">
-      <div className="bg-white rounded-lg p-8 w-full max-w-md relative">
+      <div className="bg-white rounded-lg p-8 w-full max-w-md relative max-h-[90vh] overflow-y-auto">
         <button
           onClick={onClose}
           className="absolute top-4 right-4 text-gray-400 hover:text-gray-600"
         >
           <X className="h-6 w-6" />
         </button>
-        
+
         <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
           Създайте акаунт
         </h2>
 
         {!showEmailForm ? (
           <div className="space-y-6">
+            {error && (
+              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md text-sm">
+                {error}
+              </div>
+            )}
+
             <SocialLogin
-              onGoogleLogin={() => handleSocialLogin('Google')}
-              onFacebookLogin={() => handleSocialLogin('Facebook')}
+              onGoogleLogin={handleGoogleLogin}
+              onFacebookLogin={handleFacebookLogin}
               onEmailLogin={() => setShowEmailForm(true)}
             />
-            
+
             <div className="text-center text-sm text-gray-600">
               Вече имате акаунт?{' '}
               <button
@@ -124,7 +148,7 @@ const Register: React.FC<RegisterProps> = ({ onClose, onOpenLogin }) => {
                 {error}
               </div>
             )}
-            
+
             <div>
               <label htmlFor="firstName" className="block text-sm font-medium text-gray-700 mb-1">
                 Име
@@ -203,8 +227,9 @@ const Register: React.FC<RegisterProps> = ({ onClose, onOpenLogin }) => {
                   value={formData.password}
                   onChange={handleChange}
                   className="pl-10 w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500"
-                  placeholder="Създайте парола"
+                  placeholder="Създайте парола (мин. 6 символа)"
                   required
+                  minLength={6}
                 />
               </div>
             </div>
@@ -230,7 +255,7 @@ const Register: React.FC<RegisterProps> = ({ onClose, onOpenLogin }) => {
               </div>
             </div>
 
-            <Button type="submit" className="w-full mt-6" disabled={loading}>
+            <Button type="submit" className="w-full mt-6">
               {loading ? 'Създаване...' : 'Създай акаунт'}
             </Button>
 

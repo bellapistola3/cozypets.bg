@@ -1,39 +1,43 @@
-import React, { useEffect, useLayoutEffect } from 'react';
+import { useLayoutEffect, Suspense, lazy } from 'react';
 import { BrowserRouter, Routes, Route, useLocation } from 'react-router-dom';
 import { AuthProvider } from './contexts/AuthContext';
+
+// Core components - load immediately (small and always needed)
 import Header from './components/Header';
-import Hero from './components/Hero';
-import Services from './components/Services';
-import Testimonials from './components/Testimonials';
-import Gallery from './components/Gallery';
-import Team from './components/Team';
-import Booking from './components/Booking';
-import Faq from './components/Faq';
-import Contact from './components/Contact';
 import Footer from './components/Footer';
 import ScrollToTop from './components/common/ScrollToTop';
-import About from './About';
-import PrivacyPolicy from './PrivacyPolicy';
-import SitterSearch from './components/SitterSearch';
-import UserDashboard from './components/UserDashboard';
-import PetOwnerProfile from './components/PetOwnerProfile';
-import InteractiveMap from './components/InteractiveMap';
-import AdminDashboard from './components/AdminDashboard';
-import PersonalizedRecommendations from './components/PersonalizedRecommendations';
 import ProtectedRoute from './components/ProtectedRoute';
-import SitterProfileForm from './pages/SitterProfileForm';
-import VeterinaryChat from './components/VeterinaryChat';
-import VeterinarySection from './components/VeterinarySection';
-import PremiumMagazine from './components/PremiumMagazine';
-import ServicesDirectory from './pages/ServicesDirectory';
-import AIAssistantChat from './components/AIAssistantChat';
-import AIMatchCenter2 from './components/matching/AIMatchCenter2';
-import BrandExperience from './pages/BrandExperience';
-import ConversionLanding from './pages/ConversionLanding';
-import MatchCenter from './pages/MatchCenter';
-
-import DatabaseTest from './components/DatabaseTest';
 import ErrorBoundary from './components/ErrorBoundary';
+import LoadingSpinner from './components/common/LoadingSpinner';
+
+// Lazy load all heavy components for better performance
+const Hero = lazy(() => import('./components/Hero'));
+const Services = lazy(() => import('./components/Services'));
+const Testimonials = lazy(() => import('./components/Testimonials'));
+const Gallery = lazy(() => import('./components/Gallery'));
+const Booking = lazy(() => import('./components/Booking'));
+const Faq = lazy(() => import('./components/Faq'));
+const Contact = lazy(() => import('./components/Contact'));
+const About = lazy(() => import('./About'));
+const PrivacyPolicy = lazy(() => import('./PrivacyPolicy'));
+const SitterSearch = lazy(() => import('./components/SitterSearch'));
+const UserDashboard = lazy(() => import('./components/UserDashboard'));
+const PetOwnerProfile = lazy(() => import('./components/PetOwnerProfile'));
+const SitterProfileForm = lazy(() => import('./pages/SitterProfileForm'));
+const VeterinaryChat = lazy(() => import('./components/VeterinaryChat'));
+const VeterinarySection = lazy(() => import('./components/VeterinarySection'));
+const PremiumMagazine = lazy(() => import('./components/PremiumMagazine'));
+const ServicesDirectory = lazy(() => import('./pages/ServicesDirectory'));
+const AIAssistantChat = lazy(() => import('./components/AIAssistantChat'));
+const AIMatchCenter2 = lazy(() => import('./components/matching/AIMatchCenter2'));
+const BrandExperience = lazy(() => import('./pages/BrandExperience'));
+const ConversionLanding = lazy(() => import('./pages/ConversionLanding'));
+const MatchCenter = lazy(() => import('./pages/MatchCenter'));
+const AdminLogin = lazy(() => import('./pages/AdminLogin'));
+const AdminDashboard = lazy(() => import('./pages/AdminDashboard'));
+const VetChatWidget = lazy(() => import('./components/VetChatWidget'));
+const AuthCallback = lazy(() => import('./pages/AuthCallback'));
+const DatabaseTest = lazy(() => import('./components/DatabaseTest'));
 
 function ScrollToHashElement() {
   const location = useLocation();
@@ -58,240 +62,281 @@ function App() {
   return (
     <ErrorBoundary>
       <AuthProvider>
-        <BrowserRouter>
-          <ScrollToTop />
-          <ScrollToHashElement />
-          <Header />
+
+        <ScrollToTop />
+        <ScrollToHashElement />
+        <Header />
+
+        {/* Lazy load chat widgets to improve performance */}
+        <Suspense fallback={null}>
           <AIAssistantChat />
+          <VetChatWidget />
+        </Suspense>
 
-          <Routes>
-        {/* Начална страница */}
-        <Route
-          path="/"
-          element={
-            <>
-              <main>
-                <Hero />
-                <Services />
-                <Booking />
-                <VeterinarySection />
-                <PremiumMagazine />
-                <Testimonials />
-                <Gallery />
+        <Routes>
+          {/* Начална страница */}
+          <Route
+            path="/"
+            element={
+              <>
+                <Suspense fallback={<LoadingSpinner />}>
+                  <main>
+                    <Hero />
+                    <Services />
+                    <Booking />
+                    <VeterinarySection />
+                    <PremiumMagazine /> {/* Disabled - requires magazine system migration */}
+                    <Testimonials />
+                    <Gallery />
+                    <MatchCenter />
+                    <Faq />
+                    <Contact />
+
+                    {/* Бутон за политика за поверителност */}
+                    <div className="text-center mt-12">
+                      <a
+                        href="/privacy"
+                        className="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 hover:-translate-y-1"
+                      >
+                        Политика за поверителност
+                      </a>
+                    </div>
+                  </main>
+                </Suspense>
+                <Footer />
+              </>
+            }
+          />
+
+          {/* Database Test Route */}
+          <Route
+            path="/database-test"
+            element={
+              <Suspense fallback={<LoadingSpinner />}>
+                <main>
+                  <DatabaseTest />
+                </main>
+              </Suspense>
+            }
+          />
+
+          {/* Sitter Profile Form */}
+          <Route
+            path="/become-sitter"
+            element={
+              <ProtectedRoute>
+                <Suspense fallback={<LoadingSpinner />}>
+                  <main>
+                    <SitterProfileForm />
+                  </main>
+                  <Footer />
+                </Suspense>
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Services Directory */}
+          <Route
+            path="/services"
+            element={
+              <Suspense fallback={<LoadingSpinner />}>
+                <main>
+                  <ServicesDirectory />
+                </main>
+                <Footer />
+              </Suspense>
+            }
+          />
+
+          {/* Sitters List with Service Filter */}
+          <Route
+            path="/sitters"
+            element={
+              <>
+                <main>
+                  <SitterSearch />
+                </main>
+                <Footer />
+              </>
+            }
+          />
+
+          {/* Страница за търсене на гледачи */}
+          <Route
+            path="/search"
+            element={
+              <Suspense fallback={<LoadingSpinner />}>
+                <main>
+                  <SitterSearch />
+                </main>
+                <Footer />
+              </Suspense>
+            }
+          />
+
+          {/* AI Match Center 2.0 */}
+          <Route
+            path="/ai-match"
+            element={
+              <>
+                <AIMatchCenter2 />
+                <Footer />
+              </>
+            }
+          />
+
+          {/* Brand Experience */}
+          <Route
+            path="/brand"
+            element={
+              <>
+                <BrandExperience />
+                <Footer />
+              </>
+            }
+          />
+
+          {/* Conversion Landing */}
+          <Route
+            path="/start"
+            element={
+              <>
+                <ConversionLanding />
+                <Footer />
+              </>
+            }
+          />
+
+          {/* Match Center */}
+          <Route
+            path="/match"
+            element={
+              <>
                 <MatchCenter />
-                <Faq />
-                <Contact />
+                <Footer />
+              </>
+            }
+          />
 
-                {/* Бутон за политика за поверителност */}
-                <div className="text-center mt-12">
-                  <a
-                    href="/privacy"
-                    className="inline-flex items-center justify-center px-8 py-4 bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-semibold text-lg rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:scale-105 hover:-translate-y-1"
-                  >
-                    Политика за поверителност
-                  </a>
-                </div>
-              </main>
-              <Footer />
-            </>
-          }
-        />
+          {/* Потребителски профил */}
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <Suspense fallback={<LoadingSpinner />}>
+                  <main>
+                    <UserDashboard />
+                  </main>
+                  <Footer />
+                </Suspense>
+              </ProtectedRoute>
+            }
+          />
 
-        {/* Database Test Route */}
-        <Route
-          path="/database-test"
-          element={
-            <>
-              <main>
-                <DatabaseTest />
-              </main>
-            </>
-          }
-        />
-
-        {/* Sitter Profile Form */}
-        <Route
-          path="/become-sitter"
-          element={
-            <ProtectedRoute>
+          {/* Профил на собственик на домашни любимци */}
+          <Route
+            path="/owner-profile"
+            element={
               <>
                 <main>
-                  <SitterProfileForm />
+                  <PetOwnerProfile userId="user1" />
                 </main>
                 <Footer />
               </>
-            </ProtectedRoute>
-          }
-        />
+            }
+          />
 
-        {/* Services Directory */}
-        <Route
-          path="/services"
-          element={
-            <>
-              <main>
-                <ServicesDirectory />
-              </main>
-              <Footer />
-            </>
-          }
-        />
-
-        {/* Sitters List with Service Filter */}
-        <Route
-          path="/sitters"
-          element={
-            <>
-              <main>
-                <SitterSearch />
-              </main>
-              <Footer />
-            </>
-          }
-        />
-
-        {/* Страница за търсене на гледачи */}
-        <Route
-          path="/search"
-          element={
-            <>
-              <main>
-                <SitterSearch />
-              </main>
-              <Footer />
-            </>
-          }
-        />
-
-        {/* AI Match Center 2.0 */}
-        <Route
-          path="/ai-match"
-          element={
-            <>
-              <AIMatchCenter2 />
-              <Footer />
-            </>
-          }
-        />
-
-        {/* Brand Experience */}
-        <Route
-          path="/brand"
-          element={
-            <>
-              <BrandExperience />
-              <Footer />
-            </>
-          }
-        />
-
-        {/* Conversion Landing */}
-        <Route
-          path="/start"
-          element={
-            <>
-              <ConversionLanding />
-              <Footer />
-            </>
-          }
-        />
-
-        {/* Match Center */}
-        <Route
-          path="/match"
-          element={
-            <>
-              <MatchCenter />
-              <Footer />
-            </>
-          }
-        />
-
-        {/* Потребителски профил */}
-        <Route
-          path="/dashboard"
-          element={
-            <ProtectedRoute>
+          {/* Административен панел - Login */}
+          <Route
+            path="/admin/login"
+            element={
               <>
                 <main>
-                  <UserDashboard />
+                  <AdminLogin />
                 </main>
-                <Footer />
               </>
-            </ProtectedRoute>
-          }
-        />
+            }
+          />
 
-        {/* Профил на собственик на домашни любимци */}
-        <Route
-          path="/owner-profile"
-          element={
-            <>
-              <main>
-                <PetOwnerProfile userId="user1" />
-              </main>
-              <Footer />
-            </>
-          }
-        />
-
-        {/* Административен панел */}
-        <Route
-          path="/admin"
-          element={
-            <ProtectedRoute requireAdmin={true}>
+          {/* Административен панел - Dashboard */}
+          <Route
+            path="/admin/dashboard"
+            element={
               <>
                 <main>
                   <AdminDashboard />
                 </main>
               </>
-            </ProtectedRoute>
-          }
-        />
+            }
+          />
 
-        {/* Ветеринарен чат */}
-        <Route
-          path="/vet-chat"
-          element={
-            <ProtectedRoute>
+          {/* Административен панел - Old Route */}
+          <Route
+            path="/admin"
+            element={
+              <ProtectedRoute requireAdmin={true}>
+                <>
+                  <main>
+                    <AdminDashboard />
+                  </main>
+                </>
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Ветеринарен чат */}
+          <Route
+            path="/vet-chat"
+            element={
+              <ProtectedRoute>
+                <Suspense fallback={<LoadingSpinner />}>
+                  <main>
+                    <VeterinaryChat />
+                  </main>
+                  <Footer />
+                </Suspense>
+              </ProtectedRoute>
+            }
+          />
+
+          {/* Страница „За нас" */}
+          <Route
+            path="/about"
+            element={
               <>
                 <main>
-                  <VeterinaryChat />
+                  <About />
                 </main>
                 <Footer />
               </>
-            </ProtectedRoute>
-          }
-        />
+            }
+          />
 
-        {/* Страница „За нас" */}
-        <Route
-          path="/about"
-          element={
-            <>
-              <main>
-                <About />
-              </main>
-              <Footer />
-            </>
-          }
-        />
+          {/* Страница „Политика за поверителност" */}
+          <Route
+            path="/privacy"
+            element={
+              <Suspense fallback={<LoadingSpinner />}>
+                <main>
+                  <PrivacyPolicy />
+                </main>
+                <Footer />
+              </Suspense>
+            }
+          />
 
-        {/* Страница „Политика за поверителност" */}
-        <Route
-          path="/privacy"
-          element={
-            <>
-              <main>
-                <PrivacyPolicy />
-              </main>
-              <Footer />
-            </>
-          }
-        />
+          {/* OAuth Callback */}
+          <Route
+            path="/auth/callback"
+            element={
+              <Suspense fallback={<LoadingSpinner />}>
+                <AuthCallback />
+              </Suspense>
+            }
+          />
         </Routes>
-      </BrowserRouter>
-    </AuthProvider>
+
+      </AuthProvider>
     </ErrorBoundary>
   );
 }

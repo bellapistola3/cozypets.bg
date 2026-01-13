@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Search, MapPin, Calendar, Filter, Star, Heart, Shield } from 'lucide-react';
 import { useSearchParams } from 'react-router-dom';
-import { SitterSearchFilters, SitterWithDetails, User } from '../types';
+import { SitterSearchFilters, SitterWithDetails } from '../types';
 import Button from './common/Button';
 import SitterCard from './SitterCard';
 import InteractiveMap from './InteractiveMap';
@@ -20,7 +20,6 @@ const SitterSearch: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [showFilters, setShowFilters] = useState(false);
   const [viewMode, setViewMode] = useState<'list' | 'map'>('list');
-  const [selectedSitter, setSelectedSitter] = useState<SitterWithDetails | null>(null);
   const { user } = useAuth();
 
 
@@ -53,8 +52,8 @@ const SitterSearch: React.FC = () => {
   };
 
   const handleSitterSelect = (sitter: SitterWithDetails) => {
-    setSelectedSitter(sitter);
-    // Open sitter profile or booking modal
+    // TODO: Open sitter profile or booking modal
+    console.log('Selected sitter:', sitter);
   };
 
   return (
@@ -96,7 +95,7 @@ const SitterSearch: React.FC = () => {
                 <Calendar className="absolute left-3 top-1/2 transform -translate-y-1/2 h-5 w-5 text-gray-400" />
                 <input
                   type="date"
-                  value={filters.startDate ? filters.startDate.toISOString().split('T')[0] : ''}
+                  value={filters.start_date ? filters.start_date.toISOString().split('T')[0] : ''}
                   onChange={(e) => handleFilterChange('start_date', new Date(e.target.value))}
                   className="w-full pl-10 pr-4 py-2 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500"
                 />
@@ -144,21 +143,19 @@ const SitterSearch: React.FC = () => {
             <div className="flex items-center gap-2">
               <button
                 onClick={() => setViewMode('list')}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                  viewMode === 'list'
-                    ? 'bg-green-600 text-white'
-                    : 'bg-white text-gray-600 hover:bg-gray-50'
-                }`}
+                className={`px - 4 py - 2 rounded - lg text - sm font - medium transition - colors ${viewMode === 'list'
+                  ? 'bg-green-600 text-white'
+                  : 'bg-white text-gray-600 hover:bg-gray-50'
+                  } `}
               >
                 Списък
               </button>
               <button
                 onClick={() => setViewMode('map')}
-                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
-                  viewMode === 'map'
-                    ? 'bg-green-600 text-white'
-                    : 'bg-white text-gray-600 hover:bg-gray-50'
-                }`}
+                className={`px - 4 py - 2 rounded - lg text - sm font - medium transition - colors ${viewMode === 'map'
+                  ? 'bg-green-600 text-white'
+                  : 'bg-white text-gray-600 hover:bg-gray-50'
+                  } `}
               >
                 Карта
               </button>
@@ -250,7 +247,7 @@ const SitterSearch: React.FC = () => {
           <InteractiveMap sitters={sitters} onSitterSelect={handleSitterSelect} />
         )}
       </div>
-      
+
       {/* Personalized Recommendations */}
       {user && <PersonalizedRecommendations userId={user.id} />}
     </section>

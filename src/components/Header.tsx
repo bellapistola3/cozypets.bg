@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, memo, useCallback } from 'react';
 import { Menu, X, User, Bell, Search, Heart, Home, Phone, Mail } from 'lucide-react';
 import Button from './common/Button';
 import Login from './Login';
@@ -7,7 +7,18 @@ import NotificationSystem from './NotificationSystem';
 import BecomeASitter from './BecomeASitter';
 import { useAuth } from '../contexts/AuthContext';
 
-const Header: React.FC = () => {
+// Move navLinks outside component to prevent recreation on each render
+const NAV_LINKS = [
+  { name: 'Начало', href: '/' },
+  { name: 'Услуги', href: '/services' },
+  { name: 'Отзиви', href: '#testimonials' },
+  { name: 'Галерия', href: '#gallery' },
+  { name: 'Екип', href: '#team' },
+  { name: 'Ветеринар', href: '/vet-chat' },
+  { name: 'Контакти', href: '#contact' },
+];
+
+const Header: React.FC = memo(() => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [isLoginOpen, setIsLoginOpen] = useState(false);
@@ -23,28 +34,20 @@ const Header: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const navLinks = [
-    { name: 'Начало', href: '/' },
-    { name: 'Услуги', href: '/services' },
-    { name: 'Отзиви', href: '#testimonials' },
-    { name: 'Галерия', href: '#gallery' },
-    { name: 'Екип', href: '#team' },
-    { name: 'Ветеринар', href: '/vet-chat' },
-    { name: 'Контакти', href: '#contact' },
-  ];
+
 
   return (
     <>
       <header className="fixed top-0 left-0 right-0 z-50 bg-gradient-to-r from-green-200 to-green-300 shadow-lg h-24">
         <div className="container mx-auto px-8 h-full max-w-[1600px]">
-          
+
           {/* DESKTOP ВЕРСИЯ */}
           <div className="hidden lg:flex items-center justify-between h-full">
-            
+
             {/* ЛОГО */}
             <div className="flex items-center flex-shrink-0 mr-8">
               <img
-                src="/src/components/assets/logo cozy osnovno.png"
+                src="/logo.jpg"
                 alt="CozyPets by Alice"
                 className="h-20 w-auto mr-4 object-contain"
               />
@@ -56,7 +59,7 @@ const Header: React.FC = () => {
 
             {/* НАВИГАЦИЯ */}
             <nav className="flex space-x-10 flex-1 justify-center items-center">
-              {navLinks.map((link) => (
+              {NAV_LINKS.map((link) => (
                 <a
                   key={link.name}
                   href={link.href.startsWith('#') ? `/${link.href}` : link.href}
@@ -69,7 +72,7 @@ const Header: React.FC = () => {
 
             {/* БУТОНИ */}
             <div className="flex items-center space-x-5 flex-shrink-0 ml-8">
-              
+
               {/* Резервирай сега */}
               <button
                 onClick={() => {
@@ -87,6 +90,14 @@ const Header: React.FC = () => {
               >
                 Търси гледач
               </a>
+
+              {/* Стани Гледач - NEW!! */}
+              <button
+                onClick={() => setIsBecomeASitterOpen(true)}
+                className="px-6 py-3 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-semibold rounded-xl shadow-md hover:shadow-lg transition-all duration-300 text-base whitespace-nowrap"
+              >
+                Стани Гледач
+              </button>
 
               {/* Потребител или Вход/Регистрация */}
               {user ? (
@@ -115,7 +126,7 @@ const Header: React.FC = () => {
                 <div className="flex items-center space-x-4">
                   <button
                     onClick={() => setIsLoginOpen(true)}
-                    className="px-5 py-2.5 font-semibold text-gray-700 hover:text-green-600 transition-all duration-300 text-base border-2 border-gray-300 hover:border-green-600 rounded-xl"
+                    className="px-5 py-2.5 font-semibold text-gray-700 bg-white hover:bg-green-50 hover:text-green-600 transition-all duration-300 text-base border-2 border-gray-300 hover:border-green-600 rounded-xl shadow-sm"
                   >
                     Вход
                   </button>
@@ -133,11 +144,11 @@ const Header: React.FC = () => {
           {/* МОБИЛНА ВЕРСИЯ */}
           <div className="lg:hidden">
             <div className="flex items-center justify-between h-24">
-              
+
               {/* Лого */}
               <a href="/" className="flex items-center">
                 <img
-                  src="/src/components/assets/logo cozy osnovno.png"
+                  src="/logo.jpg"
                   alt="CozyPets by Alice"
                   className="h-16 w-auto object-contain mr-3"
                 />
@@ -161,7 +172,7 @@ const Header: React.FC = () => {
               <div className="mt-4 pb-4">
                 <div className="bg-white rounded-lg shadow-lg border p-4">
                   <div className="space-y-3">
-                    {navLinks.map((link) => (
+                    {NAV_LINKS.map((link) => (
                       <a
                         key={link.name}
                         href={link.href.startsWith('#') ? `/${link.href}` : link.href}
@@ -171,7 +182,7 @@ const Header: React.FC = () => {
                         {link.name}
                       </a>
                     ))}
-                    
+
                     <div className="border-t pt-3 space-y-3">
                       <a
                         href="/search"
@@ -180,6 +191,16 @@ const Header: React.FC = () => {
                       >
                         Търси гледач
                       </a>
+
+                      <button
+                        onClick={() => {
+                          setIsMenuOpen(false);
+                          setIsBecomeASitterOpen(true);
+                        }}
+                        className="block w-full px-5 py-4 bg-gradient-to-r from-purple-600 to-purple-700 hover:from-purple-700 hover:to-purple-800 text-white font-semibold rounded-xl shadow-md hover:shadow-lg transition-all duration-300 text-center text-lg"
+                      >
+                        Стани Гледач
+                      </button>
 
                       <button
                         onClick={() => {
@@ -201,8 +222,8 @@ const Header: React.FC = () => {
                             </div>
                             <span className="text-lg font-medium text-gray-800">Здравей, {user.name}</span>
                           </div>
-                          <button 
-                            onClick={() => { signOut(); setIsMenuOpen(false); }} 
+                          <button
+                            onClick={() => { signOut(); setIsMenuOpen(false); }}
                             className="w-full px-4 py-3 text-lg text-red-600 hover:bg-red-50 font-medium rounded-lg transition-colors"
                           >
                             Изход
@@ -238,6 +259,6 @@ const Header: React.FC = () => {
       {isBecomeASitterOpen && <BecomeASitter onClose={() => setIsBecomeASitterOpen(false)} />}
     </>
   );
-};
+});
 
 export default Header;

@@ -15,13 +15,13 @@ const Login: React.FC<LoginProps> = ({ onClose, onOpenRegister }) => {
   const [showEmailForm, setShowEmailForm] = useState(false);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const { signIn } = useAuth();
+  const { signIn, signInWithGoogle, signInWithFacebook } = useAuth();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError('');
-    
+
     signIn(email, password)
       .then(() => {
         onClose();
@@ -34,9 +34,28 @@ const Login: React.FC<LoginProps> = ({ onClose, onOpenRegister }) => {
       });
   };
 
-  const handleSocialLogin = (provider: string) => {
-    console.log(`Login with ${provider}`);
-    // Handle social login logic
+  const handleGoogleLogin = async () => {
+    try {
+      setLoading(true);
+      await signInWithGoogle();
+      // OAuth redirect will happen automatically
+    } catch (error) {
+      console.error('Google login error:', error);
+      setError('Грешка при влизане с Google');
+      setLoading(false);
+    }
+  };
+
+  const handleFacebookLogin = async () => {
+    try {
+      setLoading(true);
+      await signInWithFacebook();
+      // OAuth redirect will happen automatically
+    } catch (error) {
+      console.error('Facebook login error:', error);
+      setError('Грешка при влизане с Facebook');
+      setLoading(false);
+    }
   };
 
   return (
@@ -48,22 +67,28 @@ const Login: React.FC<LoginProps> = ({ onClose, onOpenRegister }) => {
         >
           <X className="h-6 w-6" />
         </button>
-        
+
         <h2 className="text-2xl font-bold text-gray-900 mb-6 text-center">
           Влезте в акаунта си
         </h2>
 
         {!showEmailForm ? (
           <div className="space-y-6">
+            {error && (
+              <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-md text-sm">
+                {error}
+              </div>
+            )}
+
             <SocialLogin
-              onGoogleLogin={() => handleSocialLogin('Google')}
-              onFacebookLogin={() => handleSocialLogin('Facebook')}
+              onGoogleLogin={handleGoogleLogin}
+              onFacebookLogin={handleFacebookLogin}
               onEmailLogin={() => setShowEmailForm(true)}
             />
-            
+
             <div className="text-center text-sm text-gray-600">
               Нямате акаунт?{' '}
-              <button 
+              <button
                 type="button"
                 onClick={() => {
                   onClose();
@@ -82,7 +107,7 @@ const Login: React.FC<LoginProps> = ({ onClose, onOpenRegister }) => {
                 {error}
               </div>
             )}
-            
+
             <div>
               <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-1">
                 Имейл адрес
@@ -123,7 +148,7 @@ const Login: React.FC<LoginProps> = ({ onClose, onOpenRegister }) => {
               </div>
             </div>
 
-            <Button type="submit" className="w-full" disabled={loading}>
+            <Button type="submit" className="w-full">
               {loading ? 'Влизане...' : 'Влез'}
             </Button>
 
@@ -135,7 +160,7 @@ const Login: React.FC<LoginProps> = ({ onClose, onOpenRegister }) => {
               >
                 ← Назад
               </button>
-              <button 
+              <button
                 type="button"
                 onClick={() => {
                   onClose();

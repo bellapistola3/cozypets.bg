@@ -1,15 +1,228 @@
 <!doctype html>
 <html lang="bg">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>CozyPets by Alice - Услуги за гледане на домашни любимци</title>
-    <meta name="description" content="Професионални услуги за грижа за домашни любимци в София. Доверени гледачи за вашите кучета, котки и други домашни любимци." />
-  </head>
-  <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
-  </body>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <!-- Primary Meta Tags -->
+  <title>Гледачи за Кучета и Котки София | CosyPets.bg - Професионална Грижа за Домашни Любимци</title>
+  <meta name="title" content="Гледачи за Кучета и Котки София | CosyPets.bg - Професионална Грижа" />
+  <meta name="description"
+    content="🐾 Намерете най-добрите проверени гледачи за кучета, котки и домашни любимци в София, Пловдив, Варна. ⭐ 24/7 грижа, застраховка, онлайн резервация. Цени от 15 лв/ден. Безплатна регистрация!" />
+  <meta name="keywords"
+    content="гледачи за кучета софия, гледачи за котки софия, pet sitter българия, зоохотел софия, грижа за домашни любимци, професионални гледачи за кучета, къде да оставя кучето си, dog walker софия, cat sitter българия, гледане на домашни любимци цени, гледачи за животни пловдив, къде да оставя котката си, pet sitting services bulgaria, проверени гледачи за кучета, най-добрите гледачи за котки, грижа за домашни любимци софия цени, къде да оставя кучето си когато съм на почивка, професионална грижа за домашни любимци българия, зоохотел пловдив, зоохотел варна, dog sitting sofia, cat sitting sofia, pet care bulgaria, гледачи за домашни любимци варна, гледачи за домашни любимци бургас" />
+  <meta name="author" content="CosyPets.bg" />
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+  <meta name="language" content="Bulgarian" />
+  <meta name="revisit-after" content="3 days" />
+  <meta name="geo.region" content="BG" />
+  <meta name="geo.placename" content="Sofia, Bulgaria" />
+  <meta name="geo.position" content="42.6977;23.3219" />
+  <meta name="ICBM" content="42.6977, 23.3219" />
+
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:url" content="https://cozypets.bg/" />
+  <meta property="og:title" content="Гледачи за Кучета и Котки София | CosyPets.bg - Професионална Грижа" />
+  <meta property="og:description"
+    content="🐾 Намерете най-добрите проверени гледачи за кучета, котки и домашни любимци в София, Пловдив, Варна. ⭐ 24/7 грижа, застраховка, онлайн резервация." />
+  <meta property="og:image" content="https://cozypets.bg/logo.jpg" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:locale" content="bg_BG" />
+  <meta property="og:site_name" content="CosyPets.bg" />
+
+  <!-- Twitter -->
+  <meta property="twitter:card" content="summary_large_image" />
+  <meta property="twitter:url" content="https://cozypets.bg/" />
+  <meta property="twitter:title" content="Гледачи за Кучета и Котки София | CosyPets.bg" />
+  <meta property="twitter:description"
+    content="🐾 Намерете най-добрите проверени гледачи за кучета, котки и домашни любимци в София, Пловдив, Варна." />
+  <meta property="twitter:image" content="https://cozypets.bg/logo.jpg" />
+
+  <!-- Canonical URL -->
+  <link rel="canonical" href="https://cozypets.bg/" />
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/jpeg" href="/logo.jpg" />
+  <link rel="apple-touch-icon" sizes="180x180" href="/logo.jpg" />
+
+  <!-- Leaflet CSS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+  <!-- Structured Data - LocalBusiness (Enhanced for SEO) -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "LocalBusiness",
+      "name": "CosyPets.bg",
+      "image": "https://cozypets.bg/logo.jpg",
+      "url": "https://cozypets.bg",
+      "telephone": "+359-888-123-456",
+      "priceRange": "15 лв - 80 лв",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "ул. Цар Борис III 136",
+        "addressLocality": "София",
+        "postalCode": "1000",
+        "addressCountry": "BG"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": 42.6977,
+        "longitude": 23.3219
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday"
+        ],
+        "opens": "00:00",
+        "closes": "23:59"
+      },
+      "sameAs": [
+        "https://www.facebook.com/cozypetsbg",
+        "https://www.instagram.com/cozypetsbg"
+      ],
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.9",
+        "reviewCount": "127"
+      }
+    }
+    </script>
+
+  <!-- Structured Data - Service (Enhanced) -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "serviceType": "Pet Sitting & Pet Care Services",
+      "provider": {
+        "@type": "LocalBusiness",
+        "name": "CosyPets.bg",
+        "url": "https://cozypets.bg"
+      },
+      "areaServed": [
+        {
+          "@type": "City",
+          "name": "София"
+        },
+        {
+          "@type": "City",
+          "name": "Пловдив"
+        },
+        {
+          "@type": "City",
+          "name": "Варна"
+        },
+        {
+          "@type": "City",
+          "name": "Бургас"
+        }
+      ],
+      "hasOfferCatalog": {
+        "@type": "OfferCatalog",
+        "name": "Услуги за грижа за домашни любимци",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Гледане на кучета",
+              "description": "Професионална грижа за вашето куче в дома на гледача или у вас"
+            },
+            "price": "25",
+            "priceCurrency": "BGN"
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Гледане на котки",
+              "description": "Грижа за котки в тяхната позната среда"
+            },
+            "price": "20",
+            "priceCurrency": "BGN"
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Разходка на кучета",
+              "description": "Дневни разходки и физическа активност"
+            },
+            "price": "15",
+            "priceCurrency": "BGN"
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "24/7 Грижа за домашни любимци",
+              "description": "Денонощна грижа и наблюдение"
+            },
+            "price": "80",
+            "priceCurrency": "BGN"
+          }
+        ]
+      }
+    }
+    </script>
+
+  <!-- Structured Data - FAQPage -->
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Колко струва гледач за куче в София?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Цените за гледачи на кучета в София варират от 15 лв до 80 лв на ден, в зависимост от услугата. Разходка на куче струва от 15 лв, дневна грижа от 25 лв, а 24/7 грижа до 80 лв на ден."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Как да избера надежден гледач за домашния си любимец?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "В CosyPets.bg всички гледачи са проверени с документи, имат отзиви от други клиенти и профили с детайлна информация. Можете да видите рейтинга, опита и специализацията на всеки гледач преди да резервирате."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Какви услуги предлагат гледачите за домашни любимци?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Нашите гледачи предлагат: гледане на кучета и котки, разходки, хранене, игра, медицински грижи, 24/7 наблюдение, грижа в дома на гледача или у вас, и специализирани услуги за различни породи."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Застраховани ли са гледачите?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Да, всички професионални гледачи в платформата ни имат застраховка за отговорност и са обучени за спешни ситуации. Вашият домашен любимец е в сигурни ръце."
+          }
+        }
+      ]
+    }
+    </script>
+</head>
+
+<body>
+  <div id="root"></div>
+  <script type="module" src="/src/main.tsx"></script>
+</body>
+
 </html>

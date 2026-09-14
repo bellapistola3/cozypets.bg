@@ -33,6 +33,15 @@ export const authHelpers = {
           console.error('Error creating user profile:', profileError);
           console.warn('User authenticated but profile creation failed');
         }
+
+        // If session was not automatically established, sign in immediately
+        if (!data.session) {
+          try {
+            await supabase.auth.signInWithPassword({ email, password });
+          } catch (autoLoginErr) {
+            console.warn('Auto sign-in after registration skipped/failed:', autoLoginErr);
+          }
+        }
       }
 
       return { user };

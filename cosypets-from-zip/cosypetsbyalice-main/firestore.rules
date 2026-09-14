@@ -1,0 +1,13 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // ВРЕМЕННИ ПРАВИЛА ЗА РАЗВОЙНА СРЕДА
+    // ВАЖНО: Не използвайте това в продукция!
+    
+    // Позволява четене и запис за всички колекции
+    match /{document=**} {
+      allow read, write: if true;
+    }
+  }
+}

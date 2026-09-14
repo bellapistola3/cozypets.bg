@@ -1,6 +1,7 @@
 // Database-aligned TypeScript interfaces
 
 export interface User {
+  id?: string;
   user_id: number;
   name: string;
   email: string;
@@ -12,6 +13,7 @@ export interface User {
 }
 
 export interface Sitter {
+  id: string;
   sitter_id: number;
   user_id: number;
   bio?: string;
@@ -191,9 +193,9 @@ export interface UpdateUserRequest extends Partial<Omit<CreateUserRequest, 'pass
   password?: string;
 }
 
-export interface UpdateSitterRequest extends Partial<CreateSitterRequest> {}
+export interface UpdateSitterRequest extends Partial<CreateSitterRequest> { }
 
-export interface UpdatePetRequest extends Partial<CreatePetRequest> {}
+export interface UpdatePetRequest extends Partial<CreatePetRequest> { }
 
 export interface UpdateReservationRequest extends Partial<CreateReservationRequest> {
   status?: 'pending' | 'confirmed' | 'completed' | 'canceled';

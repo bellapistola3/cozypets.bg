@@ -13,7 +13,7 @@ import {
   Image as ImageIcon,
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
-import { supabase } from '../lib/supabase';
+import { supabase } from '../lib/supabaseClient';
 import Button from './common/Button';
 
 interface VetChatMessage {

@@ -1,0 +1,4 @@
+connectorId: "social-hulk-connector"
+generate:
+  dartSdk:
+    outputDir: "../../lib/generated"

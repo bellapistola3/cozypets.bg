@@ -1,0 +1,48 @@
+type User @table {
+  id: UUID! @default(expr: "gen_random_uuid()")
+  email: String
+  displayName: String
+  isAnonymous: Boolean!
+  createdAt: Timestamp! @default(expr: "request.time")
+  lastActiveAt: Timestamp!
+  subscriptionTier: String! @default(value: "free")
+  subscriptionEndDate: Timestamp
+  hashtagsGenerated: Int! @default(value: 0)
+  captionsGenerated: Int! @default(value: 0)
+  biosGenerated: Int! @default(value: 0)
+  contentIdeasGenerated: Int! @default(value: 0)
+  dailyLimit: Int! @default(value: 10)
+  lastResetDate: Date!
+  totalGenerations: Int! @default(value: 0)
+  defaultPlatform: String! @default(value: "instagram")
+  generations: [Generation!]! @relation
+}
+
+type Generation @table {
+  id: UUID! @default(expr: "gen_random_uuid()")
+  userId: UUID!
+  user: User! @relation(fields: [userId])
+  type: String!
+  platform: String!
+  inputNiche: String
+  inputKeywords: [String!]
+  inputTopic: String
+  outputResult: Any!
+  aiModel: String!
+  tokensUsed: Int!
+  createdAt: Timestamp! @default(expr: "request.time")
+  isSaved: Boolean! @default(value: false)
+}
+
+type Subscription @table {
+  id: UUID! @default(expr: "gen_random_uuid()")
+  userId: UUID!
+  productId: String!
+  purchaseToken: String!
+  status: String!
+  platform: String!
+  startDate: Timestamp!
+  endDate: Timestamp
+  price: Float!
+  currency: String!
+}

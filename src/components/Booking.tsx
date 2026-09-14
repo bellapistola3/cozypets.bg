@@ -3,7 +3,7 @@ import { Calendar, Clock, CheckCircle, User, Mail, Phone, Heart, MapPin, Star, S
 import SectionHeading from './common/SectionHeading';
 import Button from './common/Button';
 import { useAuth } from '../contexts/AuthContext';
-import { supabase } from '../lib/supabase';
+import { supabase } from '../lib/firebase';
 import { bookingService } from '../lib/bookingService';
 
 interface BookingFormData {

@@ -7,7 +7,7 @@ import SitterCard from './SitterCard';
 import InteractiveMap from './InteractiveMap';
 import PersonalizedRecommendations from './PersonalizedRecommendations';
 import { PetTypeSelect } from './PetTypeSelect';
-import { dbHelpers } from '../lib/supabase';
+import { dbHelpers } from '../lib/firebase';
 import { useAuth } from '../contexts/AuthContext';
 
 const SitterSearch: React.FC = () => {
@@ -143,19 +143,19 @@ const SitterSearch: React.FC = () => {
             <div className="flex items-center gap-2">
               <button
                 onClick={() => setViewMode('list')}
-                className={`px - 4 py - 2 rounded - lg text - sm font - medium transition - colors ${viewMode === 'list'
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${viewMode === 'list'
                   ? 'bg-green-600 text-white'
                   : 'bg-white text-gray-600 hover:bg-gray-50'
-                  } `}
+                  }`}
               >
                 Списък
               </button>
               <button
                 onClick={() => setViewMode('map')}
-                className={`px - 4 py - 2 rounded - lg text - sm font - medium transition - colors ${viewMode === 'map'
+                className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${viewMode === 'map'
                   ? 'bg-green-600 text-white'
                   : 'bg-white text-gray-600 hover:bg-gray-50'
-                  } `}
+                  }`}
               >
                 Карта
               </button>
@@ -240,7 +240,7 @@ const SitterSearch: React.FC = () => {
         ) : viewMode === 'list' ? (
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {sitters.map(sitter => (
-              <SitterCard key={sitter.sitter_id} sitter={sitter} />
+              <SitterCard key={sitter.id} sitter={sitter} />
             ))}
           </div>
         ) : (

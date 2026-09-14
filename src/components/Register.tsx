@@ -3,6 +3,8 @@ import { X, Mail, Lock, User, Phone } from 'lucide-react';
 import Button from './common/Button';
 import SocialLogin from './SocialLogin';
 import { useAuth } from '../contexts/AuthContext';
+import { supabase } from '../lib/supabaseClient';
+import { dbHelpers } from '../lib/firebase';
 
 interface RegisterProps {
   onClose: () => void;
@@ -15,19 +17,20 @@ const Register: React.FC<RegisterProps> = ({ onClose, onOpenLogin }) => {
     familyName: '',
     email: '',
     password: '',
-    phoneNumber: ''
+    phoneNumber: '',
+    role: 'owner' as 'owner' | 'sitter'
   });
-  const [showEmailForm, setShowEmailForm] = useState(false);
+  const [showEmailForm, setShowEmailForm] = useState(true);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const { signUp, signInWithGoogle, signInWithFacebook } = useAuth();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setFormData(prev => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
     setError('');
@@ -52,27 +55,47 @@ const Register: React.FC<RegisterProps> = ({ onClose, onOpenLogin }) => {
       return;
     }
 
-    signUp(formData.email, formData.password, fullName, formData.phoneNumber)
-      .then(() => {
-        onClose();
-      })
-      .catch((error) => {
-        console.error('Registration error:', error);
-        let errorMessage = 'Възникна грешка при регистрация. Моля, опитайте отново.';
-
-        if (error.message?.includes('already registered')) {
-          errorMessage = 'Този имейл вече е регистриран. Моля, влезте в акаунта си.';
-        } else if (error.message?.includes('invalid email')) {
-          errorMessage = 'Невалиден имейл адрес.';
-        } else if (error.message?.includes('weak password')) {
-          errorMessage = 'Паролата е твърде слаба. Използвайте поне 6 символа.';
+    try {
+      await signUp(formData.email, formData.password, fullName, formData.phoneNumber, formData.role);
+      
+      // If user chose to register as a sitter, create default sitter entry
+      if (formData.role === 'sitter') {
+        const { data: authData } = await supabase.auth.getUser();
+        if (authData.user?.id) {
+          await dbHelpers.createOrUpdateSitter({
+            id: authData.user.id,
+            profile_title: `${fullName} — Сертифициран Гледач`,
+            bio: 'Нов гледач в CozyPets! Готов да помага с грижата за вашите домашни любимци.',
+            address_line: 'София',
+            price_24h: 40,
+            pet_types: ['kuche', 'kotka'],
+            allow_small_dogs: true,
+            allow_large_dogs: true,
+            accept_in_heat: false,
+            accept_unneutered: true,
+            behavior_trainer: false,
+            has_car: false
+          }).catch(err => console.error('Sitter auto-creation note:', err));
         }
+      }
 
-        setError(errorMessage);
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+      onClose();
+    } catch (error: any) {
+      console.error('Registration error:', error);
+      let errorMessage = 'Възникна грешка при регистрация. Моля, опитайте отново.';
+
+      if (error.message?.includes('already registered') || error.message?.includes('User already registered')) {
+        errorMessage = 'Този имейл вече е регистриран. Моля, влезте в акаунта си.';
+      } else if (error.message?.includes('invalid email') || error.message?.includes('Invalid email')) {
+        errorMessage = 'Невалиден имейл адрес.';
+      } else if (error.message?.includes('weak password') || error.message?.includes('Password')) {
+        errorMessage = 'Паролата е твърде слаба. Използвайте поне 6 символа.';
+      }
+
+      setError(errorMessage);
+    } finally {
+      setLoading(false);
+    }
   };
 
   const handleGoogleLogin = async () => {
@@ -80,9 +103,12 @@ const Register: React.FC<RegisterProps> = ({ onClose, onOpenLogin }) => {
       setLoading(true);
       await signInWithGoogle();
       // OAuth redirect will happen automatically
-    } catch (error) {
+    } catch (error: any) {
       console.error('Google login error:', error);
-      setError('Грешка при влизане с Google');
+      const msg = error?.message?.includes('provider is not enabled')
+        ? 'Google входът все още не е активиран в Supabase настройките.'
+        : 'Грешка при регистрация с Google. Моля, попълнете формата по-долу.';
+      setError(msg);
       setLoading(false);
     }
   };
@@ -92,9 +118,12 @@ const Register: React.FC<RegisterProps> = ({ onClose, onOpenLogin }) => {
       setLoading(true);
       await signInWithFacebook();
       // OAuth redirect will happen automatically
-    } catch (error) {
+    } catch (error: any) {
       console.error('Facebook login error:', error);
-      setError('Грешка при влизане с Facebook');
+      const msg = error?.message?.includes('provider is not enabled')
+        ? 'Facebook входът все още не е активиран в Supabase настройките.'
+        : 'Грешка при регистрация с Facebook. Моля, попълнете формата по-долу.';
+      setError(msg);
       setLoading(false);
     }
   };
@@ -253,6 +282,22 @@ const Register: React.FC<RegisterProps> = ({ onClose, onOpenLogin }) => {
                   required
                 />
               </div>
+            </div>
+
+            <div>
+              <label htmlFor="role" className="block text-sm font-medium text-gray-700 mb-1">
+                Искам да се регистрирам като:
+              </label>
+              <select
+                id="role"
+                name="role"
+                value={formData.role}
+                onChange={handleChange}
+                className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-green-500 focus:border-green-500 font-medium bg-white"
+              >
+                <option value="owner">🐾 Собственик на домашен любимец</option>
+                <option value="sitter">🏡 Гледач на домашни любимци (Ситър)</option>
+              </select>
             </div>
 
             <Button type="submit" className="w-full mt-6">

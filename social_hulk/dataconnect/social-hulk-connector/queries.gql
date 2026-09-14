@@ -1,0 +1,25 @@
+query GetUser($userId: UUID!) @auth(level: USER) {
+  user(id: $userId) {
+    id
+    email
+    displayName
+    subscriptionTier
+    hashtagsGenerated
+    captionsGenerated
+    biosGenerated
+    contentIdeasGenerated
+    dailyLimit
+    totalGenerations
+  }
+}
+
+query GetUserGenerations($userId: UUID!, $limit: Int = 20) @auth(level: USER) {
+  generations(where: {userId: {eq: $userId}} orderBy: {createdAt: DESC} limit: $limit) {
+    id
+    type
+    platform
+    outputResult
+    createdAt
+    isSaved
+  }
+}

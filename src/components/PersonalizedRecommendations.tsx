@@ -23,6 +23,7 @@ const PersonalizedRecommendations: React.FC<PersonalizedRecommendationsProps> = 
   // Mock sitters data
   const mockSitters: SitterWithDetails[] = [
     {
+      id: '1',
       sitter_id: 1,
       user_id: 1,
       bio: 'Обожавам животните и имам над 5 години опит в грижата за домашни любимци.',
@@ -33,7 +34,7 @@ const PersonalizedRecommendations: React.FC<PersonalizedRecommendationsProps> = 
       rating: 4.9,
       average_rating: 4.9,
       total_reviews: 47,
-      createdAt: new Date(),
+      created_at: new Date(),
       updated_at: new Date(),
       user: {
         user_id: 1,
@@ -48,6 +49,7 @@ const PersonalizedRecommendations: React.FC<PersonalizedRecommendationsProps> = 
       reviews: [],
     },
     {
+      id: '2',
       sitter_id: 2,
       user_id: 2,
       bio: 'Специализирам се в грижата за кучета от големи породи.',
@@ -58,7 +60,7 @@ const PersonalizedRecommendations: React.FC<PersonalizedRecommendationsProps> = 
       rating: 4.8,
       average_rating: 4.8,
       total_reviews: 32,
-      createdAt: new Date(),
+      created_at: new Date(),
       updated_at: new Date(),
       user: {
         user_id: 2,
@@ -78,7 +80,7 @@ const PersonalizedRecommendations: React.FC<PersonalizedRecommendationsProps> = 
     // Simulate API call to get personalized recommendations
     const getRecommendations = async () => {
       setLoading(true);
-      
+
       // Filter sitters based on user preferences
       const filtered = mockSitters.filter(sitter => {
         // Simplified filtering based on available data
@@ -107,15 +109,15 @@ const PersonalizedRecommendations: React.FC<PersonalizedRecommendationsProps> = 
 
   const getRecommendationReason = (sitter: SitterWithDetails) => {
     const reasons = [];
-    
+
     if (sitter.average_rating >= 4.8) {
       reasons.push('Високо оценен');
     }
-    
+
     if (sitter.location.includes(userPreferences.preferredLocation)) {
       reasons.push('В района ви');
     }
-    
+
     if (sitter.hourly_rate <= userPreferences.maxPrice * 0.8) {
       reasons.push('Добра цена');
     }
@@ -168,7 +170,7 @@ const PersonalizedRecommendations: React.FC<PersonalizedRecommendationsProps> = 
       ) : (
         <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
           {recommendations.map((sitter) => (
-            <div key={sitter.sitter_id} className="relative">
+            <div key={sitter.id} className="relative">
               {/* Recommendation badge */}
               <div className="absolute top-4 left-4 z-10 bg-green-600 text-white px-3 py-1 rounded-full text-sm font-medium">
                 {getRecommendationReason(sitter)}

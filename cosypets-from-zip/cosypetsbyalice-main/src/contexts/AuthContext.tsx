@@ -1,0 +1,109 @@
+import React, { createContext, useContext, useEffect, useState } from 'react';
+import { authHelpers, AuthUser } from '../lib/auth';
+
+interface AuthContextType {
+  user: AuthUser | null;
+  loading: boolean;
+  signIn: (email: string, password: string) => Promise<void>;
+  signUp: (email: string, password: string, name: string, phone?: string) => Promise<void>;
+  signInWithGoogle: () => Promise<void>;
+  signInWithFacebook: () => Promise<void>;
+  signOut: () => Promise<void>;
+}
+
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+export const useAuth = () => {
+  const context = useContext(AuthContext);
+  if (context === undefined) {
+    throw new Error('useAuth must be used within an AuthProvider');
+  }
+  return context;
+};
+
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [user, setUser] = useState<AuthUser | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    // Get initial user
+    authHelpers.getCurrentUser().then(user => {
+      setUser(user);
+      setLoading(false);
+    });
+
+    // Listen for auth changes
+    const { data: { subscription } } = authHelpers.onAuthStateChange((user) => {
+      setUser(user);
+      setLoading(false);
+    });
+
+    return () => subscription.unsubscribe();
+  }, []);
+
+  const signIn = async (email: string, password: string) => {
+    setLoading(true);
+    try {
+      await authHelpers.signIn(email, password);
+    } catch (error) {
+      setLoading(false);
+      throw error;
+    }
+  };
+
+  const signUp = async (email: string, password: string, name: string, phone?: string) => {
+    setLoading(true);
+    try {
+      await authHelpers.signUp(email, password, name, phone);
+    } catch (error) {
+      setLoading(false);
+      throw error;
+    }
+  };
+
+  const signInWithGoogle = async () => {
+    setLoading(true);
+    try {
+      await authHelpers.signInWithGoogle();
+    } catch (error) {
+      setLoading(false);
+      throw error;
+    }
+  };
+
+  const signInWithFacebook = async () => {
+    setLoading(true);
+    try {
+      await authHelpers.signInWithFacebook();
+    } catch (error) {
+      setLoading(false);
+      throw error;
+    }
+  };
+
+  const signOut = async () => {
+    setLoading(true);
+    try {
+      await authHelpers.signOut();
+    } catch (error) {
+      setLoading(false);
+      throw error;
+    }
+  };
+
+  const value = {
+    user,
+    loading,
+    signIn,
+    signUp,
+    signInWithGoogle,
+    signInWithFacebook,
+    signOut
+  };
+
+  return (
+    <AuthContext.Provider value={value}>
+      {children}
+    </AuthContext.Provider>
+  );
+};

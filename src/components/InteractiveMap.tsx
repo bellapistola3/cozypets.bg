@@ -1,36 +1,55 @@
 import React, { useState, useEffect } from 'react';
-import { MapPin, Navigation, Filter, Star, Phone } from 'lucide-react';
+import { MapPin, Navigation, Filter, Star } from 'lucide-react';
+import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet';
+import L from 'leaflet';
 import { SitterWithDetails } from '../types';
-import Button from './common/Button';
+
+// Fix for default marker icon in Leaflet
+import markerIcon2x from 'leaflet/dist/images/marker-icon-2x.png';
+import markerIcon from 'leaflet/dist/images/marker-icon.png';
+import markerShadow from 'leaflet/dist/images/marker-shadow.png';
+
+delete (L.Icon.Default.prototype as any)._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconUrl: markerIcon,
+  iconRetinaUrl: markerIcon2x,
+  shadowUrl: markerShadow,
+});
 
 interface InteractiveMapProps {
   sitters: SitterWithDetails[];
   onSitterSelect: (sitter: SitterWithDetails) => void;
 }
 
+// Component to handle map center updates
+const ChangeView = ({ center, zoom }: { center: [number, number], zoom: number }) => {
+  const map = useMap();
+  map.setView(center, zoom);
+  return null;
+};
+
 const InteractiveMap: React.FC<InteractiveMapProps> = ({ sitters, onSitterSelect }) => {
   const [selectedSitter, setSelectedSitter] = useState<SitterWithDetails | null>(null);
-  const [userLocation, setUserLocation] = useState<{ lat: number; lng: number } | null>(null);
-  const [mapCenter, setMapCenter] = useState({ lat: 42.6977, lng: 23.3219 }); // Sofia coordinates
-  const [zoom, setZoom] = useState(12);
+  const [userLocation, setUserLocation] = useState<[number, number] | null>(null);
+  const [mapCenter, setMapCenter] = useState<[number, number]>([42.6977, 23.3219]); // Sofia coordinates
+  const [zoom] = useState(13);
 
-  // Mock coordinates for sitters (in a real app, these would come from the database)
+  // Mock coordinates for sitters if they don't have them
   const sittersWithCoordinates = sitters.map((sitter, index) => ({
     ...sitter,
-    coordinates: {
-      lat: 42.6977 + (Math.random() - 0.5) * 0.1,
-      lng: 23.3219 + (Math.random() - 0.5) * 0.1,
+    coordinates: sitter.coordinates || {
+      lat: 42.6977 + (Math.random() - 0.5) * 0.05,
+      lng: 23.3219 + (Math.random() - 0.5) * 0.05,
     },
   }));
 
   useEffect(() => {
-    // Get user's current location
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
-          setUserLocation({ lat: latitude, lng: longitude });
-          setMapCenter({ lat: latitude, lng: longitude });
+          setUserLocation([latitude, longitude]);
+          setMapCenter([latitude, longitude]);
         },
         (error) => {
           console.log('Error getting location:', error);
@@ -38,28 +57,6 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ sitters, onSitterSelect
       );
     }
   }, []);
-
-  const calculateDistance = (lat1: number, lng1: number, lat2: number, lng2: number) => {
-    const R = 6371; // Earth's radius in kilometers
-    const dLat = (lat2 - lat1) * Math.PI / 180;
-    const dLng = (lng2 - lng1) * Math.PI / 180;
-    const a = 
-      Math.sin(dLat/2) * Math.sin(dLat/2) +
-      Math.cos(lat1 * Math.PI / 180) * Math.cos(lat2 * Math.PI / 180) * 
-      Math.sin(dLng/2) * Math.sin(dLng/2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
-    return R * c;
-  };
-
-  const getDistanceFromUser = (sitter: any) => {
-    if (!userLocation || !sitter.coordinates) return null;
-    return calculateDistance(
-      userLocation.lat,
-      userLocation.lng,
-      sitter.coordinates.lat,
-      sitter.coordinates.lng
-    );
-  };
 
   const handleSitterClick = (sitter: SitterWithDetails) => {
     setSelectedSitter(sitter);
@@ -70,197 +67,117 @@ const InteractiveMap: React.FC<InteractiveMapProps> = ({ sitters, onSitterSelect
   };
 
   return (
-    <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
-      <div className="p-6 border-b border-gray-200">
+    <div className="bg-white rounded-2xl shadow-lg overflow-hidden border border-gray-100">
+      <div className="p-4 border-b border-gray-100 bg-gray-50/50">
         <div className="flex items-center justify-between">
-          <h2 className="text-2xl font-bold text-gray-900">Гледачи в района</h2>
-          <div className="flex items-center gap-4">
-            <button className="flex items-center text-green-600 hover:text-green-700">
-              <Navigation className="h-5 w-5 mr-2" />
+          <h2 className="text-xl font-bold text-gray-900">Гледачи в района</h2>
+          <div className="flex items-center gap-3">
+            <button
+              onClick={() => userLocation && setMapCenter(userLocation)}
+              className="flex items-center text-sm font-medium text-green-600 hover:text-green-700 transition-colors"
+            >
+              <Navigation className="h-4 w-4 mr-1.5" />
               Моето местоположение
-            </button>
-            <button className="flex items-center text-gray-600 hover:text-gray-700">
-              <Filter className="h-5 w-5 mr-2" />
-              Филтри
             </button>
           </div>
         </div>
       </div>
 
       <div className="relative">
-        {/* Map Container - In a real app, this would be Google Maps or Mapbox */}
-        <div className="h-96 bg-gradient-to-br from-green-100 to-blue-100 relative overflow-hidden">
-          {/* Mock map background */}
-          <div className="absolute inset-0 opacity-20">
-            <div className="w-full h-full bg-gradient-to-br from-green-200 via-blue-200 to-green-300"></div>
-          </div>
-          
-          {/* User location marker */}
-          {userLocation && (
-            <div 
-              className="absolute w-4 h-4 bg-blue-600 rounded-full border-2 border-white shadow-lg transform -translate-x-1/2 -translate-y-1/2 z-10"
-              style={{
-                left: '50%',
-                top: '50%',
-              }}
-            >
-              <div className="absolute inset-0 bg-blue-600 rounded-full animate-ping opacity-75"></div>
-            </div>
-          )}
+        <div className="h-[450px] w-full z-0">
+          <MapContainer
+            center={mapCenter}
+            zoom={zoom}
+            scrollWheelZoom={true}
+            style={{ height: '100%', width: '100%' }}
+          >
+            <ChangeView center={mapCenter} zoom={zoom} />
+            <TileLayer
+              attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
 
-          {/* Sitter markers */}
-          {sittersWithCoordinates.map((sitter, index) => {
-            const distance = getDistanceFromUser(sitter);
-            return (
-              <div
-                key={sitter.sitter_id}
-                className={`absolute transform -translate-x-1/2 -translate-y-1/2 cursor-pointer z-20 ${
-                  selectedSitter?.sitter_id === sitter.sitter_id ? 'scale-110' : 'hover:scale-105'
-                } transition-transform duration-200`}
-                style={{
-                  left: `${30 + (index % 3) * 20}%`,
-                  top: `${30 + Math.floor(index / 3) * 15}%`,
+            {userLocation && (
+              <Marker position={userLocation}>
+                <Popup>Вие сте тук</Popup>
+              </Marker>
+            )}
+
+            {sittersWithCoordinates.map((sitter) => (
+              <Marker
+                key={sitter.id}
+                position={[sitter.coordinates.lat, sitter.coordinates.lng]}
+                eventHandlers={{
+                  click: () => handleSitterClick(sitter),
                 }}
-                onClick={() => handleSitterClick(sitter)}
               >
-                <div className="relative">
-                  <div className={`w-12 h-12 rounded-full border-3 shadow-lg overflow-hidden ${
-                    selectedSitter?.sitter_id === sitter.sitter_id 
-                      ? 'border-green-500 ring-4 ring-green-200' 
-                      : 'border-white'
-                  }`}>
-                    <img
-                      src={sitter.photo_url || 'https://images.pexels.com/photos/1851164/pexels-photo-1851164.jpeg'}
-                      alt={sitter.user?.name || 'Pet Sitter'}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
-                  <div className="absolute -top-2 -right-2 bg-green-600 text-white text-xs px-1.5 py-0.5 rounded-full">
-                    {sitter.average_rating?.toFixed(1) || '5.0'}
-                  </div>
-                  {distance && (
-                    <div className="absolute -bottom-6 left-1/2 transform -translate-x-1/2 bg-white px-2 py-1 rounded-full text-xs font-medium shadow-md whitespace-nowrap">
-                      {distance.toFixed(1)} км
+                <Popup>
+                  <div className="p-1 min-w-[150px]">
+                    <div className="flex items-center gap-2 mb-2">
+                      <img
+                        src={sitter.photo_url || 'https://images.pexels.com/photos/1851164/pexels-photo-1851164.jpeg'}
+                        alt={sitter.user?.name}
+                        className="w-10 h-10 rounded-full object-cover border border-gray-200"
+                      />
+                      <div>
+                        <div className="font-bold text-gray-900 leading-tight">{sitter.user?.name?.split(' ')[0]}</div>
+                        <div className="flex items-center text-xs text-yellow-500">
+                          <Star className="h-3 w-3 fill-current mr-0.5" />
+                          <span>{sitter.average_rating?.toFixed(1) || '5.0'}</span>
+                        </div>
+                      </div>
                     </div>
-                  )}
-                </div>
-              </div>
-            );
-          })}
-
-          {/* Map controls */}
-          <div className="absolute top-4 right-4 flex flex-col gap-2">
-            <button 
-              onClick={() => setZoom(zoom + 1)}
-              className="w-10 h-10 bg-white rounded-lg shadow-md flex items-center justify-center text-gray-700 hover:bg-gray-50"
-            >
-              +
-            </button>
-            <button 
-              onClick={() => setZoom(zoom - 1)}
-              className="w-10 h-10 bg-white rounded-lg shadow-md flex items-center justify-center text-gray-700 hover:bg-gray-50"
-            >
-              −
-            </button>
-          </div>
+                    <div className="text-sm font-bold text-green-600 mb-2">
+                      {sitter.hourly_rate} лв./час
+                    </div>
+                    <button
+                      onClick={() => handleContactSitter(sitter)}
+                      className="w-full bg-green-600 text-white text-xs font-semibold py-1.5 rounded hover:bg-green-700 transition-colors"
+                    >
+                      Преглед
+                    </button>
+                  </div>
+                </Popup>
+              </Marker>
+            ))}
+          </MapContainer>
         </div>
 
-        {/* Selected sitter info panel */}
+        {/* Selected Sitter Floating Panel */}
         {selectedSitter && (
-          <div className="absolute bottom-4 left-4 right-4 bg-white rounded-xl shadow-lg p-4 z-30">
-            <div className="flex items-center gap-4">
-              <img
-                src={selectedSitter.photo_url || 'https://images.pexels.com/photos/1851164/pexels-photo-1851164.jpeg'}
-                alt={selectedSitter.user?.name || 'Pet Sitter'}
-                className="w-16 h-16 rounded-full object-cover"
-              />
-              <div className="flex-1">
-                <h3 className="font-semibold text-gray-900">
-                  {selectedSitter.user?.name || 'Pet Sitter'}
-                </h3>
-                <div className="flex items-center text-gray-600 text-sm mb-1">
-                  <MapPin className="h-4 w-4 mr-1" />
-                  <span>{selectedSitter.location || 'София'}</span>
-                </div>
-                <div className="flex items-center">
-                  <Star className="h-4 w-4 text-yellow-400 fill-current mr-1" />
-                  <span className="font-medium">{selectedSitter.average_rating?.toFixed(1) || '5.0'}</span>
-                  <span className="text-gray-600 text-sm ml-1">({selectedSitter.total_reviews || 0})</span>
-                </div>
+          <div className="absolute bottom-6 left-6 right-6 bg-white rounded-xl shadow-2xl p-4 z-[1000] border border-green-100 flex items-center gap-4 animate-slideUp">
+            <img
+              src={selectedSitter.photo_url || 'https://images.pexels.com/photos/1851164/pexels-photo-1851164.jpeg'}
+              alt={selectedSitter.user?.name}
+              className="w-14 h-14 rounded-full object-cover border-2 border-green-50"
+            />
+            <div className="flex-1">
+              <h3 className="font-bold text-gray-900 leading-tight">
+                {selectedSitter.user?.name}
+              </h3>
+              <div className="flex items-center text-gray-500 text-xs mt-0.5">
+                <MapPin className="h-3 w-3 mr-1" />
+                <span>{selectedSitter.location}</span>
               </div>
-              <div className="text-right">
-                <div className="text-lg font-bold text-green-600 mb-2">
-                  {selectedSitter.hourly_rate || 15} лв./час
-                </div>
-                <div className="flex gap-2">
-                  <button 
-                    onClick={() => handleContactSitter(selectedSitter)}
-                    className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors text-sm"
-                  >
-                    Свържи се
-                  </button>
-                  <button className="border border-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-50 transition-colors text-sm">
-                    Профил
-                  </button>
-                </div>
+              <div className="flex items-center mt-1">
+                <Star className="h-3.5 w-3.5 text-yellow-400 fill-current mr-1" />
+                <span className="text-sm font-semibold">{selectedSitter.average_rating?.toFixed(1) || '5.0'}</span>
+                <span className="text-gray-400 text-xs ml-1">({selectedSitter.total_reviews || 0})</span>
               </div>
+            </div>
+            <div className="text-right">
+              <div className="text-lg font-extrabold text-green-600">
+                {selectedSitter.hourly_rate} лв.
+              </div>
+              <button
+                onClick={() => handleContactSitter(selectedSitter)}
+                className="mt-1 bg-green-600 text-white px-4 py-1.5 rounded-lg hover:bg-green-700 transition-colors text-xs font-bold"
+              >
+                Профил
+              </button>
             </div>
           </div>
         )}
-      </div>
-
-      {/* Sitters list */}
-      <div className="p-6">
-        <h3 className="font-semibold text-gray-900 mb-4">Близо до вас ({sittersWithCoordinates.length})</h3>
-        <div className="space-y-3 max-h-64 overflow-y-auto">
-          {sittersWithCoordinates
-            .sort((a, b) => {
-              const distanceA = getDistanceFromUser(a) || Infinity;
-              const distanceB = getDistanceFromUser(b) || Infinity;
-              return distanceA - distanceB;
-            })
-            .map((sitter) => {
-              const distance = getDistanceFromUser(sitter);
-              return (
-                <div
-                  key={sitter.id}
-                  className={`flex items-center gap-4 p-3 rounded-lg cursor-pointer transition-colors ${
-                    selectedSitter?.sitter_id === sitter.sitter_id 
-                      ? 'bg-green-50 border border-green-200' 
-                      : 'hover:bg-gray-50'
-                  }`}
-                  onClick={() => handleSitterClick(sitter)}
-                >
-                  <img
-                    src={sitter.photo_url || 'https://images.pexels.com/photos/1851164/pexels-photo-1851164.jpeg'}
-                    alt={sitter.user?.name || 'Pet Sitter'}
-                    className="w-12 h-12 rounded-full object-cover"
-                  />
-                  <div className="flex-1">
-                    <h4 className="font-medium text-gray-900">
-                      {sitter.user?.name || 'Pet Sitter'}
-                    </h4>
-                    <div className="flex items-center text-sm text-gray-600">
-                      <Star className="h-3 w-3 text-yellow-400 fill-current mr-1" />
-                      <span>{sitter.average_rating?.toFixed(1) || '5.0'}</span>
-                      {distance && (
-                        <>
-                          <span className="mx-2">•</span>
-                          <span>{distance.toFixed(1)} км</span>
-                        </>
-                      )}
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <div className="font-semibold text-green-600">
-                      {sitter.hourly_rate || 15} лв.
-                    </div>
-                    <div className="text-xs text-gray-500">час</div>
-                  </div>
-                </div>
-              );
-            })}
-        </div>
       </div>
     </div>
   );

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { supabase, dbHelpers } from '../lib/supabase';
+import { supabase, dbHelpers } from '../lib/firebase';
 
 const AuthCallback: React.FC = () => {
     const navigate = useNavigate();

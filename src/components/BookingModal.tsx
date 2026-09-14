@@ -4,7 +4,7 @@ import { Sitter, ServiceType, Pet } from '../types';
 import Button from './common/Button';
 import { bookingService } from '../lib/bookingService';
 import { useAuth } from '../contexts/AuthContext';
-import { supabase } from '../lib/supabase';
+import { supabase } from '../lib/supabaseClient';
 
 interface BookingModalProps {
   sitter: Sitter;

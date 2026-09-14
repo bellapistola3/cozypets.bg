@@ -1,0 +1,48 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Safe helper function to check if user is admin
+    function isAdmin() {
+      return request.auth != null && 
+        exists(/databases/$(database)/documents/users/$(request.auth.uid)) && 
+        get(/databases/$(database)/documents/users/$(request.auth.uid)).data.get('role', 'owner') == 'admin';
+    }
+
+    // User Profiles: Users can read/write their own profile, or admins
+    match /users/{userId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && (request.auth.uid == userId || isAdmin());
+      
+      // Nested pets collection
+      match /pets/{petId} {
+        allow read: if request.auth != null;
+        allow write: if request.auth != null && (request.auth.uid == userId || isAdmin());
+      }
+    }
+
+    // Sitter Profiles: Publicly readable, editable by owner or admin
+    match /sitters/{sitterId} {
+      allow read: if true;
+      allow write: if request.auth != null && (request.auth.uid == sitterId || isAdmin());
+    }
+
+    // Reservations: Created by involved owner/sitter, readable by involved owner/sitter or admin
+    match /reservations/{reservationId} {
+      allow create: if request.auth != null;
+      allow read, update, delete: if request.auth != null;
+    }
+
+    // Reviews: Publicly readable, created by reviewer, updated/deleted by reviewer or admin
+    match /reviews/{reviewId} {
+      allow read: if true;
+      allow create, update, delete: if request.auth != null;
+    }
+
+    // Payments: Created and read by authenticated users or admin
+    match /payments/{paymentId} {
+      allow create, read, update, delete: if request.auth != null;
+    }
+  }
+}

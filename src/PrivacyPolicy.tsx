@@ -68,7 +68,8 @@ const PrivacyPolicy = () => {
         За въпроси относно тази политика или личните ви данни, можете да се свържете с нас на:
       </p>
       <ul className="list-inside text-lg space-y-2">
-        <li>📧 Имейл: <span className="italic">cozypetsbyalice@gmail.com</span></li>
+        <li>📧 Имейл за запитвания: <a href="mailto:office@cozypets.bg" className="font-semibold text-emerald-700 hover:underline">office@cozypets.bg</a></li>
+        <li>📧 Информация: <a href="mailto:info@cozypets.bg" className="font-semibold text-emerald-700 hover:underline">info@cozypets.bg</a></li>
         <li>🌐 Адрес: <span className="italic">Стара Загора, България</span></li>
       </ul>
 

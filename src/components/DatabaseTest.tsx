@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { CheckCircle, XCircle, AlertCircle, Database, Users, Calendar, Star } from 'lucide-react';
-import { dbHelpers } from '../lib/supabase';
+import { dbHelpers } from '../lib/firebase';
 import Button from './common/Button';
 
 interface TestResult {

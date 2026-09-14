@@ -1,14 +1,5 @@
-import { auth, dbHelpers } from './firebase';
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signInWithPopup,
-  GoogleAuthProvider,
-  FacebookAuthProvider,
-  signOut as firebaseSignOut,
-  onAuthStateChanged,
-  type User
-} from 'firebase/auth';
+import { supabase } from './supabaseClient';
+import { dbHelpers } from './firebase';
 
 export interface AuthUser {
   id: string;
@@ -17,102 +8,76 @@ export interface AuthUser {
   role: 'owner' | 'admin' | 'sitter';
 }
 
-export const authHelpers = {
-  // Sign up new user
-  async signUp(email: string, password: string, name: string, phone?: string) {
-    try {
-      // Create Firebase auth user
-      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
+const ADMIN_EMAILS = ['cozypetsbyalice@gmail.com', 'methodman9090@gmail.com'];
 
-      // Create user profile in Firestore
+export const authHelpers = {
+  // Sign up new user via Supabase Auth
+  async signUp(email: string, password: string, name: string, phone?: string, role: 'owner' | 'admin' | 'sitter' = 'owner') {
+    try {
+      const assignedRole = ADMIN_EMAILS.includes(email) ? 'admin' : role;
+
+      const { data, error } = await supabase.auth.signUp({ email, password });
+      if (error) throw error;
+
+      const user = data.user;
       if (user) {
         try {
           await dbHelpers.createUserProfile({
-            auth_user_id: user.uid,
+            auth_user_id: user.id,
             name,
             email: user.email!,
             phone,
-            role: email === 'methodman9090@gmail.com' ? 'admin' : 'owner'
+            role: assignedRole
           });
-        } catch (userError) {
-          console.error('Error creating user profile:', userError);
+        } catch (profileError) {
+          console.error('Error creating user profile:', profileError);
           console.warn('User authenticated but profile creation failed');
         }
-
-        return { user };
       }
+
+      return { user };
     } catch (error) {
       console.error('Sign up error:', error);
       throw error;
     }
   },
 
-  // Sign in user
+  // Sign in user via Supabase Auth
   async signIn(email: string, password: string) {
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      return { user: userCredential.user };
+      const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+      if (error) throw error;
+      return { user: data.user };
     } catch (error) {
       console.error('Sign in error:', error);
       throw error;
     }
   },
 
-  // Sign in with Google
+  // Sign in with Google via Supabase OAuth
   async signInWithGoogle() {
     try {
-      const provider = new GoogleAuthProvider();
-      provider.setCustomParameters({
-        prompt: 'select_account'
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'google',
+        options: { redirectTo: `${window.location.origin}/auth/callback` }
       });
-
-      const result = await signInWithPopup(auth, provider);
-      const user = result.user;
-
-      // Create profile if doesn't exist
-      if (user) {
-        const existingProfile = await dbHelpers.getUserByAuthId(user.uid);
-
-        if (!existingProfile) {
-          await dbHelpers.createUserProfile({
-            auth_user_id: user.uid,
-            name: user.displayName || user.email!.split('@')[0],
-            email: user.email!,
-            role: 'owner'
-          });
-        }
-      }
-
-      return { user };
+      if (error) throw error;
+      return { data };
     } catch (error) {
       console.error('Google sign in error:', error);
       throw error;
     }
   },
 
-  // Sign in with Facebook
+  // Sign in with Facebook via Supabase OAuth
   async signInWithFacebook() {
     try {
-      const provider = new FacebookAuthProvider();
-      const result = await signInWithPopup(auth, provider);
-      const user = result.user;
-
-      // Create profile if doesn't exist
-      if (user) {
-        const existingProfile = await dbHelpers.getUserByAuthId(user.uid);
-
-        if (!existingProfile) {
-          await dbHelpers.createUserProfile({
-            auth_user_id: user.uid,
-            name: user.displayName || user.email!.split('@')[0],
-            email: user.email!,
-            role: 'owner'
-          });
-        }
-      }
-
-      return { user };
+      const { data, error } = await supabase.auth.signInWithOAuth({
+        provider: 'facebook',
+        options: { redirectTo: `${window.location.origin}/auth/callback` }
+      });
+      if (error) throw error;
+      return { data };
     } catch (error) {
       console.error('Facebook sign in error:', error);
       throw error;
@@ -122,31 +87,31 @@ export const authHelpers = {
   // Sign out user
   async signOut() {
     try {
-      await firebaseSignOut(auth);
+      const { error } = await supabase.auth.signOut();
+      if (error) throw error;
     } catch (error) {
       console.error('Sign out error:', error);
       throw error;
     }
   },
 
-  // Get current user
+  // Get current user with profile from Supabase
   async getCurrentUser(): Promise<AuthUser | null> {
     try {
-      const user = auth.currentUser;
+      const { data: { user }, error } = await supabase.auth.getUser();
+      if (error || !user) return null;
 
-      if (!user) return null;
-
-      // Get user profile from Firestore
-      let profile = await dbHelpers.getUserByAuthId(user.uid);
+      // Get user profile from Supabase DB
+      let profile = await dbHelpers.getUserByAuthId(user.id);
 
       // If no profile exists, create one (handles OAuth users)
       if (!profile && user.email) {
         try {
           profile = await dbHelpers.createUserProfile({
-            auth_user_id: user.uid,
-            name: user.displayName || user.email.split('@')[0],
+            auth_user_id: user.id,
+            name: user.user_metadata?.full_name || user.email.split('@')[0],
             email: user.email,
-            role: 'owner'
+            role: ADMIN_EMAILS.includes(user.email) ? 'admin' : 'owner'
           });
         } catch (createError) {
           console.error('Could not create user profile:', createError);
@@ -154,13 +119,21 @@ export const authHelpers = {
         }
       }
 
-      if (!profile) return null;
+      if (!profile) {
+        const fallbackRole = (user.email && ADMIN_EMAILS.includes(user.email)) ? 'admin' : 'owner';
+        return {
+          id: user.id,
+          email: user.email!,
+          name: user.user_metadata?.full_name || user.email?.split('@')[0] || 'Потребител',
+          role: fallbackRole
+        };
+      }
 
       return {
-        id: user.uid,
+        id: user.id,
         email: user.email!,
         name: profile.name || user.email!.split('@')[0],
-        role: profile.role
+        role: profile.role || 'owner'
       };
     } catch (error) {
       console.error('Get current user error:', error);
@@ -168,35 +141,23 @@ export const authHelpers = {
     }
   },
 
-  // Listen to auth changes
+  // Listen to Supabase auth state changes
   onAuthStateChange(callback: (user: AuthUser | null) => void) {
-    try {
-      const unsubscribe = onAuthStateChanged(auth, async (firebaseUser: User | null) => {
-        if (firebaseUser) {
-          const user = await this.getCurrentUser();
-          callback(user);
-        } else {
-          callback(null);
-        }
-      });
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(async (_event, session) => {
+      if (session?.user) {
+        const user = await this.getCurrentUser();
+        callback(user);
+      } else {
+        callback(null);
+      }
+    });
 
-      // Return in Supabase-compatible format for AuthContext
-      return {
-        data: {
-          subscription: {
-            unsubscribe
-          }
+    return {
+      data: {
+        subscription: {
+          unsubscribe: () => subscription.unsubscribe()
         }
-      };
-    } catch (error) {
-      console.error('Auth state change error:', error);
-      return {
-        data: {
-          subscription: {
-            unsubscribe: () => { }
-          }
-        }
-      };
-    }
+      }
+    };
   }
 };

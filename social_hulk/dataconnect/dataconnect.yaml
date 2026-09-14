@@ -1,0 +1,11 @@
+specVersion: "v1alpha"
+serviceId: "social-hulk"
+location: "us-central1"
+schema:
+  source: "./schema"
+  datasource:
+    postgresql:
+      database: "social-hulk-db"
+      cloudSql:
+        instanceId: "social-hulk-instance"
+connectorDirs: ["./social-hulk-connector"]

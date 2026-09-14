@@ -28,8 +28,8 @@ const SitterCard: React.FC<SitterCardProps> = ({ sitter }) => {
         <div className="absolute bottom-4 left-4 bg-white/90 backdrop-blur-sm rounded-lg px-3 py-2">
           <div className="flex items-center">
             <Star className="h-4 w-4 text-yellow-400 fill-current mr-1" />
-            <span className="font-semibold text-gray-900">{sitter.rating}</span>
-            <span className="text-gray-600 text-sm ml-1">({sitter.total_reviews})</span>
+            <span className="font-semibold text-gray-900">{sitter.rating || 0}</span>
+            <span className="text-gray-600 text-sm ml-1">({sitter.total_reviews || 0})</span>
           </div>
         </div>
       </div>
@@ -66,7 +66,7 @@ const SitterCard: React.FC<SitterCardProps> = ({ sitter }) => {
         <div className="flex justify-between items-center mb-4">
           <div>
             <p className="text-sm text-gray-600">Рейтинг</p>
-            <p className="font-semibold text-gray-900">{sitter.average_rating.toFixed(1)}</p>
+            <p className="font-semibold text-gray-900">{(sitter.average_rating || sitter.rating || 0).toFixed(1)}</p>
           </div>
           <div className="text-right">
             <p className="text-sm text-gray-600">От</p>

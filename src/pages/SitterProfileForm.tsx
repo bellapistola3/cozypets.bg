@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from 'react';
-import { dbHelpers, supabase } from '../lib/supabase';
+import { dbHelpers } from '../lib/firebase';
+import { supabase } from '../lib/supabaseClient';
 import { MapContainer, TileLayer, Marker, useMapEvents } from 'react-leaflet';
 import L from 'leaflet';
 
@@ -154,14 +155,20 @@ export default function SitterProfileForm() {
     // 2) upload avatar (optional)
     let avatar_url: string | undefined = undefined;
     if (avatarFile) {
-      const path = `${session.user.id}/avatar_${Date.now()}_${avatarFile.name}`;
-      const { data, error } = await supabase.storage.from('sitter-media').upload(path, avatarFile, { upsert: true });
-      if (error) return alert(error.message);
-      const { data: pub } = supabase.storage.from('sitter-media').getPublicUrl(data.path);
-      avatar_url = pub.publicUrl;
-      // Note: avatar_url is not currently in users table schema
-      // You may need to add it later or use a separate table
-      console.log('Avatar uploaded:', avatar_url);
+      try {
+        const fileRef = ref(storage, `sitter-avatars/${session.user.id}/${Date.now()}_${avatarFile.name}`);
+        const snapshot = await uploadBytes(fileRef, avatarFile);
+        avatar_url = await getDownloadURL(snapshot.ref);
+        console.log('Avatar uploaded via Firebase Storage:', avatar_url);
+      } catch (fbErr) {
+        console.warn('Firebase storage avatar failed, trying Supabase storage fallback:', fbErr);
+        const path = `${session.user.id}/avatar_${Date.now()}_${avatarFile.name}`;
+        const { data, error } = await supabase.storage.from('sitter-media').upload(path, avatarFile, { upsert: true });
+        if (!error && data) {
+          const { data: pub } = supabase.storage.from('sitter-media').getPublicUrl(data.path);
+          avatar_url = pub.publicUrl;
+        }
+      }
     }
 
     // 3) media upload (up to 5 total)
@@ -169,18 +176,29 @@ export default function SitterProfileForm() {
     const canUpload = Math.max(0, MAX_MEDIA - currentCount);
     const toUpload = mediaFiles.slice(0, canUpload);
     for (const f of toUpload) {
-      try { // Added try block
-        const path = `${session.user.id}/media_${Date.now()}_${f.name}`;
-        const { data, error } = await supabase.storage.from('sitter-media').upload(path, f, { upsert: true });
-        if (error) { throw error; } // Throw error to be caught
-        const { data: pub } = supabase.storage.from('sitter-media').getPublicUrl(data.path);
-        await supabase.from('sitter_media').insert({
-          sitter_id: session.user.id,
-          url: pub.publicUrl,
-          media_type: f.type.startsWith('video') ? 'video' : 'image'
-        });
-      } catch (error: any) { // eslint-disable-next-line @typescript-eslint/no-explicit-any
-        alert(error.message); break;
+      try {
+        let mediaUrl = '';
+        try {
+          const fileRef = ref(storage, `sitter-gallery/${session.user.id}/${Date.now()}_${f.name}`);
+          const snapshot = await uploadBytes(fileRef, f);
+          mediaUrl = await getDownloadURL(snapshot.ref);
+        } catch (fbErr) {
+          const path = `${session.user.id}/media_${Date.now()}_${f.name}`;
+          const { data, error } = await supabase.storage.from('sitter-media').upload(path, f, { upsert: true });
+          if (error) throw error;
+          const { data: pub } = supabase.storage.from('sitter-media').getPublicUrl(data.path);
+          mediaUrl = pub.publicUrl;
+        }
+
+        if (mediaUrl) {
+          await supabase.from('sitter_media').insert({
+            sitter_id: session.user.id,
+            url: mediaUrl,
+            media_type: f.type.startsWith('video') ? 'video' : 'image'
+          });
+        }
+      } catch (error: any) {
+        console.error('Media upload error:', error);
       }
     }
 

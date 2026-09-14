@@ -5,7 +5,7 @@ interface AuthContextType {
   user: AuthUser | null;
   loading: boolean;
   signIn: (email: string, password: string) => Promise<void>;
-  signUp: (email: string, password: string, name: string, phone?: string) => Promise<void>;
+  signUp: (email: string, password: string, name: string, phone?: string, role?: 'owner' | 'admin' | 'sitter') => Promise<void>;
   signInWithGoogle: () => Promise<void>;
   signInWithFacebook: () => Promise<void>;
   signOut: () => Promise<void>;
@@ -51,10 +51,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  const signUp = async (email: string, password: string, name: string, phone?: string) => {
+  const signUp = async (email: string, password: string, name: string, phone?: string, role: 'owner' | 'admin' | 'sitter' = 'owner') => {
     setLoading(true);
     try {
-      await authHelpers.signUp(email, password, name, phone);
+      await authHelpers.signUp(email, password, name, phone, role);
     } catch (error) {
       setLoading(false);
       throw error;

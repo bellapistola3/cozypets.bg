@@ -28,15 +28,23 @@ const Contact: React.FC = () => {
             <h3 className="text-xl font-semibold mb-6">Контакти</h3>
             <div className="space-y-4">
               <div className="flex items-center">
-                <Phone className="h-5 w-5 text-green-600 mr-3" />
-                <span>+359 895 363 601</span>
+                <Phone className="h-5 w-5 text-green-600 mr-3 flex-shrink-0" />
+                <a href="tel:+359895363601" className="hover:text-green-600 transition-colors">+359 895 363 601</a>
               </div>
               <div className="flex items-center">
-                <Mail className="h-5 w-5 text-green-600 mr-3" />
-                <span>cozypetsbyalice@gmail.com</span>
+                <Mail className="h-5 w-5 text-green-600 mr-3 flex-shrink-0" />
+                <a href="mailto:office@cozypets.bg" className="hover:text-green-600 transition-colors">office@cozypets.bg</a>
               </div>
               <div className="flex items-center">
-                <MapPin className="h-5 w-5 text-green-600 mr-3" />
+                <Mail className="h-5 w-5 text-green-600 mr-3 flex-shrink-0" />
+                <a href="mailto:info@cozypets.bg" className="hover:text-green-600 transition-colors">info@cozypets.bg</a>
+              </div>
+              <div className="flex items-center">
+                <Mail className="h-5 w-5 text-green-600 mr-3 flex-shrink-0" />
+                <a href="mailto:cozypetsbyalice@gmail.com" className="hover:text-green-600 transition-colors text-sm text-gray-500">cozypetsbyalice@gmail.com</a>
+              </div>
+              <div className="flex items-center">
+                <MapPin className="h-5 w-5 text-green-600 mr-3 flex-shrink-0" />
                 <span>Стара Загора, България</span>
               </div>
             </div>

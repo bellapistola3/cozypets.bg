@@ -1,0 +1,11 @@
+mutation CreateUser($email: String, $displayName: String, $isAnonymous: Boolean!) @auth(level: USER) {
+  user_insert(data: {email: $email, displayName: $displayName, isAnonymous: $isAnonymous, lastActiveAt: {expr: "request.time"}, lastResetDate: {expr: "request.date"}})
+}
+
+mutation SaveGeneration($userId: UUID!, $type: String!, $platform: String!, $inputNiche: String, $inputKeywords: [String!], $inputTopic: String, $outputResult: Any!, $aiModel: String!, $tokensUsed: Int!) @auth(level: USER) {
+  generation_insert(data: {userId: $userId, type: $type, platform: $platform, inputNiche: $inputNiche, inputKeywords: $inputKeywords, inputTopic: $inputTopic, outputResult: $outputResult, aiModel: $aiModel, tokensUsed: $tokensUsed})
+}
+
+mutation IncrementUsage($userId: UUID!, $type: String!) @auth(level: USER) {
+  user_update(id: $userId, data: {totalGenerations: {increment: 1}, lastActiveAt: {expr: "request.time"}})
+}

@@ -59,19 +59,25 @@ const Footer: React.FC = () => {
             <h3 className="text-lg font-semibold mb-4">Свържете се с нас</h3>
             <div className="space-y-3">
               <div className="flex items-center">
-                <Mail className="h-5 w-5 mr-2 text-gray-400" />
-                <a href="mailto:cozypetsbyalice@gmail.com" className="text-gray-400 hover:text-white transition-colors">
-                  cozypetsbyalice@gmail.com
+                <Mail className="h-5 w-5 mr-2 text-gray-400 flex-shrink-0" />
+                <a href="mailto:office@cozypets.bg" className="text-gray-400 hover:text-white transition-colors">
+                  office@cozypets.bg
                 </a>
               </div>
               <div className="flex items-center">
-                <Phone className="h-5 w-5 mr-2 text-gray-400" />
+                <Mail className="h-5 w-5 mr-2 text-gray-400 flex-shrink-0" />
+                <a href="mailto:info@cozypets.bg" className="text-gray-400 hover:text-white transition-colors">
+                  info@cozypets.bg
+                </a>
+              </div>
+              <div className="flex items-center">
+                <Phone className="h-5 w-5 mr-2 text-gray-400 flex-shrink-0" />
                 <a href="tel:+359895363601" className="text-gray-400 hover:text-white transition-colors">
                   +359 895 363 601
                 </a>
               </div>
               <div className="flex items-center">
-                <MapPin className="h-5 w-5 mr-2 text-gray-400" />
+                <MapPin className="h-5 w-5 mr-2 text-gray-400 flex-shrink-0" />
                 <span className="text-gray-400">
                   Стара Загора, България
                 </span>

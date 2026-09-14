@@ -12,7 +12,12 @@ const VeterinarySection: React.FC = () => {
     if (user) {
       navigate('/vet-chat');
     } else {
-      alert('Ветеринарната консултация е достъпна само за регистрирани потребители с PRO абонамент. Моля, актуализирайте до PRO, за да получите достъп.');
+      const headerBtn = document.querySelector('header button');
+      if (headerBtn) {
+        (headerBtn as HTMLElement).click();
+      } else {
+        navigate('/vet-chat');
+      }
     }
   };
 
@@ -199,32 +204,7 @@ const VeterinarySection: React.FC = () => {
             ))}
           </div>
 
-          <div className="bg-gradient-to-r from-green-600 to-green-700 rounded-2xl p-8 md:p-12 text-center border-2 border-green-800 shadow-xl">
-            <h3 className="text-3xl font-bold text-white mb-4">
-              Готови ли сте за безплатна консултация?
-            </h3>
-            <p className="text-xl text-green-50 mb-8 max-w-2xl mx-auto">
-              Не чакайте проблемът да стане по-сериозен. Свържете се с ветеринар днес
-              и получете професионални съвети за здравето на любимеца си.
-            </p>
-            <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
-              <Button
-                onClick={handleStartConsultation}
-                className="px-8 py-4 text-lg font-semibold bg-white text-green-600 hover:bg-gray-50 shadow-lg hover:shadow-xl"
-              >
-                <MessageCircle className="h-5 w-5 mr-2" />
-                {user ? 'Започни консултация' : 'Регистрирай се сега'}
-              </Button>
-              {!user && (
-                <a
-                  href="#services"
-                  className="px-8 py-4 text-lg font-semibold text-white hover:text-green-100 underline"
-                >
-                  Научи повече
-                </a>
-              )}
-            </div>
-          </div>
+
         </div>
       </div>
     </section>

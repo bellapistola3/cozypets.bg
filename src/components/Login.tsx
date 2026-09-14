@@ -12,7 +12,7 @@ interface LoginProps {
 const Login: React.FC<LoginProps> = ({ onClose, onOpenRegister }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [showEmailForm, setShowEmailForm] = useState(false);
+  const [showEmailForm, setShowEmailForm] = useState(true);
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
   const { signIn, signInWithGoogle, signInWithFacebook } = useAuth();
@@ -26,8 +26,14 @@ const Login: React.FC<LoginProps> = ({ onClose, onOpenRegister }) => {
       .then(() => {
         onClose();
       })
-      .catch((error) => {
-        setError(error.message || 'Възникна грешка при влизане');
+      .catch((error: any) => {
+        let msg = 'Възникна грешка при влизане.';
+        if (error.message?.includes('Invalid login credentials') || error.message?.includes('invalid_credentials')) {
+          msg = 'Грешен имейл адрес или парола.';
+        } else if (error.message?.includes('Email not confirmed')) {
+          msg = 'Имейл адресът все още не е потвърден.';
+        }
+        setError(msg);
       })
       .finally(() => {
         setLoading(false);
@@ -39,9 +45,12 @@ const Login: React.FC<LoginProps> = ({ onClose, onOpenRegister }) => {
       setLoading(true);
       await signInWithGoogle();
       // OAuth redirect will happen automatically
-    } catch (error) {
+    } catch (error: any) {
       console.error('Google login error:', error);
-      setError('Грешка при влизане с Google');
+      const msg = error?.message?.includes('provider is not enabled')
+        ? 'Google входът все още не е активиран в Supabase настройките.'
+        : 'Грешка при влизане с Google. Моля, използвайте имейл и парола.';
+      setError(msg);
       setLoading(false);
     }
   };
@@ -51,9 +60,12 @@ const Login: React.FC<LoginProps> = ({ onClose, onOpenRegister }) => {
       setLoading(true);
       await signInWithFacebook();
       // OAuth redirect will happen automatically
-    } catch (error) {
+    } catch (error: any) {
       console.error('Facebook login error:', error);
-      setError('Грешка при влизане с Facebook');
+      const msg = error?.message?.includes('provider is not enabled')
+        ? 'Facebook входът все още не е активиран в Supabase настройките.'
+        : 'Грешка при влизане с Facebook. Моля, използвайте имейл и парола.';
+      setError(msg);
       setLoading(false);
     }
   };

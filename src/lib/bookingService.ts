@@ -38,7 +38,7 @@ export const bookingService = {
       const existingPet = await supabase
         .from('pets')
         .select('*')
-        .eq('owner_id', petData.owner_id)
+        .eq('user_id', petData.owner_id)
         .eq('name', petData.name)
         .maybeSingle();
 
@@ -49,17 +49,12 @@ export const bookingService = {
       const { data, error } = await supabase
         .from('pets')
         .insert([{
-          owner_id: petData.owner_id,
+          user_id: petData.owner_id,
           name: petData.name,
-          type: petData.type,
-          breed: petData.breed,
-          age: petData.age,
-          weight: petData.weight,
-          spayed_neutered: petData.spayed_neutered,
-          gender: petData.gender,
-          vaccinated: true,
-          microchipped: false,
-          temperament: [],
+          breed: `${petData.type ? petData.type + ' - ' : ''}${petData.breed || ''}`.trim(),
+          age: petData.age || 0,
+          health_status: petData.spayed_neutered ? 'Кастриран/а' : 'Некастриран/а',
+          photo_url: '',
         }])
         .select()
         .single();
@@ -175,21 +170,24 @@ export const bookingService = {
         }
       }
 
+      const startDate = new Date(reservationData.start_date).toISOString();
+      const endDate = new Date(reservationData.end_date || reservationData.start_date).toISOString();
+
+      const reservationPayload: Record<string, any> = {
+        owner_id: reservationData.owner_id,
+        pet_id: reservationData.pet_id || null,
+        start_date: startDate,
+        end_date: endDate,
+        total_price: reservationData.total_price,
+        status: 'pending',
+      };
+      if (reservationData.sitter_id) {
+        reservationPayload.sitter_id = reservationData.sitter_id;
+      }
+
       const { data: reservation, error: reservationError } = await supabase
         .from('reservations')
-        .insert([{
-          owner_id: reservationData.owner_id,
-          sitter_id: reservationData.sitter_id || null,
-          pet_id: reservationData.pet_id || null,
-          service_type: reservationData.service_type,
-          start_date: reservationData.start_date,
-          end_date: reservationData.end_date || reservationData.start_date,
-          start_time: reservationData.start_time || '09:00',
-          end_time: reservationData.end_time || '17:00',
-          special_instructions: reservationData.special_instructions || '',
-          total_price: reservationData.total_price,
-          status: 'pending',
-        }])
+        .insert([reservationPayload])
         .select()
         .single();
 
@@ -201,34 +199,43 @@ export const bookingService = {
         };
       }
 
-      const { data: payment, error: paymentError } = await supabase
-        .from('payments')
-        .insert([{
-          reservation_id: reservation.id,
-          amount: reservationData.total_price,
-          payment_method: 'credit_card',
-          payment_status: 'pending',
-          escrow_status: 'held',
-          platform_fee: reservationData.total_price * 0.20,
-          sitter_amount: reservationData.total_price * 0.75,
-        }])
-        .select()
-        .single();
+      let payment = null;
+      try {
+        const { data: paymentData, error: paymentError } = await supabase
+          .from('payments')
+          .insert([{
+            reservation_id: reservation.id,
+            amount: reservationData.total_price,
+            payment_method: 'credit_card',
+            payment_status: 'pending',
+            escrow_status: 'held',
+          }])
+          .select()
+          .single();
 
-      if (paymentError) {
-        console.warn('Payment record creation failed:', paymentError);
+        if (paymentError) {
+          console.warn('Payment record creation note:', paymentError);
+        } else {
+          payment = paymentData;
+        }
+      } catch (pErr) {
+        console.warn('Payment record creation error:', pErr);
       }
 
-      await supabase
-        .from('notifications')
-        .insert([{
-          user_id: reservationData.owner_id,
-          type: 'booking',
-          title: 'Резервация създадена',
-          message: `Вашата резервация за ${reservationData.service_type} е получена успешно!`,
-          action_url: '/dashboard',
-          is_read: false,
-        }]);
+      try {
+        await supabase
+          .from('notifications')
+          .insert([{
+            user_id: reservationData.owner_id,
+            type: 'booking',
+            title: 'Резервация създадена',
+            message: `Вашата резервация за ${reservationData.service_type} е получена успешно!`,
+            action_url: '/dashboard',
+            is_read: false,
+          }]);
+      } catch (notifErr) {
+        console.warn('Notification send note:', notifErr);
+      }
 
       return {
         success: true,

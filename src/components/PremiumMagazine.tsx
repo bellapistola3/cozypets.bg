@@ -19,7 +19,7 @@ import {
   ShieldCheck,
 } from 'lucide-react';
 import { useAuth } from '../contexts/AuthContext';
-import { supabase } from '../lib/supabase';
+import { supabase } from '../lib/firebase';
 import Button from './common/Button';
 
 interface MagazineIssue {
@@ -54,6 +54,7 @@ interface VeterinaryClinic {
 const PremiumMagazine: React.FC = () => {
   const { user } = useAuth();
   const [isPremium, setIsPremium] = useState(false);
+  const [isProExpanded, setIsProExpanded] = useState(false);
   const [currentIssue, setCurrentIssue] = useState<MagazineIssue | null>(null);
   const [articles, setArticles] = useState<Article[]>([]);
   const [clinics, setClinics] = useState<VeterinaryClinic[]>([]);
@@ -198,14 +199,7 @@ const PremiumMagazine: React.FC = () => {
               за грижата за вашия домашен любимец
             </p>
 
-            {!isPremium && user && (
-              <div className="mt-6 inline-flex items-center gap-2 bg-amber-50 border-2 border-amber-200 px-6 py-3 rounded-xl">
-                <Lock className="h-5 w-5 text-amber-600" />
-                <p className="text-amber-800 font-medium">
-                  Надградете до PRO акаунт за само 9,99€/месец за пълен достъп
-                </p>
-              </div>
-            )}
+
           </div>
 
           {currentIssue && (
@@ -270,154 +264,133 @@ const PremiumMagazine: React.FC = () => {
             </div>
           )}
 
-          <div className="grid lg:grid-cols-2 gap-12 mb-16">
-            <div className="rounded-2xl shadow-xl overflow-hidden border-2 border-orange-100">
-              <div className="bg-gradient-to-br from-amber-500 to-orange-600 p-8">
-                <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
-                  <Building className="h-8 w-8 text-white" />
-                  Директория на услуги
-                </h3>
+          {/* SUPER PRO TOGGLE BUTTON (Collapses 2 large columns into 1 interactive trigger) */}
+          <div className="mb-12 text-center">
+            <button
+              onClick={() => setIsProExpanded(!isProExpanded)}
+              className="group mx-auto inline-flex items-center justify-center gap-4 bg-gradient-to-r from-amber-500 via-orange-500 to-amber-600 hover:from-amber-600 hover:to-orange-600 text-white font-black text-xl px-10 py-5 rounded-3xl shadow-2xl hover:shadow-amber-500/40 border-2 border-amber-300/40 transition-all duration-300 transform hover:scale-105"
+            >
+              <Sparkles className="w-7 h-7 text-yellow-200 animate-spin" style={{ animationDuration: '6s' }} />
+              <span>✨ Станете PRO за 9.99€ / месец — Виж офертата & предимствата</span>
+              <ChevronRight className={`w-6 h-6 transition-transform duration-300 ${isProExpanded ? 'rotate-90' : ''}`} />
+            </button>
+          </div>
 
-                <div className="space-y-4 mb-6">
-                  {clinics.map((clinic) => (
-                    <div
-                      key={clinic.id}
-                      className="interactive-card neon-glow bg-white rounded-xl p-4 border-2 border-white/50"
-                    >
-                    <div className="flex items-start justify-between mb-2">
-                      <h4 className="font-bold text-gray-900">{clinic.name}</h4>
-                      <div className="flex items-center gap-1 bg-amber-100 px-2 py-1 rounded">
-                        <Star className="h-4 w-4 text-amber-600 fill-amber-600" />
-                        <span className="text-sm font-bold text-amber-700">{clinic.rating}</span>
-                      </div>
-                    </div>
+          {/* COLLAPSIBLE 2-COLUMN PRICING & DIRECTORY SECTION */}
+          {isProExpanded && (
+            <div className="grid lg:grid-cols-2 gap-12 mb-16 animate-in fade-in slide-in-from-top-4 duration-300">
+              <div className="rounded-2xl shadow-xl overflow-hidden border-2 border-orange-100">
+                <div className="bg-gradient-to-br from-amber-500 to-orange-600 p-8">
+                  <h3 className="text-2xl font-bold text-white mb-6 flex items-center gap-3">
+                    <Building className="h-8 w-8 text-white" />
+                    Директория на услуги
+                  </h3>
 
-                    <div className="space-y-2 text-sm text-gray-600">
-                      <div className="flex items-center gap-2">
-                        <MapPin className="h-4 w-4 text-gray-400" />
-                        <span>{clinic.city} - {clinic.address}</span>
-                      </div>
-                      <div className="flex items-center gap-2">
-                        <Phone className="h-4 w-4 text-gray-400" />
-                        <span>{clinic.phone}</span>
-                      </div>
-                      {clinic.emergency_available && (
-                        <div className="inline-flex items-center gap-1 bg-red-100 text-red-700 px-2 py-1 rounded text-xs font-semibold">
-                          <Clock className="h-3 w-3" />
-                          24/7 Спешна помощ
+                  <div className="space-y-4 mb-6">
+                    {clinics.map((clinic) => (
+                      <div
+                        key={clinic.id}
+                        className="interactive-card neon-glow bg-white rounded-xl p-4 border-2 border-white/50"
+                      >
+                        <div className="flex items-start justify-between mb-2">
+                          <h4 className="font-bold text-gray-900">{clinic.name}</h4>
+                          <div className="flex items-center gap-1 bg-amber-100 px-2 py-1 rounded">
+                            <Star className="h-4 w-4 text-amber-600 fill-amber-600" />
+                            <span className="text-sm font-bold text-amber-700">{clinic.rating}</span>
+                          </div>
                         </div>
-                      )}
-                    </div>
 
-                    <div className="flex flex-wrap gap-2 mt-3">
-                      {clinic.services.slice(0, 3).map((service, idx) => (
-                        <span
-                          key={idx}
-                          className="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs"
-                        >
-                          {service}
-                        </span>
-                      ))}
+                        <div className="space-y-2 text-sm text-gray-600">
+                          <div className="flex items-center gap-2">
+                            <MapPin className="h-4 w-4 text-gray-400" />
+                            <span>{clinic.city} - {clinic.address}</span>
+                          </div>
+                          <div className="flex items-center gap-2">
+                            <Phone className="h-4 w-4 text-gray-400" />
+                            <span>{clinic.phone}</span>
+                          </div>
+                          {clinic.emergency_available && (
+                            <div className="inline-flex items-center gap-1 bg-red-100 text-red-700 px-2 py-1 rounded text-xs font-semibold">
+                              <Clock className="h-3 w-3" />
+                              24/7 Спешна помощ
+                            </div>
+                          )}
+                        </div>
+
+                        <div className="flex flex-wrap gap-2 mt-3">
+                          {clinic.services.slice(0, 3).map((service, idx) => (
+                            <span
+                              key={idx}
+                              className="bg-gray-100 text-gray-700 px-2 py-1 rounded text-xs"
+                            >
+                              {service}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-3 text-white">
+                      <CheckCircle className="h-5 w-5 text-white" />
+                      <span>Ветеринарни клиники в цяла България</span>
+                    </div>
+                    <div className="flex items-center gap-3 text-white">
+                      <CheckCircle className="h-5 w-5 text-white" />
+                      <span>Груминг салони и козметични процедури</span>
+                    </div>
+                    <div className="flex items-center gap-3 text-white">
+                      <CheckCircle className="h-5 w-5 text-white" />
+                      <span>Зоо магазини с доставка</span>
                     </div>
                   </div>
+                </div>
+
+                <div className="bg-white p-8">
+                  <div className="flex items-center gap-3 mb-4">
+                    <ShieldCheck className="w-6 h-6 text-orange-500" />
+                    <h3 className="text-2xl font-bold text-gray-900">Сигурен избор за вашия любимец</h3>
+                  </div>
+                  <p className="text-gray-600 mb-4">
+                    Всички партньори в директорията преминават проверка за качество и безопасност.
+                  </p>
+                </div>
+              </div>
+
+              <div className="bg-white rounded-2xl shadow-xl p-8 border-2 border-orange-100">
+                <h3 className="text-2xl font-bold text-gray-900 mb-6">
+                  Какво включва PRO абонаментът?
+                </h3>
+
+                <div className="space-y-3 mb-8">
+                  {benefits.map((benefit, index) => (
+                    <div key={index} className="flex items-start gap-3">
+                      <CheckCircle className="h-6 w-6 text-orange-600 flex-shrink-0 mt-0.5" />
+                      <span className="text-gray-700">{benefit}</span>
+                    </div>
                   ))}
                 </div>
 
-                <div className="space-y-3">
-                  <div className="flex items-center gap-3 text-white">
-                    <CheckCircle className="h-5 w-5 text-white" />
-                    <span>Ветеринарни клиники в цяла България</span>
-                  </div>
-                  <div className="flex items-center gap-3 text-white">
-                    <CheckCircle className="h-5 w-5 text-white" />
-                    <span>Груминг салони и козметични процедури</span>
-                  </div>
-                  <div className="flex items-center gap-3 text-white">
-                    <CheckCircle className="h-5 w-5 text-white" />
-                    <span>Зоо магазини с доставка</span>
-                  </div>
-                  <div className="flex items-center gap-3 text-white">
-                    <CheckCircle className="h-5 w-5 text-white" />
-                    <span>Специалисти по обучение и дресировка</span>
-                  </div>
-                </div>
-              </div>
-
-              <div className="bg-white p-8">
-                <div className="flex items-center gap-3 mb-4">
-                  <ShieldCheck className="w-6 h-6 text-orange-500" />
-                  <h3 className="text-2xl font-bold text-gray-900">Сигурен избор за вашия любимец</h3>
-                </div>
-                <p className="text-gray-600 mb-4">
-                  Всички партньори в директорията преминават проверка за качество и безопасност.
-                </p>
-                <div className="space-y-3">
-                  <div className="flex items-start gap-3 text-gray-700">
-                    <CheckCircle className="h-5 w-5 text-orange-600 mt-0.5 flex-shrink-0" />
-                    <span>Проверени ветеринарни клиники и салони</span>
-                  </div>
-                  <div className="flex items-start gap-3 text-gray-700">
-                    <CheckCircle className="h-5 w-5 text-orange-600 mt-0.5 flex-shrink-0" />
-                    <span>Актуални контакти и работно време</span>
-                  </div>
-                  <div className="flex items-start gap-3 text-gray-700">
-                    <CheckCircle className="h-5 w-5 text-orange-600 mt-0.5 flex-shrink-0" />
-                    <span>Мнения и оценки от други стопани</span>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white rounded-2xl shadow-xl p-8 border-2 border-orange-100">
-              <h3 className="text-2xl font-bold text-gray-900 mb-6">
-                Какво включва PRO абонаментът?
-              </h3>
-
-              <div className="space-y-3 mb-8">
-                {benefits.map((benefit, index) => (
-                  <div key={index} className="flex items-start gap-3">
-                    <CheckCircle className="h-6 w-6 text-orange-600 flex-shrink-0 mt-0.5" />
-                    <span className="text-gray-700">{benefit}</span>
-                  </div>
-                ))}
-              </div>
-
-              <div className="bg-gradient-to-r from-amber-500 to-orange-500 rounded-xl p-6 text-white mb-6">
-                <div className="flex items-center gap-3 mb-3">
-                  <Sparkles className="h-8 w-8" />
-                  <div>
-                    <div className="text-3xl font-bold">9,99€ / месец</div>
-                    <div className="text-amber-100">Пълен достъп до всички материали</div>
-                  </div>
-                </div>
-                <p className="text-amber-50 text-sm">
-                  Месечно издание с актуална информация, експертни съвети и пълна директория
-                  на услуги за вашия домашен любимец.
-                </p>
-              </div>
-
-              {!isPremium && (
-                <Button className="w-full py-4 text-lg font-semibold bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
-                  <Star className="h-6 w-6 mr-2" />
-                  Надградете до PRO сега
-                </Button>
-              )}
-
-              {isPremium && (
-                <div className="bg-gradient-to-r from-green-50 to-emerald-50 rounded-xl p-6 border-2 border-green-200">
-                  <div className="flex items-center gap-3 text-green-700">
-                    <CheckCircle className="h-8 w-8" />
+                <div className="bg-gradient-to-r from-amber-500 to-orange-500 rounded-xl p-6 text-white mb-6">
+                  <div className="flex items-center gap-3 mb-3">
+                    <Sparkles className="h-8 w-8" />
                     <div>
-                      <div className="font-bold text-lg">Вие сте PRO член!</div>
-                      <div className="text-sm text-green-600">
-                        Имате достъп до всички материали
-                      </div>
+                      <div className="text-3xl font-bold">9,99€ / месец</div>
+                      <div className="text-amber-100">Пълен достъп до всички материали</div>
                     </div>
                   </div>
                 </div>
-              )}
+
+                {!isPremium && (
+                  <Button className="w-full py-4 text-lg font-semibold bg-gradient-to-r from-amber-600 to-orange-600 hover:from-amber-700 hover:to-orange-700 shadow-lg hover:shadow-xl transform hover:scale-105 transition-all duration-300">
+                    <Star className="h-6 w-6 mr-2" />
+                    Активирай PRO за 9.99€ сега
+                  </Button>
+                )}
+              </div>
             </div>
-          </div>
+          )}
 
           <div className="grid md:grid-cols-4 gap-6 mb-12">
             {features.map((feature, index) => (

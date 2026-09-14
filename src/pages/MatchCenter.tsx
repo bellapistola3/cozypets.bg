@@ -106,21 +106,21 @@ const MatchCenter: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-20">
-      <div className="max-w-[1400px] mx-auto px-6 py-8">
-        <div className="mb-8 text-center">
-          <div className="flex justify-center mb-4">
-            <CozyMascot variant="thinking" size="medium" />
+    <section id="ai-match" className="bg-gray-50 py-12">
+      <div className="max-w-[1400px] mx-auto px-4 sm:px-6">
+        <div className="mb-6 text-center">
+          <div className="flex justify-center mb-3">
+            <CozyMascot variant="thinking" size="small" />
           </div>
-          <h1 className="text-4xl font-bold text-gray-900 mb-2">
+          <h2 className="text-2xl font-bold text-gray-900 mb-1">
             AI Център за Съвпадения 🐾
-          </h1>
-          <p className="text-gray-600">
+          </h2>
+          <p className="text-gray-500 text-sm">
             Алис анализира най-добрите гледачи за вашето животинче
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-[280px_1fr_320px] gap-6">
+        <div className="grid lg:grid-cols-[240px_1fr_280px] gap-4">
           <div className="lg:sticky lg:top-6 h-fit">
             <FiltersPanel
               filters={filters}
@@ -130,9 +130,9 @@ const MatchCenter: React.FC = () => {
 
           <div>
             {isLoading ? (
-              <div className="flex justify-center items-center py-20">
+              <div className="flex justify-center items-center py-10">
                 <div className="animate-thinking">
-                  <CozyMascot variant="thinking" size="large" />
+                  <CozyMascot variant="thinking" size="medium" />
                 </div>
               </div>
             ) : (
@@ -149,7 +149,7 @@ const MatchCenter: React.FC = () => {
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 };
 

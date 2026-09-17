@@ -1,5 +1,5 @@
 import { supabase } from './supabaseClient';
-import { dbHelpers } from './firebase';
+import { dbHelpers } from './supabaseDb';
 
 export interface AuthUser {
   id: string;
